@@ -180,7 +180,6 @@ public class Util {
     		
 		BufferedReader reader = null;
 	    
-		//File file = new File(txtFile);
  	    if(file.exists() == true)
 			try {
 				
