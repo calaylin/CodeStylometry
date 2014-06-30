@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.*;
@@ -95,25 +96,31 @@ public class FeatureCalculators {
 
     	
     String test_cpp_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/";	
-    List test_file_paths = Util.listCPPFiles(test_cpp_dir);
+    String test = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/test/";	
+
+    //    List test_file_paths = Util.listCPPFiles(test_cpp_dir); //use this for preprocessing
+    List test_file_paths = Util.listTextFiles(test_cpp_dir);
     for(int i=0; i< test_file_paths.size(); i++){
 		int testIDlength = test_file_paths.get(i).toString().length();    		
 		String filePath = test_file_paths.get(i).toString();  
     System.out.println(filePath);
-	preprocessData(filePath);
+    
+//	preprocessData(filePath);
     }
-
-    	
-    	
+    String[] APIsymbols = uniqueAPISymbols(test);
+    
+    for (int i=0; i<APIsymbols.length; i++)
+    { System.out.println(APIsymbols[i]);}
+ 
+   
+  
     }
      
-    
- 
+
     
    public static int countQuotesIndex (String inputText){
    int quote_score =0;
    for (Character c: inputText.toCharArray()) {
-//       if (c.equals('\"')) {
        if (c.equals('\"')) {
 
        	quote_score++;
@@ -123,21 +130,25 @@ public class FeatureCalculators {
    return quote_score;
 
 }
-   
-   public static String[]  uniqueWords (String inputText){
- // String[] uniqueWords ={""};
+ 
+     public static String[] uniqueAPISymbols (String dirPath) throws IOException{
+	  
+	   
+	    List test_file_paths = Util.listTextFiles(dirPath);
+		HashSet<String> uniqueWords = new HashSet<String>();
 
-//  String[] words = inputText.split("[!-~]* ");
-	   String[] words = inputText.split( "\\s+");
+	    for(int i=0; i< test_file_paths.size(); i++){
+			String filePath = test_file_paths.get(i).toString();  
+	   
+	   String inputText =Util.readFile(filePath);
+	   Pattern pattern = Pattern.compile("u'(.*?)'");
+	   Matcher matcher = pattern.matcher(inputText);
+	   while (matcher.find()) {
+	       uniqueWords.add(matcher.group(1));
+	   }}
+	   String[] words = uniqueWords.toArray(new String[0]);
 
-  Set<String> uniqueWords = new HashSet<String>();
-
-  for (String word : words) {
-      uniqueWords.add(word);
-  }
-  words = uniqueWords.toArray(new String[0]);
-  return words;
-
+       return words;
 }
   
   
