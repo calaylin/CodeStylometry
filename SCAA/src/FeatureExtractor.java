@@ -34,7 +34,6 @@ import java.text.SimpleDateFormat;
 
 /**
  * FeatureExtractor writes extracted features to arff file to be used with WEKA
- *
  * @author Aylin Caliskan-Islam (ac993@drexel.edu)
  */
 
@@ -53,7 +52,7 @@ public class FeatureExtractor {
        	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/" +"CodeJam"+ (month+1) + "." + 
     	dayOfMonth + "_"+ time +".arff" ;
      
-    String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/BoWdata8/";	
+    String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/";	
 	List test_file_paths = Util.listTextFiles(test_dir);
 	String text = "";
   	//Writing the test arff
@@ -65,7 +64,7 @@ public class FeatureExtractor {
 	Util.writeFile("@attribute 'authorName' {",output_filename, true);
 	for(int i=0; i< test_file_paths.size(); i++){
 		int testIDlength = test_file_paths.get(i).toString().length();    		
-		String authorName = test_file_paths.get(i).toString().substring(70,testIDlength-((testIDlength-75)/2)-7);  
+		String authorName = test_file_paths.get(i).toString().substring(83,testIDlength-((testIDlength-92)/2)-9);  
 		text = text.concat(authorName + ",");  
 		String[] words = text.split( ",");
 		  Set<String> uniqueWords = new HashSet<String>();
@@ -107,10 +106,8 @@ public class FeatureExtractor {
    	for(int i=0; i< test_file_paths.size(); i++){
 		String featureText = Util.readFile(test_file_paths.get(i).toString());
 		System.out.println(FeatureCalculators.functionIDCount(featureText));
-		//remove all newlines so that topic modeling takes it as one document.
 		int testIDlength = test_file_paths.get(i).toString().length(); 
-		// /Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/BoWdata8/darkKelvin/darkKelvin_1_0.txt
-		String authorName = test_file_paths.get(i).toString().substring(70,testIDlength-((testIDlength-75)/2)-7);  
+		String authorName = test_file_paths.get(i).toString().substring(83,testIDlength-((testIDlength-92)/2)-9);  
 
 		System.out.println(test_file_paths.get(i));
 		System.out.println(authorName);
@@ -126,9 +123,7 @@ public class FeatureExtractor {
    	
 	  public static String[]  uniqueDirectoryWords (String directoryFilePath){
 
-		    String text = "===\n" +
-		            "FunctionId: 3" +
-		            "FunctionName: operator"+ "";
+		    String text = "FunctionName: operator"+ "";
 		            
 		            
 
