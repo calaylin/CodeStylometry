@@ -2,6 +2,7 @@ SCAA
 ====
 Runs joern on testCode, writes joern-tools script output to text files for each testCode file, 
 extracts features from the text files to create an arff file that can be used in WEKA for machine learning.
+
 (This project requires the development branches of joern and python-joern, and also joern-tools to be set up.  These three git repositories have dependencies and come with thorough documentation.)
 
 1) Do preprocessing for all files in the directory structure, year-> author name -> all_cpp_files_ofauthor
