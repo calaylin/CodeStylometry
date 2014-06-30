@@ -31,7 +31,6 @@ import org.apache.commons.lang3.StringUtils;
  * Calculators.
  * These features are currently being extended.
  * 
- *
  * @author Aylin Caliskan-Islam (ac993@drexel.edu)
  */
 
@@ -39,14 +38,6 @@ import org.apache.commons.lang3.StringUtils;
 public class FeatureCalculators {
 	
 
-//    TwitterDatabase db;
-
-
-    /**
-     * Initialization of the model, etc.
-     *
-     * @param db - The database connection
-     */
     public FeatureCalculators( ) {
     }
     
