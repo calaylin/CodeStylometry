@@ -9,7 +9,13 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.io.FileUtils;
 
-
+/**
+ * Appends two arff files where each feature vector contains the same ID.
+ * This can be used to combine extracted features with features extracted from JSylo 
+ * (eg Writeprints limited, save to arff files in the Analysis tab) 
+ *
+ * @author Aylin Caliskan-Islam (ac993@drexel.edu)
+ */
 public class AppendArffFiles {
 
 	//after @data, if the first csv element is the same as file2's first csv element, 
