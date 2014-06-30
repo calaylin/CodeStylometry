@@ -29,6 +29,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Calculators.
+ * These features are currently being extended.
+ * 
  *
  * @author Aylin Caliskan-Islam (ac993@drexel.edu)
  */
