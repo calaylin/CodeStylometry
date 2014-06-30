@@ -21,7 +21,6 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /**
  * Util has necessary functions for file processing.
- *
  * @author Aylin Caliskan-Islam (ac993@drexel.edu)
  */
 
@@ -119,7 +118,6 @@ public class Util {
 					}
 					
 					dataLine = reader.readLine();
-					//System.out.println(allFunctionWords.size());
 				}
 				
 				
