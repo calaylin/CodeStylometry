@@ -1,3 +1,5 @@
+
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,11 +28,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 public class Util {
 	
-	
 
-	
-	
-	
 	public static void writeFile(List<String> allLines,String fileName, boolean append)
 	{
 		File aFile = new File(fileName);
