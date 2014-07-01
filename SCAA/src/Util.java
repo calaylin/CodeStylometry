@@ -118,6 +118,7 @@ public class Util {
 					}
 					
 					dataLine = reader.readLine();
+					System.out.println(dataLine);
 				}
 				
 				

@@ -107,29 +107,21 @@ public class FeatureCalculators {
     
 //	preprocessData(filePath);
     }
-    String[] APIsymbols = uniqueAPISymbols(test);
+  
     
+    String[] APIsymbols = uniqueAPISymbols(test);
+	String featureText = Util.readFile("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/test/cgy4ever_2_0.txt");
+
     for (int i=0; i<APIsymbols.length; i++)
     { System.out.println(APIsymbols[i]);}
- 
-   
+    int[] symCount = APISymbolCount(featureText, APIsymbols );
+    for (int i=0; i<APIsymbols.length; i++)
+    { System.out.println(symCount[i]);}
   
     }
      
 
     
-   public static int countQuotesIndex (String inputText){
-   int quote_score =0;
-   for (Character c: inputText.toCharArray()) {
-       if (c.equals('\"')) {
-
-       	quote_score++;
-       }
-   }
-
-   return quote_score;
-
-}
  
      public static String[] uniqueAPISymbols (String dirPath) throws IOException{
 	  
@@ -151,7 +143,22 @@ public class FeatureCalculators {
        return words;
 }
   
-  
+     public static int [] APISymbolCount (String featureText, String[] APISymbols )
+     {    
+     int symbolCount = APISymbols.length;
+     int [] counter = new int[symbolCount];
+     for (int i =0; i<symbolCount; i++){
+//if case insensitive, make lowercase
+//   String str = APISymbols[i].toString().toLowerCase();
+  	 String str = "u'"+APISymbols[i].toString()+"'";
+//if case insensitive, make lowercase
+//   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
+  	 counter[i] = StringUtils.countMatches(featureText, str);  	   
+
+     }
+     return counter;
+     }   
+     
    public static float wordCountIndex(String inputText){
 	   //returns the word count separated by spaces
 	    if (inputText == null)
@@ -159,7 +166,14 @@ public class FeatureCalculators {
 	    return inputText.trim().split("\\s+").length;
 	}
   
-     
+   public static int functionIDCount (String featureText)
+	  {		   int counter = 0;
+
+			   String str = "FunctionId";
+			   counter = StringUtils.countMatches(featureText, str);
+		   return counter;
+		   
+		   }   
    
    public static int DictionaryIndex (String inputText)
    {
@@ -182,16 +196,20 @@ public class FeatureCalculators {
    return counter;
    
    }
-   public static int functionIDCount (String featureText)
-	  {		   int counter = 0;
 
-			   String str = "FunctionId";
-			   counter = StringUtils.countMatches(featureText, str);
-		   return counter;
-		   
-		   }
 	  
-	  
+   public static int countQuotesIndex (String inputText){
+   int quote_score =0;
+   for (Character c: inputText.toCharArray()) {
+       if (c.equals('\"')) {
+
+       	quote_score++;
+       }
+   }
+
+   return quote_score;
+
+}	  
 	  
 	  public static void wordsCount (String featureText) throws IOException 
 	   {

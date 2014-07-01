@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
  * This can be used to combine extracted features with features extracted from JSylo 
  * (eg Writeprints limited, save to arff files in the Analysis tab) 
  *
+ *
  * @author Aylin Caliskan-Islam (ac993@drexel.edu)
  */
 public class AppendArffFiles {

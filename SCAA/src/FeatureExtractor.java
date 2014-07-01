@@ -60,6 +60,11 @@ public class FeatureExtractor {
 	Util.writeFile("@relation CodeJamBoW"+"\n"+"\n", output_filename, true);
 	Util.writeFile("@attribute 'functionIDCount' numeric"+"\n", output_filename, true);
 
+    String[] APIsymbols = FeatureCalculators.uniqueAPISymbols(test_dir);
+    for (int i=0; i<APIsymbols.length; i++)	
+    {	Util.writeFile("@attribute 'APIsymbols["+i+"]' numeric"+"\n", output_filename, true);}
+
+	
 	//Writing the classes (authorname)
 	Util.writeFile("@attribute 'authorName' {",output_filename, true);
 	for(int i=0; i< test_file_paths.size(); i++){
@@ -95,11 +100,7 @@ public class FeatureExtractor {
 	
    	
 	Util.writeFile("@data"+"\n", output_filename, true);	
-//Finished defining the attributes
-	
-	
-	
-	
+	//Finished defining the attributes
 	
 	
 	//EXTRACT LABELED FEATURES
@@ -112,6 +113,12 @@ public class FeatureExtractor {
 		System.out.println(test_file_paths.get(i));
 		System.out.println(authorName);
 		Util.writeFile(FeatureCalculators.functionIDCount(featureText)+",", output_filename, true);
+		
+
+		//get count of each API symbol present	 
+	    int[] symCount = FeatureCalculators.APISymbolCount(featureText, APIsymbols );
+	    for (int j=0; j<APIsymbols.length; j++)
+		{Util.writeFile(symCount[j]+",", output_filename, true);}	
 		Util.writeFile(authorName+"\n", output_filename, true);
 
    	
