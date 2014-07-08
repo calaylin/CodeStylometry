@@ -189,33 +189,56 @@ public class FeatureCalculators {
     String test = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/test/";	
 
        List test_file_paths = Util.listCPPFiles(test_cpp_dir); //use this for preprocessing
+       
  //   List test_file_paths = Util.listTextFiles(test_cpp_dir); // use this to list txt files with API symbols
     for(int i=0; i< test_file_paths.size(); i++){
 //		int testIDlength = test_file_paths.get(i).toString().length();    		
 		String filePath = test_file_paths.get(i).toString();  
 //    System.out.println(filePath);
-    
 //	preprocessDataToAPISymbols(filePath);
-	preprocessDataToASTFeatures(filePath);
+//	preprocessDataToASTFeatures(filePath);
     
     }
 
 
   
-/*    //Get API symbols and their count in each txt file
-    String[] APIsymbols = uniqueAPISymbols(test);
-	String featureText = Util.readFile("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/test/cgy4ever_2_0.txt");
+   //Get API symbols and their count in each txt file
+//   String[] APIsymbols = uniqueAPISymbols(test);
+    String[] APIsymbols = uniqueASTTypes(test);
+
+    
+	String featureText = Util.readFile("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/test/Gennady.Korotkevich_1_0.ast");
 
     for (int i=0; i<APIsymbols.length; i++)
     { System.out.println(APIsymbols[i]);}
-    int[] symCount = APISymbolCount(featureText, APIsymbols );
+//    int[] symCount = APISymbolCount(featureText, APIsymbols );
+    int[] symCount = ASTTypeCount(featureText, APIsymbols );
+
     for (int i=0; i<APIsymbols.length; i++)
     { System.out.println(symCount[i]);}
-  */
+  
     }
      
 
-    
+    public static String[] uniqueASTTypes (String dirPath) throws IOException{
+  	  
+ 	   
+	    List test_file_paths = Util.listASTFiles(dirPath);
+		HashSet<String> uniqueWords = new HashSet<String>();
+
+	    for(int i=0; i< test_file_paths.size(); i++){
+			String filePath = test_file_paths.get(i).toString();  
+	   
+	   String inputText =Util.readFile(filePath);
+	   Pattern pattern = Pattern.compile("type:(.*?)\n");
+	   Matcher matcher = pattern.matcher(inputText);
+	   while (matcher.find()) {
+	       uniqueWords.add(matcher.group(1));
+	   }}
+	   String[] words = uniqueWords.toArray(new String[0]);
+
+      return words;
+}   
  
      public static String[] uniqueAPISymbols (String dirPath) throws IOException{
 	  
@@ -245,6 +268,22 @@ public class FeatureCalculators {
 //if case insensitive, make lowercase
 //   String str = APISymbols[i].toString().toLowerCase();
   	 String str = "u'"+APISymbols[i].toString()+"'";
+//if case insensitive, make lowercase
+//   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
+  	 counter[i] = StringUtils.countMatches(featureText, str);  	   
+
+     }
+     return counter;
+     }  
+     
+     public static int [] ASTTypeCount (String featureText, String[] ASTTypes )
+     {    
+     int symbolCount = ASTTypes.length;
+     int [] counter = new int[symbolCount];
+     for (int i =0; i<symbolCount; i++){
+//if case insensitive, make lowercase
+//   String str = APISymbols[i].toString().toLowerCase();
+  	 String str = "type:"+ASTTypes[i].toString()+"\n";
 //if case insensitive, make lowercase
 //   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
   	 counter[i] = StringUtils.countMatches(featureText, str);  	   
