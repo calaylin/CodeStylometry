@@ -22,6 +22,7 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -37,7 +38,6 @@ import javax.script.ScriptException;
 import org.apache.commons.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.io.IOUtils;
-
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
@@ -324,7 +324,42 @@ public class FeatureCalculators {
 			   counter = StringUtils.countMatches(ASTText, str);
 		   return counter;
 		   
-		   }   
+		   } 
+   
+   public static float averageASTDepth (String ASTText)
+   {    
+   float ASTFunctionIDCountNo = ASTFunctionIDCount(ASTText);
+   float counter = 0;   
+   
+   
+//   String str1 = ")";
+//   String str2 = "(";
+
+   String lines[] =  ASTText.split("\\n");
+   for (int i =0; i<lines.length; i++)
+   {
+	   if (lines[i].startsWith("functionId:"))
+	   {
+		   for(char c : lines[i].toCharArray()){
+			      if(c == ')' ){
+			    	  counter++;
+			      }
+			      if(c == '(' ){
+			    	  counter++;
+			      }
+//	   counter = counter + StringUtils.countMatches(ASTText, str1);
+//	   counter = counter + StringUtils.countMatches(ASTText, str2);
+	   }	   
+   }}
+
+//   return counter;
+
+   return counter/ASTFunctionIDCountNo;
+   
+   
+   }  
+   
+   
    
    
    public static int DictionaryIndex (String inputText)

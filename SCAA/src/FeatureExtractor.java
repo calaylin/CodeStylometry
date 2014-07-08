@@ -65,6 +65,7 @@ public class FeatureExtractor {
 	Util.writeFile("@attribute 'functionIDCount' numeric"+"\n", output_filename, true);
 	Util.writeFile("@attribute 'CFGNodeCount' numeric"+"\n", output_filename, true);
 	Util.writeFile("@attribute 'ASTFunctionIDCount' numeric"+"\n", output_filename, true);
+	Util.writeFile("@attribute 'AverageASTDepth' numeric"+"\n", output_filename, true);
 
 	
     String[] APIsymbols = FeatureCalculators.uniqueAPISymbols(test_dir);
@@ -127,6 +128,7 @@ public class FeatureExtractor {
 		String ASTText = Util.readFile(test_file_paths.get(i).toString().substring(0,testIDlength-3)+"ast");
 		Util.writeFile(FeatureCalculators.CFGNodeCount(ASTText)+",", output_filename, true);
 		Util.writeFile(FeatureCalculators.ASTFunctionIDCount(ASTText)+",", output_filename, true);
+		Util.writeFile(FeatureCalculators.averageASTDepth(ASTText)+",", output_filename, true);
 
 
 		//get count of each API symbol present	 
