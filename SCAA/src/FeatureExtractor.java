@@ -64,8 +64,12 @@ public class FeatureExtractor {
 	Util.writeFile("@attribute 'functionIDCount' numeric"+"\n", output_filename, true);
 
     String[] APIsymbols = FeatureCalculators.uniqueAPISymbols(test_dir);
+    String[] ASTtypes = FeatureCalculators.uniqueASTTypes(test_dir);
+
     for (int i=0; i<APIsymbols.length; i++)	
     {	Util.writeFile("@attribute 'APIsymbols["+i+"]' numeric"+"\n", output_filename, true);}
+    for (int i=0; i<ASTtypes.length; i++)	
+    {	Util.writeFile("@attribute 'ASTtypes["+i+"]' numeric"+"\n", output_filename, true);}
 
 	
 	//Writing the classes (authorname)
@@ -122,6 +126,13 @@ public class FeatureExtractor {
 	    int[] symCount = FeatureCalculators.APISymbolCount(featureText, APIsymbols );
 	    for (int j=0; j<APIsymbols.length; j++)
 		{Util.writeFile(symCount[j]+",", output_filename, true);}	
+
+	    //get count of each AST type present	 
+	    int[] typeCount = FeatureCalculators.ASTTypeCount(featureText, ASTtypes );
+	    for (int j=0; j<ASTtypes.length; j++)
+		{Util.writeFile(typeCount[j]+",", output_filename, true);}	
+	    
+	    
 		Util.writeFile(authorName+"\n", output_filename, true);
 
    	
