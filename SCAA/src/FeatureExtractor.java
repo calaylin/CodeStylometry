@@ -57,12 +57,16 @@ public class FeatureExtractor {
      
     String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/";	
 	List test_file_paths = Util.listTextFiles(test_dir);
+
 	String text = "";
   	//Writing the test arff
   	//first specify relation
 	Util.writeFile("@relation CodeJamBoW"+"\n"+"\n", output_filename, true);
 	Util.writeFile("@attribute 'functionIDCount' numeric"+"\n", output_filename, true);
+	Util.writeFile("@attribute 'CFGNodeCount' numeric"+"\n", output_filename, true);
+	Util.writeFile("@attribute 'ASTFunctionIDCount' numeric"+"\n", output_filename, true);
 
+	
     String[] APIsymbols = FeatureCalculators.uniqueAPISymbols(test_dir);
     String[] ASTtypes = FeatureCalculators.uniqueASTTypes(test_dir);
 
@@ -120,7 +124,10 @@ public class FeatureExtractor {
 		System.out.println(test_file_paths.get(i));
 		System.out.println(authorName);
 		Util.writeFile(FeatureCalculators.functionIDCount(featureText)+",", output_filename, true);
-		
+		String ASTText = Util.readFile(test_file_paths.get(i).toString().substring(0,testIDlength-3)+"ast");
+		Util.writeFile(FeatureCalculators.CFGNodeCount(ASTText)+",", output_filename, true);
+		Util.writeFile(FeatureCalculators.ASTFunctionIDCount(ASTText)+",", output_filename, true);
+
 
 		//get count of each API symbol present	 
 	    int[] symCount = FeatureCalculators.APISymbolCount(featureText, APIsymbols );
@@ -128,7 +135,7 @@ public class FeatureExtractor {
 		{Util.writeFile(symCount[j]+",", output_filename, true);}	
 
 	    //get count of each AST type present	 
-	    int[] typeCount = FeatureCalculators.ASTTypeCount(featureText, ASTtypes );
+	    int[] typeCount = FeatureCalculators.ASTTypeCount(ASTText, ASTtypes );
 	    for (int j=0; j<ASTtypes.length; j++)
 		{Util.writeFile(typeCount[j]+",", output_filename, true);}	
 	    

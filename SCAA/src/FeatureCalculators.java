@@ -308,6 +308,25 @@ public class FeatureCalculators {
 		   
 		   }   
    
+   public static int CFGNodeCount (String ASTText)
+	  {		   int counter = 0;
+
+			   String str = "isCFGNode:";
+			   counter = StringUtils.countMatches(ASTText, str);
+		   return counter;
+		   
+		   }      
+   
+   public static int ASTFunctionIDCount (String ASTText)
+	  {		   int counter = 0;
+
+			   String str = "functionId:";
+			   counter = StringUtils.countMatches(ASTText, str);
+		   return counter;
+		   
+		   }   
+   
+   
    public static int DictionaryIndex (String inputText)
    {
 	   
