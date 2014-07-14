@@ -245,6 +245,25 @@ public class FeatureCalculators {
      return counter;
      }  
      
+     public static float [] APISymbolTFIDF (String featureText, String datasetDir,String[] APISymbols ) throws IOException
+     {    
+     float symbolCount = APISymbols.length;
+     float tf =0;
+     float idf = 0;
+     float [] counter = new float[(int) symbolCount];
+     for (int i =0; i<symbolCount; i++){
+//if case insensitive, make lowercase
+//   String str = APISymbols[i].toString().toLowerCase();
+  	 String str = "u'"+APISymbols[i].toString()+"'";
+
+  	 tf = StringUtils.countMatches(featureText, str);  	
+  	 idf = APISymbolIDF(datasetDir, APISymbols[i].toString());
+  	 counter[i] = tf * idf;
+     }
+     return counter;
+     }  
+     
+     
      public static float APISymbolIDF (String datasetDir, String APISymbol ) throws IOException
      {    
     		
@@ -274,6 +293,22 @@ public class FeatureCalculators {
   		return (directories.length/counter);
 
      }  	 
+     
+     public static float [] ASTTypeTF (String featureText, String[] ASTTypes )
+     {    
+     float symbolCount = ASTTypes.length;
+     float [] counter = new float[(int) symbolCount];
+     for (int i =0; i<symbolCount; i++){
+//if case insensitive, make lowercase
+//   String str = APISymbols[i].toString().toLowerCase();
+  	 String str = "type:"+ASTTypes[i].toString()+"\n";
+//if case insensitive, make lowercase
+//   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
+  	 counter[i] = StringUtils.countMatches(featureText, str);  	   
+
+     }
+     return counter;
+     }   
      
      public static float ASTTypeIDF (String datasetDir, String ASTType ) throws IOException
      {    
@@ -306,20 +341,23 @@ public class FeatureCalculators {
      }      
      
      
-     
-     
-     public static float [] ASTTypeTF (String featureText, String[] ASTTypes )
+     public static float [] ASTTypeTFIDF (String featureText, String datasetDir, String[] ASTTypes ) throws IOException
      {    
      float symbolCount = ASTTypes.length;
+     float idf = 0;
+     float tf = 0;
      float [] counter = new float[(int) symbolCount];
      for (int i =0; i<symbolCount; i++){
 //if case insensitive, make lowercase
 //   String str = APISymbols[i].toString().toLowerCase();
   	 String str = "type:"+ASTTypes[i].toString()+"\n";
+  	 
 //if case insensitive, make lowercase
 //   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
-  	 counter[i] = StringUtils.countMatches(featureText, str);  	   
-
+  	 
+  	 tf = StringUtils.countMatches(featureText, str);  	
+  	 idf = ASTTypeIDF(datasetDir, ASTTypes[i].toString());
+  	 counter[i] = tf * idf;
      }
      return counter;
      }   
