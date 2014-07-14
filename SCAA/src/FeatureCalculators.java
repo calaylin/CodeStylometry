@@ -24,6 +24,8 @@ public class FeatureCalculators {
     
     public static void preprocessDataToAPISymbols(String filePath) throws IOException, InterruptedException{
     	//should take filename to test each time
+    	//just needs the name of the directory with the authors and their source files as an input
+    	//and outputs .txt files in source file's corresponding directory - has only APISymbols 
    
     	 Runtime dbTime = Runtime.getRuntime();
     	 Runtime joernTime = Runtime.getRuntime();
@@ -85,6 +87,8 @@ public class FeatureCalculators {
     
     public static void preprocessDataToASTFeatures(String filePath) throws IOException, InterruptedException, ScriptException{
     	//should take filename to test each time
+    	//just needs the name of the directory with the authors and their source files as an input
+    	//and outputs .ast files in source file's corresponding directory - has AST information 
    
     	 Runtime dbTime = Runtime.getRuntime();
     	 Runtime joernTime = Runtime.getRuntime();
@@ -147,9 +151,9 @@ public class FeatureCalculators {
 	public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
     	
-    String test_cpp_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/";	
+//    String test_cpp_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/";	
     String test = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/test/";	
-
+    String test_cpp_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor/";
        List test_file_paths = Util.listCPPFiles(test_cpp_dir); //use this for preprocessing
        
  //   List test_file_paths = Util.listTextFiles(test_cpp_dir); // use this to list txt files with API symbols
@@ -157,7 +161,8 @@ public class FeatureCalculators {
 //		int testIDlength = test_file_paths.get(i).toString().length();    		
 		String filePath = test_file_paths.get(i).toString();  
 //    System.out.println(filePath);
-//	preprocessDataToAPISymbols(filePath);
+		
+	preprocessDataToAPISymbols(filePath);
 //	preprocessDataToASTFeatures(filePath);
     
     }
