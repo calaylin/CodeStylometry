@@ -46,8 +46,13 @@ public class FeatureExtractor {
 
     for (int i=0; i<APIsymbols.length; i++)	
     {	Util.writeFile("@attribute 'APIsymbols["+i+"]' numeric"+"\n", output_filename, true);}
+    for (int i=0; i<APIsymbols.length; i++)	
+    {	Util.writeFile("@attribute 'APIsymbolsTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
+    
     for (int i=0; i<ASTtypes.length; i++)	
     {	Util.writeFile("@attribute 'ASTtypes["+i+"]' numeric"+"\n", output_filename, true);}
+    for (int i=0; i<ASTtypes.length; i++)	
+    {	Util.writeFile("@attribute 'ASTtypesTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
 
 	
 	//Writing the classes (authorname)
@@ -109,11 +114,22 @@ public class FeatureExtractor {
 	    for (int j=0; j<APIsymbols.length; j++)
 		{Util.writeFile(symCount[j]+",", output_filename, true);}	
 
+		//get tfidf of each API symbol present	 
+	    float[] symTFIDF = FeatureCalculators.APISymbolTFIDF(featureText,test_dir, APIsymbols );
+	    for (int j=0; j<APIsymbols.length; j++)
+		{Util.writeFile(symTFIDF[j]+",", output_filename, true);}	
+
+	    
 	    //get count of each AST type present	 
 	    float[] typeCount = FeatureCalculators.ASTTypeTF(ASTText, ASTtypes );
 	    for (int j=0; j<ASTtypes.length; j++)
 		{Util.writeFile(typeCount[j]+",", output_filename, true);}	
 	    
+		//get tfidf of each AST Type present	 
+	    float[] astTypeTFIDF = FeatureCalculators.ASTTypeTFIDF(featureText, test_dir, ASTtypes);
+	    for (int j=0; j<ASTtypes.length; j++)
+		{Util.writeFile(astTypeTFIDF[j]+",", output_filename, true);}	
+
 	    
 		Util.writeFile(authorName+"\n", output_filename, true);
 
