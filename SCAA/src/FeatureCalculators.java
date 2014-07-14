@@ -1,11 +1,13 @@
 import java.io.*;
-import java.io.BufferedReader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.script.ScriptException;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -179,7 +181,7 @@ public class FeatureCalculators {
     for (int i=0; i<APIsymbols.length; i++)
     { System.out.println(APIsymbols[i]);}
 //    int[] symCount = APISymbolCount(featureText, APIsymbols );
-    int[] symCount = ASTTypeCount(featureText, APIsymbols );
+    float[] symCount = ASTTypeTF(featureText, APIsymbols );
 
     for (int i=0; i<APIsymbols.length; i++)
     { System.out.println(symCount[i]);}
@@ -227,10 +229,10 @@ public class FeatureCalculators {
        return words;
 }
   
-     public static int [] APISymbolCount (String featureText, String[] APISymbols )
+     public static float [] APISymbolTF (String featureText, String[] APISymbols )
      {    
-     int symbolCount = APISymbols.length;
-     int [] counter = new int[symbolCount];
+     float symbolCount = APISymbols.length;
+     float [] counter = new float[(int) symbolCount];
      for (int i =0; i<symbolCount; i++){
 //if case insensitive, make lowercase
 //   String str = APISymbols[i].toString().toLowerCase();
@@ -243,10 +245,73 @@ public class FeatureCalculators {
      return counter;
      }  
      
-     public static int [] ASTTypeCount (String featureText, String[] ASTTypes )
+     public static float APISymbolIDF (String datasetDir, String APISymbol ) throws IOException
      {    
-     int symbolCount = ASTTypes.length;
-     int [] counter = new int[symbolCount];
+    		
+		 float counter = 0;
+
+    	 File file = new File(datasetDir);
+   	     String[] directories = file.list(new FilenameFilter() {
+   	    	 @Override
+         public boolean accept(File current, String name) 
+   	    	 {
+   	    		 return new File(current, name).isDirectory();
+    		 }
+    			   });
+    	 for(int j=0; j< directories.length; j++)
+    		{
+  			String authorName = directories[j];
+    		List test_file_paths = Util.listTextFiles(datasetDir+authorName+"/");
+     		for(int i=0; i< test_file_paths.size(); i++)
+     		{
+     			String featureText = Util.readFile(test_file_paths.get(i).toString());
+     		  	 String str = "u'"+APISymbol+"'";
+     		  	 int termFrequencyAuthor = StringUtils.countMatches(featureText, str);  	
+     		  	 if (termFrequencyAuthor>0)
+     		  		 counter++;
+     		} 
+     }
+  		return (directories.length/counter);
+
+     }  	 
+     
+     public static float ASTTypeIDF (String datasetDir, String ASTType ) throws IOException
+     {    
+    		
+		 float counter = 0;
+
+    	 File file = new File(datasetDir);
+   	     String[] directories = file.list(new FilenameFilter() {
+   	    	 @Override
+         public boolean accept(File current, String name) 
+   	    	 {
+   	    		 return new File(current, name).isDirectory();
+    		 }
+    			   });
+    	 for(int j=0; j< directories.length; j++)
+    		{
+  			String authorName = directories[j];
+    		List test_file_paths = Util.listASTFiles(datasetDir+authorName+"/");
+     		for(int i=0; i< test_file_paths.size(); i++)
+     		{
+     			String featureText = Util.readFile(test_file_paths.get(i).toString());
+     		  	 String str = "type:"+ASTType+"\n";
+     		  	 int termFrequencyAuthor = StringUtils.countMatches(featureText, str);  	
+     		  	 if (termFrequencyAuthor>0)
+     		  		 counter++;
+     		} 
+     }
+  		return (directories.length/counter);
+
+     }      
+     
+     
+     
+     
+     public static float [] ASTTypeTF (String featureText, String[] ASTTypes )
+     {    
+     float symbolCount = ASTTypes.length;
+     float [] counter = new float[(int) symbolCount];
      for (int i =0; i<symbolCount; i++){
 //if case insensitive, make lowercase
 //   String str = APISymbols[i].toString().toLowerCase();

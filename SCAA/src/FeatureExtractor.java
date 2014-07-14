@@ -105,12 +105,12 @@ public class FeatureExtractor {
 
 
 		//get count of each API symbol present	 
-	    int[] symCount = FeatureCalculators.APISymbolCount(featureText, APIsymbols );
+	    float[] symCount = FeatureCalculators.APISymbolTF(featureText, APIsymbols );
 	    for (int j=0; j<APIsymbols.length; j++)
 		{Util.writeFile(symCount[j]+",", output_filename, true);}	
 
 	    //get count of each AST type present	 
-	    int[] typeCount = FeatureCalculators.ASTTypeCount(ASTText, ASTtypes );
+	    float[] typeCount = FeatureCalculators.ASTTypeTF(ASTText, ASTtypes );
 	    for (int j=0; j<ASTtypes.length; j++)
 		{Util.writeFile(typeCount[j]+",", output_filename, true);}	
 	    
