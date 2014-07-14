@@ -164,8 +164,8 @@ public class FeatureCalculators {
 		String filePath = test_file_paths.get(i).toString();  
 //    System.out.println(filePath);
 		
-	preprocessDataToAPISymbols(filePath);
-//	preprocessDataToASTFeatures(filePath);
+//	preprocessDataToAPISymbols(filePath);
+	preprocessDataToASTFeatures(filePath);
     
     }
 
@@ -228,7 +228,7 @@ public class FeatureCalculators {
 
        return words;
 }
-  
+     //not normalized by the number of APISymbols in the source code
      public static float [] APISymbolTF (String featureText, String[] APISymbols )
      {    
      float symbolCount = APISymbols.length;
@@ -290,10 +290,10 @@ public class FeatureCalculators {
      		  		 counter++;
      		} 
      }
-  		return (directories.length/counter);
+  		return (float) (Math.log10(directories.length/counter));
 
      }  	 
-     
+//not normalized by the number of ASTTypes in the source code in the source code
      public static float [] ASTTypeTF (String featureText, String[] ASTTypes )
      {    
      float symbolCount = ASTTypes.length;
@@ -336,7 +336,7 @@ public class FeatureCalculators {
      		  		 counter++;
      		} 
      }
-  		return (directories.length/counter);
+  		return (float) (Math.log10(directories.length/counter));
 
      }      
      
