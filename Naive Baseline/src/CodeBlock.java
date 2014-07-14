@@ -1,6 +1,14 @@
 import java.util.LinkedList;
 import java.util.List;
 
+/*
+ * TODO
+ * 
+ * This class is purposefully mutable. Reconsider the shallowness/deepness of some of the getters...
+ * 
+ * Consider making a node inner class rather than recursively using this class.
+ */
+
 /**
  * An data structure that resembles an n-ary tree. It represents blocks of code
  * and its nested blocks (and statements).
@@ -15,11 +23,13 @@ public class CodeBlock<T> {
 	private String prototype;
 	private List<T> statements;
 	private List<CodeBlock<T>> children;
+	private CodeBlock<T> parent;
 
 	/**
 	 * Default constructor.
 	 */
 	private CodeBlock() {
+		this.parent = null;
 		this.statements = new LinkedList<T>();
 		this.children = new LinkedList<CodeBlock<T>>();
 	}
@@ -29,7 +39,7 @@ public class CodeBlock<T> {
 	 * 
 	 * @param prototype
 	 *            The "prototype" for the block. It can be a function prototype,
-	 *            or a class declaration, etc...
+	 *            or a class declaration, loop header, etc...
 	 */
 	public CodeBlock(String prototype) {
 		this();
@@ -43,11 +53,30 @@ public class CodeBlock<T> {
 	 *            CodeBlock to copy.
 	 */
 	public CodeBlock(CodeBlock<T> copy) {
+		this.parent = copy.parent;
 		this.prototype = copy.prototype;
 		this.addStatements(copy.statements);
 		for (CodeBlock<T> child : copy.getChildren()) {
 			this.addChild(new CodeBlock<T>(child));
 		}
+	}
+	
+	/**
+	 * Gets the block's parent block.
+	 * 
+	 * @return The parent block.
+	 */
+	public CodeBlock<T> getParent() {
+		return this.parent;
+	}
+	
+	/**
+	 * Changes the block's parent block.
+	 * 
+	 * @param parent The new parent block.
+	 */
+	public void setParent(CodeBlock<T> parent) {
+		this.parent = parent;
 	}
 
 	/**
@@ -136,6 +165,7 @@ public class CodeBlock<T> {
 	 */
 	public void addChild(CodeBlock<T> child) {
 		this.children.add(child);
+		child.parent = this;
 	}
 
 	/**
