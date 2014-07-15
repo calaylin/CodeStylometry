@@ -26,6 +26,12 @@ import java.util.Set;
  * MAKE SURE THAT AFTER THE LOOPS THERES NOTHING LEFT OVER IN THE BUFFERS
  */
 
+/**
+ * Two big assumptions: the code is valid and no silly macros
+ * 
+ * @author andrew.liu
+ *
+ */
 public abstract class AbstractExtractor {
 
 	private File file;
@@ -79,6 +85,7 @@ public abstract class AbstractExtractor {
 			if (isPrototype(source)) {
 				// adding all statements into the previous block
 				currentBlock.addStatements(breakIntoStmts(sink));
+				sink = new StringBuffer();
 				// creating a child block to use
 				CodeBlock<String> temp = new CodeBlock<String>(extractPrototype(source));
 				currentBlock.addChild(temp);
@@ -86,6 +93,7 @@ public abstract class AbstractExtractor {
 			} else if (isBlockEnd(source)) {
 				// adding all statements into the previous block
 				currentBlock.addStatements(breakIntoStmts(sink));
+				sink = new StringBuffer();
 				// using the parent block
 				currentBlock = currentBlock.getParent();
 			} else {
@@ -117,6 +125,12 @@ public abstract class AbstractExtractor {
 	 */
 	abstract String extractPrototype(StringBuffer source);
 	abstract boolean isBlockEnd(StringBuffer source);
+	/**
+	 * Does NOT empty buffer when done.
+	 * 
+	 * @param source
+	 * @return
+	 */
 	abstract List<String> breakIntoStmts(StringBuffer source);
 	
 	void setTokenDelimiter() {
@@ -132,6 +146,21 @@ public abstract class AbstractExtractor {
 	final void extractChar(StringBuffer source, StringBuffer sink) {
 		sink.append(source.charAt(0));
 		source.deleteCharAt(0);
+	}
+	
+	
+	/**
+	 * Remember this eats up the regex char!
+	 * 
+	 * @param source
+	 * @param sink
+	 * @param regex
+	 */
+	final void readUntil(StringBuffer source, StringBuffer sink, String regex) {
+		while (!source.substring(0, 1).matches(regex)) {
+			this.extractChar(source, sink);
+		}
+		this.extractChar(source, sink);
 	}
 	
 	String getTokenDelimiter() {
