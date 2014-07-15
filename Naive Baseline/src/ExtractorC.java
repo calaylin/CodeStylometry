@@ -75,13 +75,22 @@ public class ExtractorC extends AbstractExtractor {
 	}
 
 	@Override
-	boolean isPrototype(StringBuffer source) {
-		// TODO Auto-generated method stub
-		//tricky --> might need to do case by case
-		// for while do
-		// typedef
-		// struct
-		// void int other stuff
+	boolean isPrototype(StringBuffer source) {		
+		String s = source.toString();
+		if (s.matches("for.*") || s.matches("while.*") || s.matches("do.*") || s.matches("struct.*") || s.matches("typedef struct.*")) {
+			return true;
+		}
+		if (s.matches("static.*") || s.matches("extern.*") || s.matches("unsigned.*") || s.matches("signed.*") || s.matches("char.*") || s.matches("short.*") || s.matches("int.*") || s.matches("long.*") || s.matches("float.*") || s.matches("double.*")) {
+			int braceIndex = s.indexOf('{');
+			int semicolonIndex = s.indexOf(';');
+			if (braceIndex == -1) {
+				return false;
+			}
+			if (semicolonIndex == -1) {
+				return true;
+			}
+			return braceIndex < semicolonIndex;
+		}
 		return false;
 	}
 
@@ -93,9 +102,15 @@ public class ExtractorC extends AbstractExtractor {
 	}
 
 	@Override
-	boolean isBlockEnd(StringBuffer source) {
+	boolean isBlockEnd(StringBuffer source, StringBuffer sink) {
 		if (source.charAt(0) == '}') {
 			source.deleteCharAt(0); // get rid of the '}'
+			if (source.charAt(0) == ';') {
+				source.deleteCharAt(0); // get rid of the ';' after the '}'
+			} else if (source.toString().matches("[\\s]*while")){ // in case of a do-while
+				int semicolonIndex = source.indexOf(";");
+				this.extractMultipleChars(source, sink, semicolonIndex + 1);
+			}
 			return true;
 		}
 		return false;

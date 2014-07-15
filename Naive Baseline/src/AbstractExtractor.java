@@ -90,7 +90,7 @@ public abstract class AbstractExtractor {
 				CodeBlock<String> temp = new CodeBlock<String>(extractPrototype(source));
 				currentBlock.addChild(temp);
 				currentBlock = temp;
-			} else if (isBlockEnd(source)) {
+			} else if (isBlockEnd(source, sink)) {
 				// adding all statements into the previous block
 				currentBlock.addStatements(breakIntoStmts(sink));
 				sink = new StringBuffer();
@@ -124,7 +124,14 @@ public abstract class AbstractExtractor {
 	 * @return
 	 */
 	abstract String extractPrototype(StringBuffer source);
-	abstract boolean isBlockEnd(StringBuffer source);
+	/**
+	 * Will put the "while" part into sink if it detects a do-while
+	 * 
+	 * @param source
+	 * @param sink
+	 * @return
+	 */
+	abstract boolean isBlockEnd(StringBuffer source, StringBuffer sink);
 	/**
 	 * Does NOT empty buffer when done.
 	 * 
