@@ -28,8 +28,10 @@ public class FeatureExtractor {
        	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/" +"CodeJam"+ (month+1) + "." + 
     	dayOfMonth + "_"+ time +".arff" ;
      
-    String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/";	
-	List test_file_paths = Util.listTextFiles(test_dir);
+//    String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/";	
+      String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor/";	
+
+       	List test_file_paths = Util.listTextFiles(test_dir);
 
 	String text = "";
   	//Writing the test arff
@@ -44,13 +46,13 @@ public class FeatureExtractor {
     String[] APIsymbols = FeatureCalculators.uniqueAPISymbols(test_dir);
     String[] ASTtypes = FeatureCalculators.uniqueASTTypes(test_dir);
 
-    for (int i=0; i<APIsymbols.length; i++)	
-    {	Util.writeFile("@attribute 'APIsymbols["+i+"]' numeric"+"\n", output_filename, true);}
+/*    for (int i=0; i<APIsymbols.length; i++)	
+    {	Util.writeFile("@attribute 'APIsymbols["+i+"]' numeric"+"\n", output_filename, true);}*/
     for (int i=0; i<APIsymbols.length; i++)	
     {	Util.writeFile("@attribute 'APIsymbolsTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
     
-    for (int i=0; i<ASTtypes.length; i++)	
-    {	Util.writeFile("@attribute 'ASTtypes["+i+"]' numeric"+"\n", output_filename, true);}
+/*    for (int i=0; i<ASTtypes.length; i++)	
+    {	Util.writeFile("@attribute 'ASTtypes["+i+"]' numeric"+"\n", output_filename, true);}*/
     for (int i=0; i<ASTtypes.length; i++)	
     {	Util.writeFile("@attribute 'ASTtypesTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
 
@@ -59,7 +61,7 @@ public class FeatureExtractor {
 	Util.writeFile("@attribute 'authorName' {",output_filename, true);
 	for(int i=0; i< test_file_paths.size(); i++){
 		int testIDlength = test_file_paths.get(i).toString().length();    		
-		String authorName = test_file_paths.get(i).toString().substring(83,testIDlength-((testIDlength-92)/2)-9);  
+		String authorName = test_file_paths.get(i).toString().substring(77,76+((testIDlength-100)/2));  
 		text = text.concat(authorName + ",");  
 		String[] words = text.split( ",");
 		  Set<String> uniqueWords = new HashSet<String>();
@@ -98,7 +100,7 @@ public class FeatureExtractor {
 		String featureText = Util.readFile(test_file_paths.get(i).toString());
 		System.out.println(FeatureCalculators.functionIDCount(featureText));
 		int testIDlength = test_file_paths.get(i).toString().length(); 
-		String authorName = test_file_paths.get(i).toString().substring(83,testIDlength-((testIDlength-92)/2)-9);  
+		String authorName = test_file_paths.get(i).toString().substring(77,76+((testIDlength-100)/2));  
 
 		System.out.println(test_file_paths.get(i));
 		System.out.println(authorName);
@@ -109,10 +111,10 @@ public class FeatureExtractor {
 		Util.writeFile(FeatureCalculators.averageASTDepth(ASTText)+",", output_filename, true);
 
 
-		//get count of each API symbol present	 
+/*		//get count of each API symbol present	 
 	    float[] symCount = FeatureCalculators.APISymbolTF(featureText, APIsymbols );
 	    for (int j=0; j<APIsymbols.length; j++)
-		{Util.writeFile(symCount[j]+",", output_filename, true);}	
+		{Util.writeFile(symCount[j]+",", output_filename, true);}	*/
 
 		//get tfidf of each API symbol present	 
 	    float[] symTFIDF = FeatureCalculators.APISymbolTFIDF(featureText,test_dir, APIsymbols );
@@ -120,10 +122,10 @@ public class FeatureExtractor {
 		{Util.writeFile(symTFIDF[j]+",", output_filename, true);}	
 
 	    
-	    //get count of each AST type present	 
+/*	    //get count of each AST type present	 
 	    float[] typeCount = FeatureCalculators.ASTTypeTF(ASTText, ASTtypes );
 	    for (int j=0; j<ASTtypes.length; j++)
-		{Util.writeFile(typeCount[j]+",", output_filename, true);}	
+		{Util.writeFile(typeCount[j]+",", output_filename, true);}	*/
 	    
 		//get tfidf of each AST Type present	 
 	    float[] astTypeTFIDF = FeatureCalculators.ASTTypeTFIDF(featureText, test_dir, ASTtypes);
