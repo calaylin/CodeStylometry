@@ -21,19 +21,24 @@ import java.util.Set;
  * 
  * comments are straightforward
  * 
+ * watch out for preprocessor directives when processing statements
+ * 
  * MAKE SURE THAT AFTER THE LOOPS THERES NOTHING LEFT OVER IN THE BUFFERS
  */
 
 public abstract class AbstractExtractor {
 
-	private File program;
-	private String tokenDelimiter;
+	private File file;
+	protected String tokenDelimiter;
+	private MultiSet<String> literals;
+	private List<String> commentList;
+	CodeBlock<String> blocks; // visibility level?
 	
 	public AbstractExtractor(File program) throws IOException {
-		this.setTokenDelimiter();
+		this.setTokenDelimiter(); // set what separates a token
 		
 		/* reading in the program contents into a StringBuffer */
-		this.program = program;
+		this.file = program;
 		BufferedReader reader = new BufferedReader(new FileReader(program));
 		StringBuffer source = new StringBuffer();
 		char nextChar;
@@ -45,66 +50,51 @@ public abstract class AbstractExtractor {
 		
 		/* stripping out the String, character, integer, and floating point literals */
 		/* filtering out the comments as well*/
-
-		List<String> literalList = new LinkedList<>();
-		List<String> commentList = new LinkedList<>();
+		this.literals = new MultiSet<String>();
+		this.commentList = new LinkedList<>();
 		StringBuffer sink = new StringBuffer();
+		
 		while (source.length() > 0) {
 			if (matchesLiteral(source)) {
-				// read entire literal
-				literalList.add(readNextLiteral(source));
+				// read in the literal
+				this.literals.add(readNextLiteral(source));
 			} else if (matchesComment(source)) {
-				commentList.add(readNextComment(source));
+				// read in the comment
+				this.commentList.add(readNextComment(source));
 			} else {
-				// read until the next delimiter (including the delim)
+				// read in the code until after the next delimiter
 				readUntilNextToken(source, sink);
 			}
 		}
-
-		/*
-		 * straightforward
-		 */
-		/* separate by block (don't forget prototypes) */
-		/*
-		 * the blocks are straightforward; the prototypes are not (TODO)
-		 */
-		/* separate by statement (manage preprocessor directives as well) */
-		/*
-		 * the normal statements are straightforward (semicolon), the directives are not
-		 */
 		
-		/*
-		 * BE SURE TO MAKE ABSTRACT THE METHODS THAT AREN'T CONCRETE FOR ALL LANGUAGES
-		 */
-		
-		String s = "/* comment in literal */";
-		/* String s = "literal in comment"; */
-		
+		/* putting the leftover code back into the source */
 		source = sink;
 		sink = new StringBuffer();
 		
-		CodeBlock<String> blocks = new CodeBlock<String>(this.program.getName());
+		/* separating the code by blocks */
+		this.blocks = new CodeBlock<String>(this.file.getName());
 		CodeBlock<String> currentBlock = blocks;
 		
 		while (source.length() > 0) {
-			// if its the start of a prototype
-			// then extract the prototype
-			// then start a new block
-			// then break the current buffer into statements and add them
-			// otherwise if its the end of a block
-			// then break the current buffer into statements and add them
-			// then change the reference to the parent block
-			// otherwise extractChar into the buffer
+			if (isPrototype(source)) {
+				// adding all statements into the previous block
+				currentBlock.addStatements(breakIntoStmts(sink));
+				// creating a child block to use
+				CodeBlock<String> temp = new CodeBlock<String>(extractPrototype(source));
+				currentBlock.addChild(temp);
+				currentBlock = temp;
+			} else if (isBlockEnd(source)) {
+				// adding all statements into the previous block
+				currentBlock.addStatements(breakIntoStmts(sink));
+				// using the parent block
+				currentBlock = currentBlock.getParent();
+			} else {
+				readUntilNextToken(source, sink);
+			}
 		}
 		// if executed correctly currentBlock should be null at this point
-		
+		//TODO fill out other stuff
 	}
-	
-	// check if is prototype + extract prototype
-	// check if start block (merge with prototype check?)
-	// check if end block
-	// break code into statements --> need to manage preprocessor directives
-	// extract into current block
 	
 	/**
 	 * Implement this now or make a getter for the token delimiter. Also remember to read in the delimiter itself!
@@ -112,40 +102,45 @@ public abstract class AbstractExtractor {
 	 * @param source
 	 * @param sink
 	 */
-	protected abstract void readUntilNextToken(StringBuffer source, StringBuffer sink);
-	protected abstract boolean matchesLiteral(StringBuffer source);
-	protected abstract String readNextLiteral(StringBuffer source);
-	protected abstract boolean matchesComment(StringBuffer source);
-	protected abstract String readNextComment(StringBuffer source);
+	abstract void readUntilNextToken(StringBuffer source, StringBuffer sink);
+	abstract boolean matchesLiteral(StringBuffer source);
+	abstract String readNextLiteral(StringBuffer source);
+	abstract boolean matchesComment(StringBuffer source);
+	abstract String readNextComment(StringBuffer source);
 	
-	protected abstract boolean isPrototype(StringBuffer source);
+	abstract boolean isPrototype(StringBuffer source);
 	/**
 	 * Don't forget to remove the opening delimiter of the next block
 	 * 
 	 * @param source
 	 * @return
 	 */
-	protected abstract String extractPrototype(StringBuffer source);
-	protected abstract boolean isBlockEnd(StringBuffer source);
-	protected abstract List<String> breakIntoStmts(StringBuffer source);
+	abstract String extractPrototype(StringBuffer source);
+	abstract boolean isBlockEnd(StringBuffer source);
+	abstract List<String> breakIntoStmts(StringBuffer source);
 	
-	protected void setTokenDelimiter() {
-		this.setTokenDelimiter("[*;\\{\\}\\[\\]()+=\\-&/|%!?:,<>~`\\s]");
+	void setTokenDelimiter() {
+		this.tokenDelimiter = "[*;\\{\\}\\[\\]()+=\\-&/|%!?:,<>~`\\s]";
 	}
 	
-	
-	protected final void setTokenDelimiter(String s) {
-		this.tokenDelimiter = s;
-	}
-	
-	protected final void extractMultipleChars(StringBuffer source, StringBuffer sink, int num) {
+	final void extractMultipleChars(StringBuffer source, StringBuffer sink, int num) {
 		for (int i = 0; i < num; i++) {
 			extractChar(source, sink);
 		}
 	}
 	
-	protected final void extractChar(StringBuffer source, StringBuffer sink) {
+	final void extractChar(StringBuffer source, StringBuffer sink) {
 		sink.append(source.charAt(0));
 		source.deleteCharAt(0);
 	}
+	
+	String getTokenDelimiter() {
+		return this.tokenDelimiter;
+	}
+	
+	public File getFile() {
+		return this.file;
+	}
+	
+	// TODO public getters and other features
 }

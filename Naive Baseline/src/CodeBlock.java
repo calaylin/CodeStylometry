@@ -7,6 +7,8 @@ import java.util.List;
  * This class is purposefully mutable. Reconsider the shallowness/deepness of some of the getters...
  * 
  * Consider making a node inner class rather than recursively using this class.
+ * 
+ * EDIT: This class probably shouldn't be purposefully mutable...
  */
 
 /**
