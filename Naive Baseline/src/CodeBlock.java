@@ -112,7 +112,7 @@ public class CodeBlock<T> {
 	 *            The new prototype.
 	 */
 	public void setPrototype(String prototype) {
-		this.prototype = prototype;
+		this.prototype = prototype.trim();
 	}
 
 	/**
@@ -219,6 +219,15 @@ public class CodeBlock<T> {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return "I'll do this later...";
+		return this.toStringAux().toString();
+	}
+	
+	private StringBuffer toStringAux() {
+		StringBuffer ret = new StringBuffer("{");
+		ret.append(this.prototype);
+		for (CodeBlock<T> child : this.children) {
+			ret.append(child.toStringAux());
+		}
+		return ret.append("}");
 	}
 }

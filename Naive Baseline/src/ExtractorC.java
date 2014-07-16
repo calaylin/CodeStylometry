@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ExtractorC extends AbstractExtractor {
@@ -119,7 +121,17 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	List<String> breakIntoStmts(StringBuffer source) {
-		return Arrays.asList(source.toString().split("[\\};]")); // TODO cover preprocessor directives
+		List<String> stmts = new LinkedList<String>(); 
+		List<String> fragments = Arrays.asList(source.toString().split("[\\n;]"));
+		 Iterator<String> iter = fragments.iterator();
+		 while (iter.hasNext()) {
+			 String s = iter.next();
+			 if (s.matches("[\\s]*")) {
+				 continue;
+			 }
+			 stmts.add(s.trim());
+		 }
+		 return stmts;
 	}
 
 }

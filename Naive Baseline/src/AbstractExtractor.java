@@ -100,7 +100,6 @@ public abstract class AbstractExtractor {
 				readUntilNextToken(source, sink);
 			}
 		}
-		// if executed correctly currentBlock should be null at this point
 		//TODO fill out other stuff
 	}
 	
@@ -190,4 +189,22 @@ public abstract class AbstractExtractor {
 	}
 	
 	// TODO public getters and other features
+	// number of code blocks
+	// nesting level
+	// length
+	// num tokens
+	// num comments
+	// num literals
+	// reserved words
+	// locality of variables
+	// type of loop
+	//ternary operators
+	// ++ vs += 1
+	// spaces vs tabs
+	// length of lines
+	// x=1 vs x = 1
+	// ' vs " (python maybe)
+	// formatted strings vs mass concatenation
+	// use of else statements
+	// variable names
 }
