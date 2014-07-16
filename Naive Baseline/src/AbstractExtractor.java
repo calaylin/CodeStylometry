@@ -35,9 +35,9 @@ import java.util.Set;
 public abstract class AbstractExtractor {
 
 	private File file;
-	protected String tokenDelimiter;
-	private MultiSet<String> literals;
-	private List<String> commentList;
+	protected String tokenDelimiter = "[*;\\{\\}\\[\\]()+=\\-&/|%!?:,<>~`\\s]";
+	MultiSet<String> literals;
+	List<String> commentList;
 	CodeBlock<String> blocks; // visibility level?
 	
 	public AbstractExtractor(File program) throws IOException {
@@ -141,7 +141,7 @@ public abstract class AbstractExtractor {
 	abstract List<String> breakIntoStmts(StringBuffer source);
 	
 	void setTokenDelimiter() {
-		this.tokenDelimiter = "[*;\\{\\}\\[\\]()+=\\-&/|%!?:,<>~`\\s]";
+		// override if you want
 	}
 	
 	final void extractMultipleChars(StringBuffer source, StringBuffer sink, int num) {
@@ -164,10 +164,21 @@ public abstract class AbstractExtractor {
 	 * @param regex
 	 */
 	final void readUntil(StringBuffer source, StringBuffer sink, String regex) {
+		this.readBefore(source, sink, regex);
+		this.extractChar(source, sink);
+	}
+	
+	/**
+	 * Same as readUntil except it doesn't eat the regex.
+	 * 
+	 * @param source
+	 * @param sink
+	 * @param regex
+	 */
+	final void readBefore(StringBuffer source, StringBuffer sink, String regex) {
 		while (!source.substring(0, 1).matches(regex)) {
 			this.extractChar(source, sink);
 		}
-		this.extractChar(source, sink);
 	}
 	
 	String getTokenDelimiter() {
