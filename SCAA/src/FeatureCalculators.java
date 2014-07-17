@@ -122,8 +122,14 @@ public class FeatureCalculators {
            while(br2.ready())
                System.out.println(br2.readLine());
 
-           String output_filename = filePath.substring(0, filePath.length()-3).concat("ast");
-           String cmd1 = "echo \'queryNodeIndex(\"type:Function\").id\' | python /Users/Aylin/git/joern-tools/lookup.py -g |  python /Users/Aylin/git/joern-tools/getAst.py | python /Users/Aylin/git/joern-tools/ast2Features.py >" + output_filename;
+           String output_filename = filePath.substring(0, filePath.length()-3).concat("dep");
+           String cmd1 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
+           		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
+           		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
+           		+ "python /Users/Aylin/git/joern-tools/astLabel.py |  "
+           		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
+           		+ output_filename;
+           
            Process joernscripts = dbTime.exec((new String[]{"/bin/sh","-c", cmd1}));
 
            joernscripts.waitFor();
