@@ -13,7 +13,7 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	void readUntilNextToken(StringBuffer source, StringBuffer sink) {
-		this.readUntil(source, sink, this.tokenDelimiter);
+		this.readUntil(source, sink, tokenDelimiter);
 	}
 
 	@Override
@@ -80,10 +80,10 @@ public class ExtractorC extends AbstractExtractor {
 	@Override
 	boolean isPrototype(StringBuffer source) {
 		String s = source.toString();
-		if (s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*") || s.matches("do [\\w\\W]*") || s.matches("struct[\\w\\W]*") || s.matches("typedef struct[\\w\\W]*") || s.matches("if[\\w\\W]*") || s.matches("else[\\w\\W]*")) {
+		if (s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*") || s.matches("do [\\w\\W]*") || s.matches("struct[\\w\\W]*") || s.matches("if[\\w\\W]*") || s.matches("else[\\w\\W]*") || s.matches("switch[\\w\\W]*")) {
 			return true; // notice the space after the "do" regex (avoids matching "double"
 		}
-		if (s.matches("static[\\w\\W]*") || s.matches("extern[\\w\\W]*") || s.matches("unsigned[\\w\\W]*") || s.matches("signed[\\w\\W]*") || s.matches("char[\\w\\W]*") || s.matches("short[\\w\\W]*") || s.matches("int[\\w\\W]*") || s.matches("long[\\w\\W]*") || s.matches("float[\\w\\W]*") || s.matches("double[\\w\\W]*")) {
+		if (s.matches("static[\\w\\W]*") || s.matches("extern[\\w\\W]*") || s.matches("unsigned[\\w\\W]*") || s.matches("signed[\\w\\W]*") || s.matches("char[\\w\\W]*") || s.matches("short[\\w\\W]*") || s.matches("int[\\w\\W]*") || s.matches("long[\\w\\W]*") || s.matches("float[\\w\\W]*") || s.matches("double[\\w\\W]*") || s.matches("enum[\\w\\W]*") || s.matches("typedef[\\w\\W]*") || s.matches("register[\\w\\W]*") || s.matches("union[\\w\\W]*")) {
 			int braceIndex = s.indexOf('{');
 			int semicolonIndex = s.indexOf(';');		
 			if (braceIndex == -1) {

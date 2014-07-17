@@ -12,20 +12,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-/*
- * when reading literals:
- * 
- * string/char are straightforward; be careful of numbers
- * 
- * 3.2, 40294724820L, 3.4f, asdf2134
- * 
- * comments are straightforward
- * 
- * watch out for preprocessor directives when processing statements
- * 
- * MAKE SURE THAT AFTER THE LOOPS THERES NOTHING LEFT OVER IN THE BUFFERS
- */
-
 /**
  * Two big assumptions: the code is valid and no silly macros
  * 
@@ -35,13 +21,14 @@ import java.util.Set;
 public abstract class AbstractExtractor {
 
 	private File file;
-	protected String tokenDelimiter = "[*;\\{\\}\\[\\]()+=\\-&/|%!?:,<>~`\\s]";
+	static String tokenDelimiter = "[*;\\{\\}\\[\\]()+=\\-&/|%!?:,<>~`\\s]";
 	MultiSet<String> literals;
 	List<String> commentList;
-	CodeBlock<String> blocks; // visibility level?
+	CodeBlock<String> blocks;
+	final String code;
 	
 	public AbstractExtractor(File program) throws IOException {
-		this.setTokenDelimiter(); // set what separates a token
+		setTokenDelimiter(); // set what separates a token
 		
 		/* reading in the program contents into a StringBuffer */
 		this.file = program;
@@ -76,6 +63,7 @@ public abstract class AbstractExtractor {
 		/* putting the leftover code back into the source */
 		source = sink;
 		sink = new StringBuffer();
+		code = source.toString(); // setting the code without literals or comments
 		
 		/* separating the code by blocks */
 		this.blocks = new CodeBlock<String>(this.file.getName());
@@ -139,7 +127,7 @@ public abstract class AbstractExtractor {
 	 */
 	abstract List<String> breakIntoStmts(StringBuffer source);
 	
-	void setTokenDelimiter() {
+	static void setTokenDelimiter() {
 		// override if you want
 	}
 	
@@ -180,31 +168,12 @@ public abstract class AbstractExtractor {
 		}
 	}
 	
-	String getTokenDelimiter() {
-		return this.tokenDelimiter;
+	static String getTokenDelimiter() {
+		return tokenDelimiter;
 	}
 	
 	public File getFile() {
 		return this.file;
 	}
-	
-	// TODO public getters and other features
-	// number of code blocks
-	// nesting level
-	// length
-	// num tokens
-	// num comments
-	// num literals
-	// reserved words
-	// locality of variables
-	// type of loop
-	//ternary operators
-	// ++ vs += 1
-	// spaces vs tabs
-	// length of lines
-	// x=1 vs x = 1
-	// ' vs " (python maybe)
-	// formatted strings vs mass concatenation
-	// use of else statements
-	// variable names
+
 }
