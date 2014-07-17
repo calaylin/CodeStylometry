@@ -189,11 +189,11 @@ public class FeatureCalculators {
 	for (int i=0; i<DepASTTypes.length; i++)
     { System.out.println(DepASTTypes[i]);}
 //    int[] symCount = APISymbolCount(featureText, APIsymbols );
-    float[] symCount = DepASTTypeTFIDF(featureText, dataDir, ASTTypes );
-    float[] symCount1 = DepASTTypeTF(featureText, ASTTypes );
+    float[] symCount = DepASTTypeTFIDF(featureText, dataDir, DepASTTypes );
+    float[] symCount1 = DepASTTypeTF(featureText, DepASTTypes );
 
-    for (int i=0; i<ASTTypes.length; i++)
-    {    float idf = DepASTTypeIDF( dataDir, ASTTypes[i].toString() );
+    for (int i=0; i<DepASTTypes.length; i++)
+    {    float idf = DepASTTypeIDF( dataDir, DepASTTypes[i].toString() );
     	System.out.println("tfidf: "+symCount[i] + " tf: " +symCount1[i] + " idf: " + idf );}
     
     
@@ -322,38 +322,22 @@ public class FeatureCalculators {
 	public static float [] APISymbolTFIDF (String featureText, String datasetDir,String[] APISymbols ) throws IOException
      {    
      float symbolCount = APISymbols.length;
-     float tf =0;
+	 float[] tf = APISymbolTF(featureText, APISymbols);
+
      float idf = 0;
      float [] counter = new float[(int) symbolCount];
      for (int i =0; i<symbolCount; i++){
 //if case insensitive, make lowercase
 //   String str = APISymbols[i].toString().toLowerCase();
-  	 String str = "u'"+APISymbols[i].toString()+"'";
+//  	 String str = "u'"+APISymbols[i].toString()+"'";
 
-  	 tf = StringUtils.countMatches(featureText, str);  	
   	 idf = APISymbolIDF(datasetDir, APISymbols[i].toString());
-  	 counter[i] = tf * idf;
+  	 counter[i] = tf[i] * idf;
      }
      return counter;
      }  
      
      
-     //not normalized by the number of ASTTypes in the source code in the source code
-     public static float [] ASTTypeTF (String featureText, String[] ASTTypes )
-     {    
-     float symbolCount = ASTTypes.length;
-     float [] counter = new float[(int) symbolCount];
-     for (int i =0; i<symbolCount; i++){
-//if case insensitive, make lowercase
-//   String str = APISymbols[i].toString().toLowerCase();
-  	 String str = "type:"+ASTTypes[i].toString()+"\n";
-//if case insensitive, make lowercase
-//   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
-  	 counter[i] = StringUtils.countMatches(featureText, str);  	   
-
-     }
-     return counter;
-     }   
      //use this for dep file with label AST
      public static float [] DepASTTypeTF (String featureText, String[] ASTTypes )
      {    
@@ -363,9 +347,18 @@ public class FeatureCalculators {
 //if case insensitive, make lowercase
 //   String str = APISymbols[i].toString().toLowerCase();
   	 String str = ASTTypes[i].toString();
+  	 String str1 = "(" + str + ")";
+  	 String str2 = "(" + str + "(";
+  	 String str3 = ")" + str + ")";
+  	 String str4 = ")" + str + "(";
+
 //if case insensitive, make lowercase
 //   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
-  	 counter[i] = StringUtils.countMatches(featureText, str);  	   
+  	 counter[i] = StringUtils.countMatches(featureText, str1) 
+  			 +StringUtils.countMatches(featureText, str2)
+  			 +StringUtils.countMatches(featureText, str3)
+  			 +StringUtils.countMatches(featureText, str4)
+  			 ;  	   
 
      }
      return counter;
@@ -408,26 +401,44 @@ public class FeatureCalculators {
 	
 	 }
      //use this for dep file with label AST
-	public static float [] DepASTTypeTFIDF (String featureText, String datasetDir, String[] ASTTypes ) throws IOException
+	public static float [] DepASTTypeTFIDF (String featureText, String datasetDir, String[] DepASTTypes ) throws IOException
 	   {    
-	   float symbolCount = ASTTypes.length;
+	   float symbolCount = DepASTTypes.length;
 	   float idf = 0;
-	   float tf = 0;
+	   float[] tf = DepASTTypeTF(featureText, DepASTTypes);
 	   float [] counter = new float[(int) symbolCount];
+	//   tf = StringUtils.countMatches(featureText, str);  	
+
 	   for (int i =0; i<symbolCount; i++){
 	//if case insensitive, make lowercase
 	// String str = APISymbols[i].toString().toLowerCase();
-		 String str = ASTTypes[i].toString();
+	//	 String str = DepASTTypes[i].toString();
 		 
 	//if case insensitive, make lowercase
 	// strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
 		 
-		 tf = StringUtils.countMatches(featureText, str);  	
-		 idf = DepASTTypeIDF(datasetDir, ASTTypes[i].toString());
-		 counter[i] = tf * idf;
+		 idf = DepASTTypeIDF(datasetDir, DepASTTypes[i].toString());
+		 counter[i] = tf[i] * idf;
 	   }
 	   return counter;
 	   }
+
+	//not normalized by the number of ASTTypes in the source code in the source code
+	     public static float [] ASTTypeTF (String featureText, String[] ASTTypes )
+	     {    
+	     float symbolCount = ASTTypes.length;
+	     float [] counter = new float[(int) symbolCount];
+	     for (int i =0; i<symbolCount; i++){
+	//if case insensitive, make lowercase
+	//   String str = APISymbols[i].toString().toLowerCase();
+	  	 String str = "type:"+ASTTypes[i].toString()+"\n";
+	//if case insensitive, make lowercase
+	//   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
+	  	 counter[i] = StringUtils.countMatches(featureText, str);  	   
+	
+	     }
+	     return counter;
+	     }
 
 	public static float ASTTypeIDF (String datasetDir, String ASTType ) throws IOException
      {    
@@ -470,19 +481,18 @@ public class FeatureCalculators {
      {    
      float symbolCount = ASTTypes.length;
      float idf = 0;
-     float tf = 0;
+	 float[] tf = ASTTypeTF(featureText, ASTTypes);
      float [] counter = new float[(int) symbolCount];
      for (int i =0; i<symbolCount; i++){
 //if case insensitive, make lowercase
 //   String str = APISymbols[i].toString().toLowerCase();
-  	 String str = "type:"+ASTTypes[i].toString()+"\n";
+//  	 String str = "type:"+ASTTypes[i].toString()+"\n";
   	 
 //if case insensitive, make lowercase
 //   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
   	 
-  	 tf = StringUtils.countMatches(featureText, str);  	
   	 idf = ASTTypeIDF(datasetDir, ASTTypes[i].toString());
-  	 counter[i] = tf * idf;
+  	 counter[i] = tf[i] * idf;
      }
      return counter;
      }   
