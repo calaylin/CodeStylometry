@@ -331,7 +331,11 @@ public class FeatureCalculators {
 //   String str = APISymbols[i].toString().toLowerCase();
 //  	 String str = "u'"+APISymbols[i].toString()+"'";
 
-  	 idf = APISymbolIDF(datasetDir, APISymbols[i].toString());
+     if ((tf[i] != 0) ){
+    idf = APISymbolIDF(datasetDir, APISymbols[i].toString());}
+    else 
+    {idf =0;    		 }
+    	 
 	 if ((tf[i] != 0) && (idf != 0))
 	 counter[i] = tf[i] * idf;
 	 else
@@ -419,8 +423,11 @@ public class FeatureCalculators {
 		 
 	//if case insensitive, make lowercase
 	// strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
-		 
-		 idf = DepASTTypeIDF(datasetDir, DepASTTypes[i].toString());
+		 if ((tf[i] != 0) ){
+		 idf = DepASTTypeIDF(datasetDir, DepASTTypes[i].toString());}
+		 else {
+			 idf =0;
+		 }
 		 if ((tf[i] != 0) && (idf != 0))
 		 counter[i] = tf[i] * idf;
 		 else
@@ -497,7 +504,12 @@ public class FeatureCalculators {
 //if case insensitive, make lowercase
 //   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
   	 
-  	 idf = ASTTypeIDF(datasetDir, ASTTypes[i].toString());
+  	 
+  	 if ((tf[i] != 0) ){
+  	  	 idf = ASTTypeIDF(datasetDir, ASTTypes[i].toString());}
+		 else {
+			 idf =0;
+		 }
   	 counter[i] = tf[i] * idf;
   	 if ((tf[i] != 0) && (idf != 0))
   		 counter[i] = tf[i] * idf;
