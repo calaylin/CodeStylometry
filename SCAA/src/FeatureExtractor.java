@@ -45,17 +45,23 @@ public class FeatureExtractor {
 	
     String[] APIsymbols = FeatureCalculators.uniqueAPISymbols(test_dir);
     String[] ASTtypes = FeatureCalculators.uniqueASTTypes(test_dir);
-
+    String[] DepASTTypes =FeatureCalculators.uniqueDepASTTypes(test_dir);
 //    for (int i=0; i<APIsymbols.length; i++)	
 //    {	Util.writeFile("@attribute 'APIsymbols["+i+"]' numeric"+"\n", output_filename, true);}
     /*    for (int i=0; i<APIsymbols.length; i++)	
     {	Util.writeFile("@attribute 'APIsymbolsTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
     */
-    for (int i=0; i<ASTtypes.length; i++)	
-    {	Util.writeFile("@attribute 'ASTtypes["+i+"]' numeric"+"\n", output_filename, true);}
+//    for (int i=0; i<ASTtypes.length; i++)	
+//    {	Util.writeFile("@attribute 'ASTtypes["+i+"]' numeric"+"\n", output_filename, true);}
 /*    for (int i=0; i<ASTtypes.length; i++)	
     {	Util.writeFile("@attribute 'ASTtypesTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
 */
+    
+    for (int i=0; i<DepASTTypes.length; i++)	
+    {	Util.writeFile("@attribute 'DepASTTypes["+i+"]' numeric"+"\n", output_filename, true);}
+    for (int i=0; i<DepASTTypes.length; i++)	
+  {	Util.writeFile("@attribute 'DepASTTypesTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
+
 	
 	//Writing the classes (authorname)
 	Util.writeFile("@attribute 'authorName' {",output_filename, true);
@@ -109,6 +115,8 @@ public class FeatureExtractor {
 		System.out.println(authorName);
 		Util.writeFile(FeatureCalculators.functionIDCount(featureText)+",", output_filename, true);
 		String ASTText = Util.readFile(test_file_paths.get(i).toString().substring(0,testIDlength-3)+"ast");
+		String DepASTText = Util.readFile(test_file_paths.get(i).toString().substring(0,testIDlength-3)+"dep");
+
 		Util.writeFile(FeatureCalculators.CFGNodeCount(ASTText)+",", output_filename, true);
 		Util.writeFile(FeatureCalculators.ASTFunctionIDCount(ASTText)+",", output_filename, true);
 		Util.writeFile(FeatureCalculators.averageASTDepth(ASTText)+",", output_filename, true);
@@ -125,16 +133,26 @@ public class FeatureExtractor {
 		{Util.writeFile(symTFIDF[j]+",", output_filename, true);}	 */
 
 	    
-	    //get count of each AST type present	 
+/*	    //get count of each AST type present	 
 	    float[] typeCount = FeatureCalculators.ASTTypeTF(ASTText, ASTtypes );
 	    for (int j=0; j<ASTtypes.length; j++)
-		{Util.writeFile(typeCount[j] +",", output_filename, true);}	
+		{Util.writeFile(typeCount[j] +",", output_filename, true);}	*/
 	    
 /*		//get tfidf of each AST Type present	 
 	    float[] astTypeTFIDF = FeatureCalculators.ASTTypeTFIDF(featureText, test_dir, ASTtypes);
 	    for (int j=0; j<ASTtypes.length; j++)
 		{Util.writeFile(astTypeTFIDF[j]+",", output_filename, true);}	*/
 
+	    //get count of each DepAST type present	 
+	    float[] typeCount = FeatureCalculators.DepASTTypeTF(DepASTText, DepASTTypes );
+	    for (int j=0; j<DepASTTypes.length; j++)
+		{Util.writeFile(typeCount[j] +",", output_filename, true);}	
+	    
+		//get tfidf of each AST Type present	 
+	    float[] DepastTypeTFIDF = FeatureCalculators.DepASTTypeTFIDF(featureText, test_dir, DepASTTypes);
+	    for (int j=0; j<DepASTTypes.length; j++)
+		{Util.writeFile(DepastTypeTFIDF[j]+",", output_filename, true);}	
+		
 	    
 		Util.writeFile(authorName+"\n", output_filename, true);
 
