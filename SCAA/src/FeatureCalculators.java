@@ -296,7 +296,7 @@ public class FeatureCalculators {
      		  		 counter++;
      		} 
      }
-  		return (float) (Math.log10(directories.length/counter));
+   		return (float) (Math.log(directories.length/counter)/ Math.log(2));
 
      }  	 
 //not normalized by the number of ASTTypes in the source code in the source code
@@ -342,7 +342,8 @@ public class FeatureCalculators {
      		  		 counter++;
      		} 
      }
-  		return (float) (Math.log10(directories.length/counter));
+  		return (float) (Math.log(directories.length/counter)/ Math.log(2));
+
 
      }      
      
