@@ -332,8 +332,11 @@ public class FeatureCalculators {
 //  	 String str = "u'"+APISymbols[i].toString()+"'";
 
   	 idf = APISymbolIDF(datasetDir, APISymbols[i].toString());
-  	 counter[i] = tf[i] * idf;
-     }
+	 if ((tf[i] != 0) && (idf != 0))
+	 counter[i] = tf[i] * idf;
+	 else
+		 counter[i]=0;     
+	 }
      return counter;
      }  
      
@@ -418,7 +421,10 @@ public class FeatureCalculators {
 	// strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
 		 
 		 idf = DepASTTypeIDF(datasetDir, DepASTTypes[i].toString());
+		 if ((tf[i] != 0) && (idf != 0))
 		 counter[i] = tf[i] * idf;
+		 else
+			 counter[i]=0;
 	   }
 	   return counter;
 	   }
@@ -493,6 +499,10 @@ public class FeatureCalculators {
   	 
   	 idf = ASTTypeIDF(datasetDir, ASTTypes[i].toString());
   	 counter[i] = tf[i] * idf;
+  	 if ((tf[i] != 0) && (idf != 0))
+  		 counter[i] = tf[i] * idf;
+  		 else
+  			 counter[i]=0; 
      }
      return counter;
      }   
