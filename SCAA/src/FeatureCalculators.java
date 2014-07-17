@@ -171,7 +171,7 @@ public class FeatureCalculators {
 //    System.out.println(filePath);
 		
 //	preprocessDataToAPISymbols(filePath);
-	preprocessDataToASTFeatures(filePath);
+//	preprocessDataToASTFeatures(filePath);
     
     }
 
@@ -179,19 +179,24 @@ public class FeatureCalculators {
   
    //Get API symbols and their count in each txt file
 //   String[] APIsymbols = uniqueAPISymbols(test);
-    String[] APIsymbols = uniqueASTTypes(test);
+	String dataDir= "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/";
+    String[] ASTTypes = uniqueASTTypes(dataDir);
+    String[] DepASTTypes = uniqueDepASTTypes(dataDir);
 
-    
-	String featureText = Util.readFile("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/test/Gennady.Korotkevich_1_0.ast");
-
-    for (int i=0; i<APIsymbols.length; i++)
-    { System.out.println(APIsymbols[i]);}
+	String featureText = Util.readFile("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/for/simpleforlabels.dep");
+/*	for (int i=0; i<ASTTypes.length; i++)
+    { System.out.println(ASTTypes[i]);}*/
+	for (int i=0; i<DepASTTypes.length; i++)
+    { System.out.println(DepASTTypes[i]);}
 //    int[] symCount = APISymbolCount(featureText, APIsymbols );
-    float[] symCount = ASTTypeTF(featureText, APIsymbols );
+    float[] symCount = DepASTTypeTFIDF(featureText, dataDir, ASTTypes );
+    float[] symCount1 = DepASTTypeTF(featureText, ASTTypes );
 
-    for (int i=0; i<APIsymbols.length; i++)
-    { System.out.println(symCount[i]);}
-  
+    for (int i=0; i<ASTTypes.length; i++)
+    {    float idf = DepASTTypeIDF( dataDir, ASTTypes[i].toString() );
+    	System.out.println("tfidf: "+symCount[i] + " tf: " +symCount1[i] + " idf: " + idf );}
+    
+    
     }
      
 
@@ -215,6 +220,7 @@ public class FeatureCalculators {
       return words;
 }   
  
+    
      public static String[] uniqueAPISymbols (String dirPath) throws IOException{
 	  
 	   
@@ -234,6 +240,29 @@ public class FeatureCalculators {
 
        return words;
 }
+     
+     public static String[] uniqueDepASTTypes(String dirPath) throws IOException{
+   	  
+  	   
+	    List test_file_paths = Util.listDepFiles(dirPath);
+		HashSet<String> uniqueWords = new HashSet<String>();
+
+	    for(int i=0; i< test_file_paths.size(); i++){
+			String filePath = test_file_paths.get(i).toString();  
+	   
+	   String inputText =Util.readFile(filePath);
+	   Pattern pattern = Pattern.compile("([\\w']+)");
+	   Matcher matcher = pattern.matcher(inputText);
+	   while (matcher.find()) {
+	       uniqueWords.add(matcher.group(1));
+	   }}
+	   String[] words = uniqueWords.toArray(new String[0]);
+
+       return words;
+}
+     
+     
+     
      //not normalized by the number of APISymbols in the source code
      public static float [] APISymbolTF (String featureText, String[] APISymbols )
      {    
@@ -251,7 +280,46 @@ public class FeatureCalculators {
      return counter;
      }  
      
-     public static float [] APISymbolTFIDF (String featureText, String datasetDir,String[] APISymbols ) throws IOException
+     public static float APISymbolIDF (String datasetDir, String APISymbol ) throws IOException
+	 {    
+			
+		 float counter = 0;
+		 float IDFcounter = 0;
+
+	
+		 File file = new File(datasetDir);
+	     String[] directories = file.list(new FilenameFilter() {
+	    	 @Override
+	     public boolean accept(File current, String name) 
+	    	 {
+	    		 return new File(current, name).isDirectory();
+			 }
+				   });
+	     int dirLen = directories.length;
+	
+		 for(int j=0; j< dirLen; j++)
+			{
+			String authorName = directories[j];
+			List test_file_paths = Util.listTextFiles(datasetDir+authorName+"/");
+	 		for(int i=0; i< test_file_paths.size(); i++)
+	 		{
+	 			String featureText = Util.readFile(test_file_paths.get(i).toString());
+	 		  	 String str = "u'"+APISymbol+"'";
+	 		  	 int termFrequencyAuthor = StringUtils.countMatches(featureText, str);  	
+	 		  	 if (termFrequencyAuthor>0)
+	 		  		 counter++;
+	 		} 
+	 		if(counter>0)
+	 			IDFcounter++;
+	 		
+	 }
+		 if (IDFcounter==0)
+		 {return 0;}
+		return (float) ((Math.log(dirLen/IDFcounter))/ (Math.log(2)));
+	
+	 }
+
+	public static float [] APISymbolTFIDF (String featureText, String datasetDir,String[] APISymbols ) throws IOException
      {    
      float symbolCount = APISymbols.length;
      float tf =0;
@@ -270,36 +338,7 @@ public class FeatureCalculators {
      }  
      
      
-     public static float APISymbolIDF (String datasetDir, String APISymbol ) throws IOException
-     {    
-    		
-		 float counter = 0;
-
-    	 File file = new File(datasetDir);
-   	     String[] directories = file.list(new FilenameFilter() {
-   	    	 @Override
-         public boolean accept(File current, String name) 
-   	    	 {
-   	    		 return new File(current, name).isDirectory();
-    		 }
-    			   });
-    	 for(int j=0; j< directories.length; j++)
-    		{
-  			String authorName = directories[j];
-    		List test_file_paths = Util.listTextFiles(datasetDir+authorName+"/");
-     		for(int i=0; i< test_file_paths.size(); i++)
-     		{
-     			String featureText = Util.readFile(test_file_paths.get(i).toString());
-     		  	 String str = "u'"+APISymbol+"'";
-     		  	 int termFrequencyAuthor = StringUtils.countMatches(featureText, str);  	
-     		  	 if (termFrequencyAuthor>0)
-     		  		 counter++;
-     		} 
-     }
-   		return (float) (Math.log(directories.length/counter)/ Math.log(2));
-
-     }  	 
-//not normalized by the number of ASTTypes in the source code in the source code
+     //not normalized by the number of ASTTypes in the source code in the source code
      public static float [] ASTTypeTF (String featureText, String[] ASTTypes )
      {    
      float symbolCount = ASTTypes.length;
@@ -315,12 +354,86 @@ public class FeatureCalculators {
      }
      return counter;
      }   
-     
-     public static float ASTTypeIDF (String datasetDir, String ASTType ) throws IOException
+     //use this for dep file with label AST
+     public static float [] DepASTTypeTF (String featureText, String[] ASTTypes )
+     {    
+     float symbolCount = ASTTypes.length;
+     float [] counter = new float[(int) symbolCount];
+     for (int i =0; i<symbolCount; i++){
+//if case insensitive, make lowercase
+//   String str = APISymbols[i].toString().toLowerCase();
+  	 String str = ASTTypes[i].toString();
+//if case insensitive, make lowercase
+//   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
+  	 counter[i] = StringUtils.countMatches(featureText, str);  	   
+
+     }
+     return counter;
+     }   
+     //use this for dep file with label AST
+     public static float DepASTTypeIDF (String datasetDir, String ASTType ) throws IOException
+	 {    
+			
+		 float counter = 0;
+		 float IDFcounter = 0;
+
+		 File file = new File(datasetDir);
+	     String[] directories = file.list(new FilenameFilter() {
+	    	 @Override
+	     public boolean accept(File current, String name) 
+	    	 {
+	    		 return new File(current, name).isDirectory();
+			 }
+				   });
+	     float dirLen = directories.length;
+		 for(int j=0; j< dirLen; j++)
+			{
+			String authorName = directories[j];
+			List test_file_paths = Util.listDepFiles(datasetDir+authorName+"/");
+	 		for(int i=0; i< test_file_paths.size(); i++)
+	 		{
+	 			String featureText = Util.readFile(test_file_paths.get(i).toString());
+	 		  	 String str = ASTType;
+	 		  	 int termFrequencyAuthor = StringUtils.countMatches(featureText, str);  	
+	 		  	 if (termFrequencyAuthor>0)
+	 		  		 counter++;
+	 		} 
+	 		if(counter>0)
+	 			IDFcounter++;
+	 		
+	 }
+		 if (IDFcounter==0)
+		 {return 0;}
+		return (float) ((Math.log(dirLen/IDFcounter))/ (Math.log(2)));
+	
+	 }
+     //use this for dep file with label AST
+	public static float [] DepASTTypeTFIDF (String featureText, String datasetDir, String[] ASTTypes ) throws IOException
+	   {    
+	   float symbolCount = ASTTypes.length;
+	   float idf = 0;
+	   float tf = 0;
+	   float [] counter = new float[(int) symbolCount];
+	   for (int i =0; i<symbolCount; i++){
+	//if case insensitive, make lowercase
+	// String str = APISymbols[i].toString().toLowerCase();
+		 String str = ASTTypes[i].toString();
+		 
+	//if case insensitive, make lowercase
+	// strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
+		 
+		 tf = StringUtils.countMatches(featureText, str);  	
+		 idf = DepASTTypeIDF(datasetDir, ASTTypes[i].toString());
+		 counter[i] = tf * idf;
+	   }
+	   return counter;
+	   }
+
+	public static float ASTTypeIDF (String datasetDir, String ASTType ) throws IOException
      {    
     		
 		 float counter = 0;
-
+		 float IDFcounter=0;
     	 File file = new File(datasetDir);
    	     String[] directories = file.list(new FilenameFilter() {
    	    	 @Override
@@ -329,7 +442,8 @@ public class FeatureCalculators {
    	    		 return new File(current, name).isDirectory();
     		 }
     			   });
-    	 for(int j=0; j< directories.length; j++)
+   	     float dirLen = directories.length;
+    	 for(int j=0; j< dirLen; j++)
     		{
   			String authorName = directories[j];
     		List test_file_paths = Util.listASTFiles(datasetDir+authorName+"/");
@@ -337,17 +451,21 @@ public class FeatureCalculators {
      		{
      			String featureText = Util.readFile(test_file_paths.get(i).toString());
      		  	 String str = "type:"+ASTType+"\n";
-     		  	 int termFrequencyAuthor = StringUtils.countMatches(featureText, str);  	
-     		  	 if (termFrequencyAuthor>0)
-     		  		 counter++;
-     		} 
-     }
-  		return (float) (Math.log(directories.length/counter)/ Math.log(2));
-
-
-     }      
-     
-     
+	 		  	 int termFrequencyAuthor = StringUtils.countMatches(featureText, str);  	
+	 		  	 if (termFrequencyAuthor>0)
+	 		  		 counter++;
+	 		} 
+	 		if(counter>0)
+	 			IDFcounter++;
+	 		
+	 }
+		 if (IDFcounter==0)
+		 {return 0;}
+		return (float) ((Math.log(dirLen/IDFcounter))/ (Math.log(2)));
+	
+	 }
+	
+	
      public static float [] ASTTypeTFIDF (String featureText, String datasetDir, String[] ASTTypes ) throws IOException
      {    
      float symbolCount = ASTTypes.length;
@@ -376,6 +494,7 @@ public class FeatureCalculators {
 	    return inputText.trim().split("\\s+").length;
 	}
   
+   
    public static int functionIDCount (String featureText)
 	  {		   int counter = 0;
 
