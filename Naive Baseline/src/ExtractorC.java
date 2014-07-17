@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ExtractorC extends AbstractExtractor {
 
@@ -18,7 +20,9 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	boolean matchesLiteral(StringBuffer source) {
-		return source.charAt(0) == '"' || source.charAt(0) == '\'' || source.toString().matches("[\\d]+[\\w\\W]*") || source.toString().matches("[.][\\d]+[\\w\\W]*");
+		return source.charAt(0) == '"' || source.charAt(0) == '\''
+				|| source.toString().matches("[\\d]+[\\w\\W]*")
+				|| source.toString().matches("[.][\\d]+[\\w\\W]*");
 	}
 
 	@Override
@@ -43,7 +47,7 @@ public class ExtractorC extends AbstractExtractor {
 			} else {
 				this.extractMultipleChars(source, sink, 3);
 			}
-		} else { 
+		} else {
 			// numbers
 			this.readBefore(source, sink, "\\D");
 			if (source.charAt(0) == 'l' || source.charAt(0) == 'L') {
@@ -62,7 +66,9 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	boolean matchesComment(StringBuffer source) {
-		return source.length() >= 2 && (source.substring(0, 2).equals("//") || source.substring(0, 2).equals("/*"));
+		return source.length() >= 2
+				&& (source.substring(0, 2).equals("//") || source.substring(0,
+						2).equals("/*"));
 	}
 
 	@Override
@@ -80,12 +86,24 @@ public class ExtractorC extends AbstractExtractor {
 	@Override
 	boolean isPrototype(StringBuffer source) {
 		String s = source.toString();
-		if (s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*") || s.matches("do [\\w\\W]*") || s.matches("struct[\\w\\W]*") || s.matches("if[\\w\\W]*") || s.matches("else[\\w\\W]*") || s.matches("switch[\\w\\W]*")) {
-			return true; // notice the space after the "do" regex (avoids matching "double"
+		if (s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
+				|| s.matches("do [\\w\\W]*") || s.matches("struct[\\w\\W]*")
+				|| s.matches("if[\\w\\W]*") || s.matches("else[\\w\\W]*")
+				|| s.matches("switch[\\w\\W]*")) {
+			return true; // notice the space after the "do" regex (avoids
+							// matching "double"
 		}
-		if (s.matches("static[\\w\\W]*") || s.matches("extern[\\w\\W]*") || s.matches("unsigned[\\w\\W]*") || s.matches("signed[\\w\\W]*") || s.matches("char[\\w\\W]*") || s.matches("short[\\w\\W]*") || s.matches("int[\\w\\W]*") || s.matches("long[\\w\\W]*") || s.matches("float[\\w\\W]*") || s.matches("double[\\w\\W]*") || s.matches("enum[\\w\\W]*") || s.matches("typedef[\\w\\W]*") || s.matches("register[\\w\\W]*") || s.matches("union[\\w\\W]*")) {
+		if (s.matches("static[\\w\\W]*") || s.matches("extern[\\w\\W]*")
+				|| s.matches("unsigned[\\w\\W]*")
+				|| s.matches("signed[\\w\\W]*") || s.matches("char[\\w\\W]*")
+				|| s.matches("short[\\w\\W]*") || s.matches("int[\\w\\W]*")
+				|| s.matches("long[\\w\\W]*") || s.matches("float[\\w\\W]*")
+				|| s.matches("double[\\w\\W]*") || s.matches("enum[\\w\\W]*")
+				|| s.matches("typedef[\\w\\W]*")
+				|| s.matches("register[\\w\\W]*")
+				|| s.matches("union[\\w\\W]*")) {
 			int braceIndex = s.indexOf('{');
-			int semicolonIndex = s.indexOf(';');		
+			int semicolonIndex = s.indexOf(';');
 			if (braceIndex == -1) {
 				return false;
 			}
@@ -101,7 +119,8 @@ public class ExtractorC extends AbstractExtractor {
 	String extractPrototype(StringBuffer source) {
 		StringBuffer sink = new StringBuffer();
 		this.readUntil(source, sink, "\\{");
-		return sink.substring(0, sink.length() - 1); // we don't want to include the '{'
+		return sink.substring(0, sink.length() - 1); // we don't want to include
+														// the '{'
 	}
 
 	@Override
@@ -110,7 +129,8 @@ public class ExtractorC extends AbstractExtractor {
 			source.deleteCharAt(0); // get rid of the '}'
 			if (source.charAt(0) == ';') {
 				source.deleteCharAt(0); // get rid of the ';' after the '}'
-			} else if (source.toString().matches("[\\s]*while")){ // in case of a do-while
+			} else if (source.toString().matches("[\\s]*while")) {
+				// in case of a do-while
 				int semicolonIndex = source.indexOf(";");
 				this.extractMultipleChars(source, sink, semicolonIndex + 1);
 			}
@@ -121,17 +141,80 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	List<String> breakIntoStmts(StringBuffer source) {
-		List<String> stmts = new LinkedList<String>(); 
-		List<String> fragments = Arrays.asList(source.toString().split("[\\n;]"));
-		 Iterator<String> iter = fragments.iterator();
-		 while (iter.hasNext()) {
-			 String s = iter.next();
-			 if (s.matches("[\\s]*")) {
-				 continue;
-			 }
-			 stmts.add(s.trim());
-		 }
-		 return stmts;
+		List<String> stmts = new LinkedList<String>();
+		List<String> fragments = Arrays.asList(source.toString()
+				.split("[\\n;]"));
+		Iterator<String> iter = fragments.iterator();
+		while (iter.hasNext()) {
+			String s = iter.next();
+			if (s.matches("[\\s]*")) {
+				continue;
+			}
+			stmts.add(s.trim());
+		}
+		return stmts;
+	}
+
+	@Override
+	public boolean newLineBrace() {
+		// traverse thru lines list?
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int numFunctions() {
+		// traverse thru nary tree
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int numTokens() {
+		// tricky
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Map<String, Integer> getReservedWords() {
+		// make text file first
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<Loops, Integer> getLoops() {
+		// traverse thru nary tree
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<ControlStatement, Integer> getControlStructures() {
+		// traverse thru nary tree
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<Integer> numFunctionParams() {
+		// get functions, then count number of commas
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double avgParamsPerFunction() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Map<Integer, Integer> getVariableLocality() {
+		// check var in nary tree with its tree depth
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
