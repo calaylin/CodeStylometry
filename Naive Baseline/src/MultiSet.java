@@ -47,7 +47,9 @@ public class MultiSet<T> extends HashMap<T, Integer> {
 		}
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.util.AbstractMap#toString()
 	 */
 	public String toString() {

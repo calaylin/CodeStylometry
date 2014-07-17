@@ -62,7 +62,7 @@ public class CodeBlock<T> {
 			this.addChild(new CodeBlock<T>(child));
 		}
 	}
-	
+
 	/**
 	 * Gets the block's parent block.
 	 * 
@@ -71,11 +71,12 @@ public class CodeBlock<T> {
 	public CodeBlock<T> getParent() {
 		return this.parent;
 	}
-	
+
 	/**
 	 * Changes the block's parent block.
 	 * 
-	 * @param parent The new parent block.
+	 * @param parent
+	 *            The new parent block.
 	 */
 	public void setParent(CodeBlock<T> parent) {
 		this.parent = parent;
@@ -112,7 +113,7 @@ public class CodeBlock<T> {
 	 *            The new prototype.
 	 */
 	public void setPrototype(String prototype) {
-		this.prototype = prototype;
+		this.prototype = prototype.trim();
 	}
 
 	/**
@@ -219,6 +220,15 @@ public class CodeBlock<T> {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return "I'll do this later...";
+		return this.toStringAux().toString();
+	}
+
+	private StringBuffer toStringAux() {
+		StringBuffer ret = new StringBuffer("{");
+		ret.append(this.prototype);
+		for (CodeBlock<T> child : this.children) {
+			ret.append(child.toStringAux());
+		}
+		return ret.append("}");
 	}
 }
