@@ -14,17 +14,15 @@ import org.apache.commons.lang3.StringUtils;
 public class DepthASTNode {
 	
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
-
-    	String fileName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/"
-    			+ "SCAA_Datasets/AnalysisCode/for/"
-    			+ "simpleforlabels.dep";
+    	String dataDir ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/"
+    			+ "SCAA_Datasets/AnalysisCode/for/";
+    	String fileName =dataDir+"simpleforlabels.dep";
+        String[] DepASTTypes = FeatureCalculators.uniqueDepASTTypes(dataDir);
     	String featureText = Util.readFile( fileName);
-    	int[] lines =getASTDepLines(featureText);
+    	float [] depFeature =getAvgDepthASTNode(featureText,DepASTTypes);
+    	for(int i=0;i<depFeature.length;i++)
+    		System.out.println(depFeature[i]);
     	
-    	for(int i=0; i<lines.length; i++)
-    		System.out.println(lines[i]);
-    	
-    	System.out.println(readLineNumber(featureText, 9));
     }
 	
     

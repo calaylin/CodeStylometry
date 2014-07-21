@@ -29,13 +29,13 @@ public class WholeWordIndexFinder {
     }
  
     public static void main(String[] args) {
-        WholeWordIndexFinder finder = new WholeWordIndexFinder("don?t be evil.being evil is bad");
-        List<IndexWrapper> indexes = finder.findIndexesForKeyword("be");
-        System.out.println("Indexes found "+indexes.size() +" keyword found at index : "+indexes.get(0).getStart());
+        WholeWordIndexFinder finder = new WholeWordIndexFinder("1111 t	(flag) flag ((((flag)) )flag(");
+        List<IndexWrapper> indexes = finder.findIndexesForKeyword("flag2");
+        System.out.println("Indexes found "+indexes.size() +" keyword found at index : ");
         
         //input should be the dep file, do this for each line
         //take the last line that a function id appears in that has the whole depth structure
-        String input = "1111 t	(flag2)";
+        String input = "1111 t	(flag)";
         //take the function id in the beginning of the line.    
         String firstWord = input.substring(0, input.indexOf('\t'));
         System.out.println(firstWord);
