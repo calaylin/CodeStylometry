@@ -58,10 +58,11 @@ public class FeatureExtractor {
 */
     
     for (int i=0; i<DepASTTypes.length; i++)	
-    {	Util.writeFile("@attribute 'DepASTTypes["+i+"]' numeric"+"\n", output_filename, true);}
+    {	Util.writeFile("@attribute 'DepASTTypes["+DepASTTypes[i]+"]' numeric"+"\n", output_filename, true);}
     for (int i=0; i<DepASTTypes.length; i++)	
-  {	Util.writeFile("@attribute 'DepASTTypesTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
-
+  {	Util.writeFile("@attribute 'DepASTTypesTFIDF["+DepASTTypes[i]+"]' numeric"+"\n", output_filename, true);}
+    for (int i=0; i<DepASTTypes.length; i++)	
+  {	Util.writeFile("@attribute 'AvgDep["+DepASTTypes[i]+"]' numeric"+"\n", output_filename, true);}
 	
 	//Writing the classes (authorname)
 	Util.writeFile("@attribute 'authorName' {",output_filename, true);
@@ -153,6 +154,9 @@ public class FeatureExtractor {
 	    for (int j=0; j<DepASTTypes.length; j++)
 		{Util.writeFile(DepastTypeTFIDF[j]+",", output_filename, true);}	
 		
+    	float [] depFeature =DepthASTNode.getAvgDepthASTNode(DepASTText,DepASTTypes);
+    	for(int k=0;k<depFeature.length;k++)
+		{Util.writeFile(depFeature[k] +",", output_filename, true);}	
 	    
 		Util.writeFile(authorName+"\n", output_filename, true);
 
