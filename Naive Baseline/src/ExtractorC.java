@@ -164,9 +164,22 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	public int numFunctions() {
-		// traverse thru nary tree
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO
+		int count = 0;
+		for (String s : this.blocks.getPrototypesRecursively()) {
+			if (s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
+					|| s.matches("do [\\w\\W]*")
+					|| s.matches("struct[\\w\\W]*") || s.matches("if[\\w\\W]*")
+					|| s.matches("else[\\w\\W]*")
+					|| s.matches("switch[\\w\\W]*")
+					|| s.matches("enum[\\w\\W]*")
+					|| s.matches("typedef[\\w\\W]*")
+					|| s.matches("register[\\w\\W]*")
+					|| s.matches("union[\\w\\W]*")) { // need to double check
+				count++;
+			}
+		}
+		return count;
 	}
 
 	@Override
@@ -185,16 +198,24 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	public Map<Loops, Integer> getLoops() {
-		// traverse thru nary tree
-		// TODO Auto-generated method stub
-		return null;
+		Map
+		for (String s : this.blocks.getPrototypesRecursively()) {
+			if () {
+				do something
+			}
+		}
+		return something;
 	}
 
 	@Override
 	public Map<ControlStatement, Integer> getControlStructures() {
-		// traverse thru nary tree
-		// TODO Auto-generated method stub
-		return null;
+		Map
+		for (String s : this.blocks.getPrototypesRecursively()) {
+			if () {
+				do something
+			}
+		}
+		return something;
 	}
 
 	@Override
