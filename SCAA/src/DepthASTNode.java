@@ -21,7 +21,7 @@ public class DepthASTNode {
     	String featureText = Util.readFile( fileName);
     	float [] depFeature =getAvgDepthASTNode(featureText,DepASTTypes);
     	for(int i=0;i<depFeature.length;i++)
-    		System.out.println(depFeature[i]);
+    		System.out.println(DepASTTypes[i]+","+depFeature[i]);
     	
     }
 	
@@ -40,25 +40,17 @@ public class DepthASTNode {
 			for (int j=0; j< ASTTypes.length; j++)
 			{
 			  	 String str = ASTTypes[j].toString();
-			  	 String str1 = "(" + str + ")";
-			  	 String str2 = "(" + str + "(";
-			  	 String str3 = ")" + str + ")";
-			  	 String str4 = ")" + str + "(";
-
-			  	 float occurrencesHere = StringUtils.countMatches(textAST, str1) 
-			  			 +StringUtils.countMatches(textAST, str2)
-			  			 +StringUtils.countMatches(textAST, str3)
-			  			 +StringUtils.countMatches(textAST, str4);	
-			  	 occurrences[j] = occurrences[j] + occurrencesHere;
-			  	 
 		         WholeWordIndexFinder finder = new WholeWordIndexFinder(textAST);
-		         List<IndexWrapper> indexes = finder.findIndexesForKeyword(str);
-			  	 for(int k=0; k<(int)occurrencesHere; k++)
+		         List<IndexWrapper> occurrencesHere = finder.findIndexesForKeyword(str);
+			  	 occurrences[j] = occurrences[j] + occurrencesHere.size();
+			  	 
+
+			  	 for(int k=0; k<occurrencesHere.size(); k++)
 			  	 {
 			  	   int rightParanthesis =0;//(
 			  	   int leftParanthesis =0;//)
 
-			  	   for (Character c: textAST.substring(0,indexes.get(k).getStart()).toCharArray()) {
+			  	   for (Character c: textAST.substring(0,occurrencesHere.get(k).getStart()).toCharArray()) {
 			  	       if (c.equals('(')) {
 			  	    	 rightParanthesis++;
 			  	       }
@@ -71,8 +63,6 @@ public class DepthASTNode {
 			  	 
 			  	 if(occurrences[j]==0)
 			  		avgDepth[j]=-1;
-			  	 else if((occurrences[j]!=0)&&(totalDepth[j]==0))
-				  	avgDepth[j]=0;
 			  	 else
 			  	 avgDepth[j]= totalDepth[j]/occurrences[j];		  	 
 			}		
@@ -106,9 +96,14 @@ public class DepthASTNode {
 	        }
 	        else
 	        {
-	        	if(!functionIDs2.contains(firstWord)||(i==lines.length-1))
+	        	if(!functionIDs2.contains(firstWord))
 	        	{
 	        		int lineNumber = i-1;
+	        		ASTDepLines[functionIDs2.size()-1] = lineNumber;
+	        	}
+	        	if(i==lines.length-1)
+	        	{
+	        		int lineNumber = i;
 	        		ASTDepLines[functionIDs2.size()-1] = lineNumber;
 	        	}
 		    functionIDs2.add(firstWord);
