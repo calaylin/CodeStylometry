@@ -53,10 +53,22 @@ public class DepthASTNode {
 			  			 +StringUtils.countMatches(textAST, str4);	
 			  	 occurrences[j] = occurrences[j] + occurrencesHere;
 			  	 
+		         WholeWordIndexFinder finder = new WholeWordIndexFinder(textAST);
+		         List<IndexWrapper> indexes = finder.findIndexesForKeyword(str);
 			  	 for(int k=0; k<(int)occurrencesHere; k++)
 			  	 {
-			  		 
-			  		 
+			  	   int rightParanthesis =0;//(
+			  	   int leftParanthesis =0;//)
+
+			  	   for (Character c: textAST.substring(0,indexes.get(k).getStart()).toCharArray()) {
+			  	       if (c.equals('(')) {
+			  	    	 rightParanthesis++;
+			  	       }
+			  	     if (c.equals(')')) {
+			  	    	 leftParanthesis++;
+			  	       }
+			  	   }
+			  	 totalDepth[j]= totalDepth[j]+rightParanthesis-leftParanthesis;		  	   
 			  	 }
 			  	 
 			  	 if(occurrences[j]==0)
