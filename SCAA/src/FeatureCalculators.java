@@ -24,139 +24,7 @@ public class FeatureCalculators {
     public FeatureCalculators( ) {
     }
     
-    public static void preprocessDataToAPISymbols(String filePath) throws IOException, InterruptedException{
-    	//should take filename to test each time
-    	//just needs the name of the directory with the authors and their source files as an input
-    	//and outputs .txt files in source file's corresponding directory - has only APISymbols 
-   
-    	 Runtime dbTime = Runtime.getRuntime();
-    	 Runtime joernTime = Runtime.getRuntime();
-    	 Runtime scriptTime = Runtime.getRuntime();
-
-          Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-        		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
-           });
-           stopDB.waitFor();
-           BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
-           while(br.ready())
-               System.out.println(br.readLine());
-           
-           Process deleteIndex = dbTime.exec(new String[]{"/bin/sh", "-c","rm -r /Users/Aylin/git/joern/.joernIndex"});
-           deleteIndex.waitFor();
-
-           Process joernRun = joernTime.exec(new String[]{"/bin/sh", "-c", 
-        		   "cd /Users/Aylin/git/joern"+"\n"+ "java -jar /Users/Aylin/git/joern/bin/joern.jar " + filePath });
-           joernRun.waitFor();
-           BufferedReader br1 = new BufferedReader(new InputStreamReader(joernRun.getInputStream()));
-           while(br1.ready())
-               System.out.println(br1.readLine());
-
-           Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
-        		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
-           });
-           startDB.waitFor();
-           BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
-           while(br2.ready())
-               System.out.println(br2.readLine());
-        
-           
-   		Process runScript = scriptTime.exec(new String[]{"/bin/sh", "-c", 
-        		   "cd /Users/Aylin/git/joern-tools"+"\n"+ "python /Users/Aylin/git/joern-tools/template.py"
-           });
-           runScript.waitFor();
-           
-           
-           BufferedReader br3 = new BufferedReader(new InputStreamReader(runScript.getInputStream()));
-     //  	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/cgy4ever/cgy4ever_3_0.txt";
-           String output_filename = filePath.substring(0, filePath.length()-3).concat("txt");
-       	while(br3.ready())
-           { //   System.out.println(br3.readLine());
-           Util.writeFile(br3.readLine().toString() +"\n",output_filename, true);
-   		   }
-       	
-       	
-       	
-        stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-      		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
-         });
-         stopDB.waitFor();
-         BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
-         while(br4.ready())
-             System.out.println(br4.readLine());
-      
-    	
-    }
-    
-    public static void preprocessDataToASTFeatures(String filePath) throws IOException, InterruptedException, ScriptException{
-    	//should take filename to test each time
-    	//just needs the name of the directory with the authors and their source files as an input
-    	//and outputs .ast files in source file's corresponding directory - has AST information 
-   
-    	 Runtime dbTime = Runtime.getRuntime();
-    	 Runtime joernTime = Runtime.getRuntime();
-    	 Runtime scriptTime = Runtime.getRuntime();
-
-          Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-        		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
-           });
-           stopDB.waitFor();
-           BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
-           while(br.ready())
-               System.out.println(br.readLine());
-           
-           Process deleteIndex = dbTime.exec(new String[]{"/bin/sh", "-c","rm -r /Users/Aylin/git/joern/.joernIndex"});
-           deleteIndex.waitFor();
-
-           Process joernRun = joernTime.exec(new String[]{"/bin/sh", "-c", 
-        		   "cd /Users/Aylin/git/joern"+"\n"+ "java -jar /Users/Aylin/git/joern/bin/joern.jar " + filePath });
-           joernRun.waitFor();
-           BufferedReader br1 = new BufferedReader(new InputStreamReader(joernRun.getInputStream()));
-           while(br1.ready())
-               System.out.println(br1.readLine());
-
-           Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
-        		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
-           });
-           startDB.waitFor();
-           BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
-           while(br2.ready())
-               System.out.println(br2.readLine());
-
-           String output_filename = filePath.substring(0, filePath.length()-3).concat("dep");
-           String cmd1 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
-           		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
-           		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
-           		+ "python /Users/Aylin/git/joern-tools/astLabel.py |  "
-           		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
-           		+ output_filename;
-           
-           Process joernscripts = dbTime.exec((new String[]{"/bin/sh","-c", cmd1}));
-
-           joernscripts.waitFor();
-              BufferedReader br5 = new BufferedReader(new InputStreamReader(joernscripts.getInputStream()));
-              while(br5.ready())
-                  System.out.println(br5.readLine());
-             
-              BufferedReader br6 = new BufferedReader(new InputStreamReader(joernscripts.getErrorStream()));
-              while(br6.ready())
-                  System.out.println(br6.readLine());
-        
-        	    
-        stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-     		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
-        });
-        stopDB.waitFor();
-        BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
-        while(br4.ready())
-            System.out.println(br4.readLine());
-      
-    	
-    }
-    
-    
-    
-    
-	public static void main(String[] args) throws Exception, IOException, InterruptedException {
+    public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
     	
 //    String test_cpp_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/";	
@@ -632,27 +500,156 @@ public class FeatureCalculators {
    
    
 	  public static void wordsCount (String featureText) throws IOException 
-	   {
-		   
-		   String[] splitted = featureText.split(" ");
-		      HashMap hm = new HashMap();
-		      int x;
-		   
-		   for (int i = 0; i < splitted.length; i++) {
-	            if (!hm.containsKey(splitted[i])) {
-	                hm.put(splitted[i], 1);
-	            } else {
-	                hm.put(splitted[i], (Integer) hm.get(splitted[i]) + 1);
-	            }
-	        }
-		   
-		   for (Object word : hm.keySet()){
-	            System.out.println(word + " " + (Integer) hm.get(word));
-	        }
-		   
-		   
-			for(int i=0; i<50; i++)
-			{
-				
-			}}
+   {
+	   
+	   String[] splitted = featureText.split(" ");
+	      HashMap hm = new HashMap();
+	      int x;
+	   
+	   for (int i = 0; i < splitted.length; i++) {
+            if (!hm.containsKey(splitted[i])) {
+                hm.put(splitted[i], 1);
+            } else {
+                hm.put(splitted[i], (Integer) hm.get(splitted[i]) + 1);
+            }
+        }
+	   
+	   for (Object word : hm.keySet()){
+            System.out.println(word + " " + (Integer) hm.get(word));
+        }
+	   
+	   
+		for(int i=0; i<50; i++)
+		{
+			
+		}}
+
+	public static void preprocessDataToASTFeatures(String filePath) throws IOException, InterruptedException, ScriptException{
+		//should take filename to test each time
+		//just needs the name of the directory with the authors and their source files as an input
+		//and outputs .ast files in source file's corresponding directory - has AST information 
+	
+		 Runtime dbTime = Runtime.getRuntime();
+		 Runtime joernTime = Runtime.getRuntime();
+		 Runtime scriptTime = Runtime.getRuntime();
+	
+	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	       });
+	       stopDB.waitFor();
+	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+	       while(br.ready())
+	           System.out.println(br.readLine());
+	       
+	       Process deleteIndex = dbTime.exec(new String[]{"/bin/sh", "-c","rm -r /Users/Aylin/git/joern/.joernIndex"});
+	       deleteIndex.waitFor();
+	
+	       Process joernRun = joernTime.exec(new String[]{"/bin/sh", "-c", 
+	    		   "cd /Users/Aylin/git/joern"+"\n"+ "java -jar /Users/Aylin/git/joern/bin/joern.jar " + filePath });
+	       joernRun.waitFor();
+	       BufferedReader br1 = new BufferedReader(new InputStreamReader(joernRun.getInputStream()));
+	       while(br1.ready())
+	           System.out.println(br1.readLine());
+	
+	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
+	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	       });
+	       startDB.waitFor();
+	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
+	       while(br2.ready())
+	           System.out.println(br2.readLine());
+	
+	       String output_filename = filePath.substring(0, filePath.length()-3).concat("dep");
+	       String cmd1 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
+	       		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
+	       		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
+	       		+ "python /Users/Aylin/git/joern-tools/astLabel.py |  "
+	       		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
+	       		+ output_filename;
+	       
+	       Process joernscripts = dbTime.exec((new String[]{"/bin/sh","-c", cmd1}));
+	
+	       joernscripts.waitFor();
+	          BufferedReader br5 = new BufferedReader(new InputStreamReader(joernscripts.getInputStream()));
+	          while(br5.ready())
+	              System.out.println(br5.readLine());
+	         
+	          BufferedReader br6 = new BufferedReader(new InputStreamReader(joernscripts.getErrorStream()));
+	          while(br6.ready())
+	              System.out.println(br6.readLine());
+	    
+	    	    
+	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    });
+	    stopDB.waitFor();
+	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+	    while(br4.ready())
+	        System.out.println(br4.readLine());
+	
+		
+	}
+
+	public static void preprocessDataToAPISymbols(String filePath) throws IOException, InterruptedException{
+	//should take filename to test each time
+	//just needs the name of the directory with the authors and their source files as an input
+	//and outputs .txt files in source file's corresponding directory - has only APISymbols 
+
+	 Runtime dbTime = Runtime.getRuntime();
+	 Runtime joernTime = Runtime.getRuntime();
+	 Runtime scriptTime = Runtime.getRuntime();
+
+      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+       });
+       stopDB.waitFor();
+       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+       while(br.ready())
+           System.out.println(br.readLine());
+       
+       Process deleteIndex = dbTime.exec(new String[]{"/bin/sh", "-c","rm -r /Users/Aylin/git/joern/.joernIndex"});
+       deleteIndex.waitFor();
+
+       Process joernRun = joernTime.exec(new String[]{"/bin/sh", "-c", 
+    		   "cd /Users/Aylin/git/joern"+"\n"+ "java -jar /Users/Aylin/git/joern/bin/joern.jar " + filePath });
+       joernRun.waitFor();
+       BufferedReader br1 = new BufferedReader(new InputStreamReader(joernRun.getInputStream()));
+       while(br1.ready())
+           System.out.println(br1.readLine());
+
+       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
+    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+       });
+       startDB.waitFor();
+       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
+       while(br2.ready())
+           System.out.println(br2.readLine());
+    
+       
+	Process runScript = scriptTime.exec(new String[]{"/bin/sh", "-c", 
+    		   "cd /Users/Aylin/git/joern-tools"+"\n"+ "python /Users/Aylin/git/joern-tools/template.py"
+       });
+       runScript.waitFor();
+       
+       
+       BufferedReader br3 = new BufferedReader(new InputStreamReader(runScript.getInputStream()));
+ //  	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/cgy4ever/cgy4ever_3_0.txt";
+       String output_filename = filePath.substring(0, filePath.length()-3).concat("txt");
+   	while(br3.ready())
+       { //   System.out.println(br3.readLine());
+       Util.writeFile(br3.readLine().toString() +"\n",output_filename, true);
+	   }
+   	
+   	
+   	
+    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+  		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+     });
+     stopDB.waitFor();
+     BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+     while(br4.ready())
+         System.out.println(br4.readLine());
+
+	
+}
 }
