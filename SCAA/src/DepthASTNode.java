@@ -1,9 +1,13 @@
+import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -19,8 +23,56 @@ public class DepthASTNode {
     	
     	for(int i=0; i<lines.length; i++)
     		System.out.println(lines[i]);
+    	
+    	System.out.println(readLineNumber(featureText, 9));
     }
 	
+    
+	public static float[] getAvgDepthASTNode(String featureText, String[] ASTTypes) throws IOException
+	{
+		int [] lines = getASTDepLines(featureText);
+		float [] occurrences=new float[ASTTypes.length];
+		float [] totalDepth=new float[ASTTypes.length];;
+		float [] avgDepth=new float[ASTTypes.length];;
+
+		String textAST=null;
+		for (int i=0; i<lines.length; i++)
+		{
+			textAST = readLineNumber(featureText, lines[i]);
+			for (int j=0; j< ASTTypes.length; j++)
+			{
+			  	 String str = ASTTypes[j].toString();
+			  	 String str1 = "(" + str + ")";
+			  	 String str2 = "(" + str + "(";
+			  	 String str3 = ")" + str + ")";
+			  	 String str4 = ")" + str + "(";
+
+			  	 float occurrencesHere = StringUtils.countMatches(textAST, str1) 
+			  			 +StringUtils.countMatches(textAST, str2)
+			  			 +StringUtils.countMatches(textAST, str3)
+			  			 +StringUtils.countMatches(textAST, str4);	
+			  	 occurrences[j] = occurrences[j] + occurrencesHere;
+			  	 
+			  	 for(int k=0; k<(int)occurrencesHere; k++)
+			  	 {
+			  		 
+			  		 
+			  	 }
+			  	 
+			  	 if(occurrences[j]==0)
+			  		avgDepth[j]=-1;
+			  	 else if((occurrences[j]!=0)&&(totalDepth[j]==0))
+				  	avgDepth[j]=0;
+			  	 else
+			  	 avgDepth[j]= totalDepth[j]/occurrences[j];		  	 
+			}		
+		}
+		return avgDepth;
+	}
+
+    
+    
+    //line number starts from 0
 	public static int[] getASTDepLines(String featureText)
 	{		
 		HashSet<String> functionIDs = new HashSet<String>();
@@ -30,7 +82,6 @@ public class DepthASTNode {
 		String[] lines = featureText.split("\n");
 		for(int i=0; i< lines.length; i++)
 		{
-
 	        String firstWord = lines[i].substring(0, featureText.indexOf('\t'));
 	        if(!functionIDs.contains(firstWord))
 	        functionIDs.add(firstWord);
@@ -52,13 +103,17 @@ public class DepthASTNode {
 	        	}
 		    functionIDs2.add(firstWord);
 	        }
-
-		}       
-	
-	       return ASTDepLines;  
-       
-       
-       
-       
+		}       	
+	       return ASTDepLines;        
 	}
+    
+	
+	
+	//starts from 0
+    public static String readLineNumber (String featureText, int lineNumber) throws IOException
+    {
+    	List<String> lines = IOUtils.readLines(new StringReader(featureText));  	
+    	return lines.get(lineNumber);
+    }
+	
 }

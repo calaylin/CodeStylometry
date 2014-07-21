@@ -221,6 +221,7 @@ public class FeatureCalculators {
      for (int i =0; i<symbolCount; i++){
 //if case insensitive, make lowercase
 //   String str = APISymbols[i].toString().toLowerCase();
+//do they ever appear withuot the paranthesis?
   	 String str = ASTTypes[i].toString();
   	 String str1 = "(" + str + ")";
   	 String str2 = "(" + str + "(";
