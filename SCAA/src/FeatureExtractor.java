@@ -58,11 +58,11 @@ public class FeatureExtractor {
 */
     
     for (int i=0; i<DepASTTypes.length; i++)	
-    {	Util.writeFile("@attribute 'DepASTTypes["+DepASTTypes[i]+"]' numeric"+"\n", output_filename, true);}
+    {	Util.writeFile("@attribute 'DepASTTypes["+i+"]' numeric"+"\n", output_filename, true);}
     for (int i=0; i<DepASTTypes.length; i++)	
-  {	Util.writeFile("@attribute 'DepASTTypesTFIDF["+DepASTTypes[i]+"]' numeric"+"\n", output_filename, true);}
+  {	Util.writeFile("@attribute 'DepASTTypesTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
     for (int i=0; i<DepASTTypes.length; i++)	
-  {	Util.writeFile("@attribute 'AvgDep["+DepASTTypes[i]+"]' numeric"+"\n", output_filename, true);}
+  {	Util.writeFile("@attribute 'AvgDep["+i+"]' numeric"+"\n", output_filename, true);}
 	
 	//Writing the classes (authorname)
 	Util.writeFile("@attribute 'authorName' {",output_filename, true);
@@ -150,7 +150,7 @@ public class FeatureExtractor {
 		{Util.writeFile(typeCount[j] +",", output_filename, true);}	
 	    
 		//get tfidf of each AST Type present	 
-	    float[] DepastTypeTFIDF = FeatureCalculators.DepASTTypeTFIDF(featureText, test_dir, DepASTTypes);
+	    float[] DepastTypeTFIDF = FeatureCalculators.DepASTTypeTFIDF(DepASTText, test_dir, DepASTTypes);
 	    for (int j=0; j<DepASTTypes.length; j++)
 		{Util.writeFile(DepastTypeTFIDF[j]+",", output_filename, true);}	
 		
