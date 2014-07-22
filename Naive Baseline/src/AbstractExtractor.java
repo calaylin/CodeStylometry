@@ -22,7 +22,7 @@ public abstract class AbstractExtractor implements FeatureSet {
 	MultiSet<String> literals;
 	List<String> commentList;
 	CodeBlock<String> blocks;
-	final String code;
+	final String code; // source strippped of literals and comments
 	int length = 0;
 	int numWhiteSpaceChars = 0;
 	List<String> lines;

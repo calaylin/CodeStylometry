@@ -1,6 +1,5 @@
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public interface FeatureSet {
 
@@ -44,7 +43,7 @@ public interface FeatureSet {
 
 	public double whiteSpaceRatio();
 
-	public Set<Integer> numFunctionParams();
+	public Map<Integer, Integer> numFunctionParams();
 
 	public double avgParamsPerFunction();
 

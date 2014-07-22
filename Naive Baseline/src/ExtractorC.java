@@ -164,30 +164,31 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	public int numFunctions() {
-		// TODO
 		int count = 0;
 		for (String s : this.blocks.getPrototypesRecursively()) {
-			if (s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
-					|| s.matches("do [\\w\\W]*")
-					|| s.matches("struct[\\w\\W]*") || s.matches("if[\\w\\W]*")
-					|| s.matches("else[\\w\\W]*")
-					|| s.matches("switch[\\w\\W]*")
-					|| s.matches("enum[\\w\\W]*")
-					|| s.matches("typedef[\\w\\W]*")
-					|| s.matches("register[\\w\\W]*")
-					|| s.matches("union[\\w\\W]*")) { // need to double check
+			if (isFunction(s)) { // need to double check
 				count++;
 			}
 		}
 		return count;
 	}
+	
+	private static boolean isFunction(String s) {
+		return s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
+				|| s.matches("do [\\w\\W]*")
+				|| s.matches("struct[\\w\\W]*") || s.matches("if[\\w\\W]*")
+				|| s.matches("else[\\w\\W]*")
+				|| s.matches("switch[\\w\\W]*")
+				|| s.matches("enum[\\w\\W]*")
+				|| s.matches("typedef[\\w\\W]*")
+				|| s.matches("register[\\w\\W]*")
+				|| s.matches("union[\\w\\W]*");
+	}
 
 	@Override
 	public int numTokens() {
-		// tricky
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		return this.code.split(tokenDelimiter).length;
+	} // need to double check
 
 	@Override
 	public Map<String, Integer> getReservedWords() {
@@ -198,37 +199,58 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	public Map<Loops, Integer> getLoops() {
-		Map
+		MultiSet<Loops> myLoops = new MultiSet<>();
 		for (String s : this.blocks.getPrototypesRecursively()) {
-			if () {
-				do something
+			if (s.matches("do [\\w\\W]*")) {
+				myLoops.add(Loops.doWhileLoop);
+			} else if (s.matches("for [\\w\\W]*")) {
+				myLoops.add(Loops.forLoop);
+			} else if (s.matches("while [\\w\\W]*")) {
+				myLoops.add(Loops.whileLoop);
 			}
 		}
-		return something;
+		return myLoops;
 	}
 
 	@Override
 	public Map<ControlStatement, Integer> getControlStructures() {
-		Map
+		MultiSet<ControlStatement> myControls = new MultiSet<>();
 		for (String s : this.blocks.getPrototypesRecursively()) {
-			if () {
-				do something
+			if (s.matches("else if[\\w\\W]*")) {
+				myControls.add(ControlStatement.elifStatement);
+			} else if (s.matches("else [\\w\\W]*")) {
+				myControls.add(ControlStatement.elseStatement);
+			} else if (s.matches("if [\\w\\W]*")) {
+				myControls.add(ControlStatement.ifStatement);
+			} else if (s.matches("switch [\\w\\W]*")) {
+				myControls.add(ControlStatement.switchStatement);
 			}
 		}
-		return something;
+		return myControls; // ternaries?
 	}
 
 	@Override
-	public Set<Integer> numFunctionParams() {
-		// get functions, then count number of commas
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Integer, Integer> numFunctionParams() {
+		MultiSet<Integer> params = new MultiSet<>();
+		for (String s : this.blocks.getPrototypesRecursively()) {
+			if (!isFunction(s)) {
+				continue;
+			}
+			String[] s2 = s.split(",");
+			params.add(s2.length - 1);
+		}
+		return params;
 	}
 
 	@Override
 	public double avgParamsPerFunction() {
-		// TODO Auto-generated method stub
-		return 0;
+		Map<Integer, Integer> params = this.numFunctionParams();
+		Set<Integer> keys = params.keySet();
+		int totalParams = 0;
+		for (Integer key : keys) {
+			totalParams += key * params.get(key);
+		}
+		return totalParams / (double) this.numFunctions();
 	}
 
 	@Override
