@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,9 +9,19 @@ import java.util.Map;
 import java.util.Set;
 
 public class ExtractorC extends AbstractExtractor {
+	
+	private Set<String> reservedWords;
 
 	public ExtractorC(File program) throws IOException {
 		super(program);
+		this.prepareReservedWords();
+	}
+	
+	protected void prepareReservedWords() {
+		this.reservedWords = new HashSet<String>();
+		for (String s : ReservedC.reservedWords) {
+			this.reservedWords.add(s);
+		}
 	}
 
 	@Override
@@ -192,9 +203,26 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	public Map<String, Integer> getReservedWords() {
-		// make text file first
-		// TODO Auto-generated method stub
-		return null;
+		MultiSet<String> reservedWords = new MultiSet<>();
+		String[] tokens = this.code.split(tokenDelimiter);
+		for (String token : tokens) {
+			if (this.reservedWords.contains(token)) {
+				reservedWords.add(token);
+			}
+		}
+		return reservedWords;
+	}
+	
+	@Override
+	public Map<String, Integer> getUserDefinedWords() {
+		MultiSet<String> reservedWords = new MultiSet<>();
+		String[] tokens = this.code.split(tokenDelimiter);
+		for (String token : tokens) {
+			if (!this.reservedWords.contains(token)) {
+				reservedWords.add(token);
+			}
+		}
+		return reservedWords;
 	}
 
 	@Override

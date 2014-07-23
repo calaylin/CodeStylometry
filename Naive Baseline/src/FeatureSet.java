@@ -25,6 +25,8 @@ public interface FeatureSet {
 	public Map<String, Integer> getLiterals();
 
 	public Map<String, Integer> getReservedWords();
+	
+	public Map<String, Integer> getUserDefinedWords();
 
 	public Map<Loops, Integer> getLoops();
 
