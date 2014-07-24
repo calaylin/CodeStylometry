@@ -48,21 +48,22 @@ public class FeatureCalculators {
    //Get API symbols and their count in each txt file
 //   String[] APIsymbols = uniqueAPISymbols(test);
 	String dataDir= "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/";
+	String dataDir1= "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor";
     String[] ASTTypes = uniqueASTTypes(dataDir);
-    String[] DepASTTypes = uniqueDepASTTypes(dataDir);
+    String[] DepASTTypes = uniqueDepASTTypes(dataDir1);
 
 	String featureText = Util.readFile("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/for/simpleforlabels.dep");
 /*	for (int i=0; i<ASTTypes.length; i++)
     { System.out.println(ASTTypes[i]);}*/
 	for (int i=0; i<DepASTTypes.length; i++)
-    { System.out.println(DepASTTypes[i]);}
-//    int[] symCount = APISymbolCount(featureText, APIsymbols );
+    { System.out.println(i+": "+DepASTTypes[i]);}
+/*//    int[] symCount = APISymbolCount(featureText, APIsymbols );
     float[] symCount = DepASTTypeTFIDF(featureText, dataDir, DepASTTypes );
     float[] symCount1 = DepASTTypeTF(featureText, DepASTTypes );
 
     for (int i=0; i<DepASTTypes.length; i++)
     {    float idf = DepASTTypeIDF( dataDir, DepASTTypes[i].toString() );
-    	System.out.println("tfidf: "+symCount[i] + " tf: " +symCount1[i] + " idf: " + idf );}
+    	System.out.println("tfidf: "+symCount[i] + " tf: " +symCount1[i] + " idf: " + idf );}*/
     
     
     }

@@ -63,6 +63,8 @@ public class DepthASTNode {
 			  	 
 			  	 if(occurrences[j]==0)
 			  		avgDepth[j]=-1;
+			  	 else if (totalDepth[j]==0)
+			  		 avgDepth[j]=0;
 			  	 else
 			  	 avgDepth[j]= totalDepth[j]/occurrences[j];		  	 
 			}		
