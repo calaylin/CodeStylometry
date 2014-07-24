@@ -170,7 +170,7 @@ public class ExtractorC extends AbstractExtractor {
 	public boolean newLineBrace() {
 		// traverse thru lines list?
 		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class ExtractorC extends AbstractExtractor {
 		return count;
 	}
 	
-	private static boolean isFunction(String s) {
+	protected static boolean isFunction(String s) {
 		return s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
 				|| s.matches("do [\\w\\W]*")
 				|| s.matches("struct[\\w\\W]*") || s.matches("if[\\w\\W]*")
@@ -285,7 +285,7 @@ public class ExtractorC extends AbstractExtractor {
 	public Map<Integer, Integer> getVariableLocality() {
 		// check var in nary tree with its tree depth
 		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 }
