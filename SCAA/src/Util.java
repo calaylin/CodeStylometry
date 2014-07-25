@@ -257,7 +257,7 @@ public class Util {
 
         while (directories.isEmpty() == false)
         {
-            List<File> subDirectories = new ArrayList();
+            List<File> subDirectories = new ArrayList<File>();
 
             for(File f : directories)
             {
@@ -292,7 +292,7 @@ public class Util {
 
         while (directories.isEmpty() == false)
         {
-            List<File> subDirectories = new ArrayList();
+            List<File> subDirectories = new ArrayList<File>();
 
             for(File f : directories)
             {
@@ -326,7 +326,7 @@ public class Util {
 
         while (directories.isEmpty() == false)
         {
-            List<File> subDirectories = new ArrayList();
+            List<File> subDirectories = new ArrayList<File>();
 
             for(File f : directories)
             {
@@ -361,7 +361,7 @@ public class Util {
 
         while (directories.isEmpty() == false)
         {
-            List<File> subDirectories = new ArrayList();
+            List<File> subDirectories = new ArrayList<File>();
 
             for(File f : directories)
             {
