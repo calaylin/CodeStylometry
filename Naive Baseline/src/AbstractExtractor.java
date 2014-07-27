@@ -77,7 +77,6 @@ public abstract class AbstractExtractor implements FeatureSet {
 		/* separating the code by blocks */
 		this.blocks = new CodeBlock<String>(this.file.getName());
 		CodeBlock<String> currentBlock = blocks;
-
 		while (source.length() > 0) {
 			if (isPrototype(source)) {
 				// adding all statements into the previous block
@@ -186,7 +185,7 @@ public abstract class AbstractExtractor implements FeatureSet {
 	 * @param regex
 	 */
 	final void readBefore(StringBuffer source, StringBuffer sink, String regex) {
-		while (!source.substring(0, 1).matches(regex)) {
+		while (source.length() > 1 && !source.substring(0, 1).matches(regex)) {
 			this.extractChar(source, sink);
 		}
 	}

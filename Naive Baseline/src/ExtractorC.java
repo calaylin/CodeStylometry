@@ -9,14 +9,14 @@ import java.util.Map;
 import java.util.Set;
 
 public class ExtractorC extends AbstractExtractor {
-	
-	private Set<String> reservedWords;
+
+	protected Set<String> reservedWords;
 
 	public ExtractorC(File program) throws IOException {
 		super(program);
 		this.prepareReservedWords();
 	}
-	
+
 	protected void prepareReservedWords() {
 		this.reservedWords = new HashSet<String>();
 		for (String s : ReservedC.reservedWords) {
@@ -97,6 +97,9 @@ public class ExtractorC extends AbstractExtractor {
 	@Override
 	boolean isPrototype(StringBuffer source) {
 		String s = source.toString();
+		if (s.matches(".*\\{[\\w\\W]*") || s.matches(".*\\n\\{[\\w\\W]*")) {
+			return true;
+		}
 		if (s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
 				|| s.matches("do [\\w\\W]*") || s.matches("struct[\\w\\W]*")
 				|| s.matches("if[\\w\\W]*") || s.matches("else[\\w\\W]*")
@@ -112,7 +115,7 @@ public class ExtractorC extends AbstractExtractor {
 				|| s.matches("double[\\w\\W]*") || s.matches("enum[\\w\\W]*")
 				|| s.matches("typedef[\\w\\W]*")
 				|| s.matches("register[\\w\\W]*")
-				|| s.matches("union[\\w\\W]*")) {
+				|| s.matches("union[\\w\\W]*") || s.matches("void[\\w\\W]*")) {
 			int braceIndex = s.indexOf('{');
 			int semicolonIndex = s.indexOf(';');
 			if (braceIndex == -1) {
@@ -129,8 +132,24 @@ public class ExtractorC extends AbstractExtractor {
 	@Override
 	String extractPrototype(StringBuffer source) {
 		StringBuffer sink = new StringBuffer();
+
+		String s = source.toString();
+		if (s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
+				|| s.matches("do [\\w\\W]*") || s.matches("struct[\\w\\W]*")
+				|| s.matches("if[\\w\\W]*") || s.matches("else[\\w\\W]*")
+				|| s.matches("switch[\\w\\W]*")) {
+			int lineIndex = s.indexOf("\n");
+			int braceIndex = s.indexOf("{");
+			if (braceIndex == -1 || braceIndex < lineIndex
+					|| s.substring(lineIndex, braceIndex).matches("[\\s]*")) {
+				this.readBefore(source, sink, "\\n");
+				return sink.toString();
+			}
+		}
+
 		this.readUntil(source, sink, "\\{");
-		return sink.substring(0, sink.length() - 1); // we don't want to include
+		return sink.substring(0, sink.length() - 1); // we don't want to
+														// include
 														// the '{'
 	}
 
@@ -138,9 +157,9 @@ public class ExtractorC extends AbstractExtractor {
 	boolean isBlockEnd(StringBuffer source, StringBuffer sink) {
 		if (source.charAt(0) == '}') {
 			source.deleteCharAt(0); // get rid of the '}'
-			if (source.charAt(0) == ';') {
+			if (source.length() > 0 && source.charAt(0) == ';') {
 				source.deleteCharAt(0); // get rid of the ';' after the '}'
-			} else if (source.toString().matches("[\\s]*while")) {
+			} else if (source.length() > 0 && source.toString().matches("[\\s]*while")) {
 				// in case of a do-while
 				int semicolonIndex = source.indexOf(";");
 				this.extractMultipleChars(source, sink, semicolonIndex + 1);
@@ -183,17 +202,15 @@ public class ExtractorC extends AbstractExtractor {
 		}
 		return count;
 	}
-	
+
 	protected static boolean isFunction(String s) {
-		return s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
-				|| s.matches("do [\\w\\W]*")
-				|| s.matches("struct[\\w\\W]*") || s.matches("if[\\w\\W]*")
-				|| s.matches("else[\\w\\W]*")
-				|| s.matches("switch[\\w\\W]*")
-				|| s.matches("enum[\\w\\W]*")
+		return !(s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
+				|| s.matches("do [\\w\\W]*") || s.matches("struct[\\w\\W]*")
+				|| s.matches("if[\\w\\W]*") || s.matches("else[\\w\\W]*")
+				|| s.matches("switch[\\w\\W]*") || s.matches("enum[\\w\\W]*")
 				|| s.matches("typedef[\\w\\W]*")
-				|| s.matches("register[\\w\\W]*")
-				|| s.matches("union[\\w\\W]*");
+				|| s.matches("register[\\w\\W]*") || s
+					.matches("union[\\w\\W]*"));
 	}
 
 	@Override
@@ -212,7 +229,7 @@ public class ExtractorC extends AbstractExtractor {
 		}
 		return reservedWords;
 	}
-	
+
 	@Override
 	public Map<String, Integer> getUserDefinedWords() {
 		MultiSet<String> reservedWords = new MultiSet<>();
