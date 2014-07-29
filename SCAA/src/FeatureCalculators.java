@@ -525,6 +525,33 @@ public class FeatureCalculators {
 		{
 			
 		}}
+	  
+	  public static float [] getCPPKeywordsTF(String sourceCode)
+	  {
+		  //84 reserved cpp keywords + override and final
+		  String [] cppKeywords = {"alignas",	"alignof",	"and",	"and_eq",	"asm",	"auto",	
+				  "bitand",	"bitor",	"bool",	"break",	"case",	"catch",	"char",	"char16_t",	"char32_t",
+				  "class",	"compl",	"const",	"constexpr",	"const_cast",	"continue",	"decltype",	"default",	
+				  "delete",	"do",	"double",	"dynamic_cast",	"else",	"enum",	"explicit",	"export",	
+				  "extern",	"FALSE",	"float",	"for",	"friend",	"goto",	"if",	"inline",	"int",	"long",	
+				  "mutable",	"namespace",	"new",	"noexcept",	"not",	"not_eq",	"nullptr",	"operator",	"or",
+				  "or_eq"	,"private"	,"protected"	,"public"	,"register",	"reinterpret_cast",	"return",	
+				  "short",	"signed",	"sizeof",	"static",	"static_assert",	"static_cast",	"struct",	
+				  "switch",	"template",	"this"	,"thread_local",	"throw",	"TRUE",	"try",	"typedef",	"typeid",
+				  "typename",	"union",	"unsigned",	"using",	"virtual",	"void",	"volatile",	"wchar_t",	"while",
+				  "xor",	"xor_eq", "override", "final"};
+		  
+		     float symbolCount = cppKeywords.length;
+		     float [] counter = new float[(int) symbolCount];
+		     for (int i =0; i<symbolCount; i++){
+		  	 String str = cppKeywords[i].toString();
+		  	 counter[i] = StringUtils.countMatches(sourceCode, str);  	   
+
+		     }
+		     return counter;
+	  }
+	  
+	  
 
 	public static void preprocessDataToASTFeatures(String filePath) throws IOException, InterruptedException, ScriptException{
 		//should take filename to test each time

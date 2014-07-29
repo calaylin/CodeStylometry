@@ -16,7 +16,19 @@ import java.text.SimpleDateFormat;
 public class FeatureExtractor {
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 		
-			
+		  String [] cppKeywords = {"alignas",	"alignof",	"and",	"and_eq",	"asm",	"auto",	
+				  "bitand",	"bitor",	"bool",	"break",	"case",	"catch",	"char",	"char16_t",	"char32_t",
+				  "class",	"compl",	"const",	"constexpr",	"const_cast",	"continue",	"decltype",	"default",	
+				  "delete",	"do",	"double",	"dynamic_cast",	"else",	"enum",	"explicit",	"export",	
+				  "extern",	"FALSE",	"float",	"for",	"friend",	"goto",	"if",	"inline",	"int",	"long",	
+				  "mutable",	"namespace",	"new",	"noexcept",	"not",	"not_eq",	"nullptr",	"operator",	"or",
+				  "or_eq"	,"private"	,"protected"	,"public"	,"register",	"reinterpret_cast",	"return",	
+				  "short",	"signed",	"sizeof",	"static",	"static_assert",	"static_cast",	"struct",	
+				  "switch",	"template",	"this"	,"thread_local",	"throw",	"TRUE",	"try",	"typedef",	"typeid",
+				  "typename",	"union",	"unsigned",	"using",	"virtual",	"void",	"volatile",	"wchar_t",	"while",
+				  "xor",	"xor_eq", "override", "final"};
+		  
+		  
 		//Specifying the test arff filename
 		Calendar cal = Calendar.getInstance();
     	cal.getTime();
@@ -64,7 +76,9 @@ public class FeatureExtractor {
   {	Util.writeFile("@attribute 'ASTNodeTypesTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
     for (int i=0; i<ASTtypes.length; i++)	
   {	Util.writeFile("@attribute 'ASTNodeTypeAvgDep["+i+"]' numeric"+"\n", output_filename, true);}
-	
+    for (int i=0; i<cppKeywords.length; i++)	
+  {	Util.writeFile("@attribute 'cppKeyword["+i+"]' numeric"+"\n", output_filename, true);}
+
 	//Writing the classes (authorname)
 	Util.writeFile("@attribute 'authorName' {",output_filename, true);
 	for(int i=0; i< test_file_paths.size(); i++){
@@ -118,6 +132,7 @@ public class FeatureExtractor {
 		Util.writeFile(FeatureCalculators.functionIDCount(featureText)+",", output_filename, true);
 		String ASTText = Util.readFile(test_file_paths.get(i).toString().substring(0,testIDlength-3)+"ast");
 		String DepASTText = Util.readFile(test_file_paths.get(i).toString().substring(0,testIDlength-3)+"dep");
+		String sourceCode = Util.readFile(test_file_paths.get(i).toString().substring(0,testIDlength-3)+"cpp");
 
 		Util.writeFile(FeatureCalculators.CFGNodeCount(ASTText)+",", output_filename, true);
 		Util.writeFile(FeatureCalculators.ASTFunctionIDCount(ASTText)+",", output_filename, true);
@@ -159,6 +174,11 @@ public class FeatureExtractor {
     	for(int k=0;k<depFeature.length;k++)
 		{Util.writeFile(depFeature[k] +",", output_filename, true);}	
 	    
+    	float [] cppKeywordsTF =FeatureCalculators.getCPPKeywordsTF(sourceCode);
+    	for(int k=0;k<cppKeywordsTF.length;k++)
+		{Util.writeFile(cppKeywordsTF[k] +",", output_filename, true);}	
+    	
+    	
 		Util.writeFile(authorName+"\n", output_filename, true);
 
    	
