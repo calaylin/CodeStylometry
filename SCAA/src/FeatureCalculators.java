@@ -50,7 +50,7 @@ public class FeatureCalculators {
 	String dataDir= "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/";
 	String dataDir1= "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor";
     String[] ASTTypes = uniqueASTTypes(dataDir);
-    String[] DepASTTypes = uniqueDepASTTypes(dataDir1);
+    String[] DepASTTypes = uniqueASTTypes(dataDir1);
 
 	String featureText = Util.readFile("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/for/simpleforlabels.dep");
 /*	for (int i=0; i<ASTTypes.length; i++)
