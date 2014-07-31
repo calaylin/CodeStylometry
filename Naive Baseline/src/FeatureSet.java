@@ -41,6 +41,11 @@ public interface FeatureSet {
 	 */
 	public Map<ControlStatement, Integer> getControlStructures();
 
+	/**
+	 * Does not count leading and trailing empty lines
+	 * 
+	 * @return
+	 */
 	public int numEmptyLines();
 
 	public double whiteSpaceRatio();
@@ -50,6 +55,16 @@ public interface FeatureSet {
 	public double avgParamsPerFunction();
 
 	public Map<Integer, Integer> getVariableLocality();
+	
+	public Map<WhiteSpace, Integer> getWhiteSpace();
+	
+	public String instanceID();
+	
+//	public Map caseDistr();//////////////
+	
+	public int numMacros();
+	
+	public boolean tabsLeadLines();
 
 	// ++ vs += 1
 	// spaces vs tabs

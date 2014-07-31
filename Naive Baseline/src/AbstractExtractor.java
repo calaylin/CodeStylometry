@@ -226,9 +226,17 @@ public abstract class AbstractExtractor implements FeatureSet {
 	@Override
 	public int numEmptyLines() {
 		int count = 0;
+		int bufferCount = 0;
+		boolean leadingFlag = false;
 		for (String line : this.lines) {
 			if (line.matches("[\\s]*")) {
-				count++;
+				if (leadingFlag) {
+					bufferCount++;
+				}
+			} else {
+				count += bufferCount;
+				bufferCount = 0;
+				leadingFlag = true;
 			}
 		}
 		return count;
@@ -258,6 +266,25 @@ public abstract class AbstractExtractor implements FeatureSet {
 	@Override
 	public double whiteSpaceRatio() {
 		return this.length / (double) this.numWhiteSpaceChars;
+	}
+	
+	@Override
+	public boolean tabsLeadLines() {
+		int tabs = 0;
+		int spaces = 0;
+		for (String s : this.code.split("\\n")) {
+			if (s.matches("\\t.*")) {
+				tabs++;
+			} else if (s.matches(" .*")) {
+				spaces++;
+			}
+		}
+		return tabs >= spaces;
+	}
+	
+	@Override
+	public String instanceID() {
+		return this.file.getName();
 	}
 
 }

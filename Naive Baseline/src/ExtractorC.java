@@ -187,9 +187,16 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	public boolean newLineBrace() {
-		// traverse thru lines list?
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		int onLineBrace = 0;
+		int newLineBrace = 0;
+		for (String s : this.code.split("\\{")) {
+			if (s.charAt(s.length() - 1) == '\n') {
+				newLineBrace++;
+			} else {
+				onLineBrace++;
+			}
+		}
+		return newLineBrace >= onLineBrace;
 	}
 
 	@Override
@@ -271,7 +278,9 @@ public class ExtractorC extends AbstractExtractor {
 				myControls.add(ControlStatement.switchStatement);
 			}
 		}
-		return myControls; // ternaries?
+		// get ternaries by splitting via "?"
+		myControls.put(ControlStatement.ternaryOperator, this.code.split("?").length - 1);
+		return myControls;
 	}
 
 	@Override
@@ -303,6 +312,17 @@ public class ExtractorC extends AbstractExtractor {
 		// check var in nary tree with its tree depth
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public int numMacros() {
+		int count = 0;
+		for (String s : this.code.split("\\n")) {
+			if (s.matches("#define.*")) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 }
