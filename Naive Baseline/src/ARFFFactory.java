@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -41,11 +42,13 @@ public class ARFFFactory {
 
 	public static String getAuthorName(AbstractExtractor e) {
 		File f = e.getFile();
-		String s = f.getName();
-		s = s.replaceFirst("p[\\d]+\\.", "");
-		int i = s.lastIndexOf('.');
-		s = s.replaceAll(",", "");
-		return s.substring(0, i - 1);
+//		String s = f.getName();
+//		s = s.replaceFirst("p[\\d]+\\.", "");
+//		int i = s.lastIndexOf('.');
+//		s = s.replaceAll(",", "");
+//		return s.substring(0, i - 1);
+		String s = f.getParentFile().getName();
+		return s.substring(0, s.length() - 1);
 	}
 
 	public static void makeARFF(String rootDirectory, String targetPath) {
@@ -118,6 +121,20 @@ public class ARFFFactory {
 		}
 		allLines.add("}\n\n@data\n");
 		Util.writeFile(allLines, targetPath, false);
+	}
+	
+	public static double stdDev(Map<Integer, Integer> mappy) {
+		List<Integer> list = new LinkedList<Integer>();
+		for (Integer i : mappy.keySet()) {
+			for (int j = 0; j < mappy.get(i); j++) {
+				list.add(i);
+			}
+		}
+		return stdDev(list);
+	}
+	
+	public static double stdDev(List<Integer> list)  {
+		throw new UnsupportedOperationException();
 	}
 
 }

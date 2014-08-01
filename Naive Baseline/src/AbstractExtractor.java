@@ -286,5 +286,20 @@ public abstract class AbstractExtractor implements FeatureSet {
 	public String instanceID() {
 		return this.file.getName();
 	}
+	
+	@Override
+	public Map<WhiteSpace, Integer> getWhiteSpace() {
+		MultiSet<WhiteSpace> whitespace = new MultiSet<WhiteSpace>();
+		for (int i = 0; i < this.code.length(); i++) {
+			if (this.code.charAt(i) == '\n') {
+				whitespace.add(WhiteSpace.newLine);
+			} else if (this.code.charAt(i) == '\t') {
+				whitespace.add(WhiteSpace.tab);
+			} else if (this.code.charAt(i) == ' ') {
+				whitespace.add(WhiteSpace.space);
+			}
+		}
+		return whitespace;
+	}
 
 }

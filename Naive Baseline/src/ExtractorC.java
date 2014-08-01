@@ -318,7 +318,7 @@ public class ExtractorC extends AbstractExtractor {
 	public int numMacros() {
 		int count = 0;
 		for (String s : this.code.split("\\n")) {
-			if (s.matches("#define.*")) {
+			if (s.matches("#.*")) {
 				count++;
 			}
 		}
