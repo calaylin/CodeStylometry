@@ -19,11 +19,8 @@ public class ARFFFactory {
 		}
 		return x;
 	}
-
-	public static String getInstanceData(FeatureSet f, Set<String> authors) {
-
-		StringBuffer x = new StringBuffer();
-
+	
+	protected void appendAttributes(FeatureSet f, StringBuffer x) {
 		x.append(f.numFunctions() + ",");
 		x.append(f.length() + ",");
 		x.append(f.numTokens() + ",");
@@ -34,6 +31,14 @@ public class ARFFFactory {
 		x.append(f.numEmptyLines() + ",");
 		x.append(f.whiteSpaceRatio() + ",");
 		x.append(f.avgParamsPerFunction() + ",");
+	}
+
+	public String getInstanceData(FeatureSet f, Set<String> authors) {
+
+		StringBuffer x = new StringBuffer();
+		//
+		appendAttributes(f, x);
+		//
 		x.append(getAuthorName((AbstractExtractor) f) + "\n");
 		authors.add(getAuthorName((AbstractExtractor) f));
 		return x.toString();
@@ -51,7 +56,7 @@ public class ARFFFactory {
 		return s.substring(0, s.length() - 1);
 	}
 
-	public static void makeARFF(String rootDirectory, String targetPath) {
+	public void makeARFF(String rootDirectory, String targetPath) {
 		// recursively spider thru all c/cpp files and make into a list of files
 		// call method below
 		// throw new UnsupportedOperationException();
@@ -75,7 +80,7 @@ public class ARFFFactory {
 		makeARFF(programs, targetPath);
 	}
 
-	public static void makeARFF(List<File> files, String targetPath) {
+	public void makeARFF(List<File> files, String targetPath) {
 		Set<String> authors = new HashSet<>();
 		List<String> allLines = new LinkedList<String>();
 		// for each file in the list, get instance data
@@ -94,13 +99,8 @@ public class ARFFFactory {
 		System.out.println(authors.size() + " authors");
 		System.out.println(files.size() + " files");
 	}
-
-	public static void makeARFFHeader(String targetPath, Set<String> authors) {
-		// put @relation at top
-		// put all the @attribute lines
-		List<String> allLines = new LinkedList<String>();
-		allLines.add("@relation code_style\n\n");
-		// add all the @attributes
+	
+	protected void arffAttributes(List<String> allLines) {
 		allLines.add("@attribute numFunctions numeric\n");
 		allLines.add("@attribute length numeric\n");
 		allLines.add("@attribute numTokens numeric\n");
@@ -111,6 +111,16 @@ public class ARFFFactory {
 		allLines.add("@attribute numEmptyLines numeric\n");
 		allLines.add("@attribute whiteSpaceRatio numeric\n");
 		allLines.add("@attribute avgParams numeric\n");
+	}
+
+	public void makeARFFHeader(String targetPath, Set<String> authors) {
+		// put @relation at top
+		// put all the @attribute lines
+		List<String> allLines = new LinkedList<String>();
+		allLines.add("@relation code_style\n\n");
+		// add all the @attributes
+		arffAttributes(allLines);
+		//
 		allLines.add("@attribute author {");
 		Iterator<String> author = authors.iterator();
 		while (author.hasNext()) {
@@ -133,8 +143,19 @@ public class ARFFFactory {
 		return stdDev(list);
 	}
 	
+	public static double variance(List<Integer> list)  {
+		int sum1 = 0; // E(x^2)
+		int sum2 = 0; // E(x)
+		double size = list.size();
+		for (Integer i : list) {
+			sum1 += i * i;
+			sum2 += i;
+		}
+		return (sum1 / size) - (sum2 / size) * (sum2 / size);
+	}
+	
 	public static double stdDev(List<Integer> list)  {
-		throw new UnsupportedOperationException();
+		return Math.sqrt(variance(list));
 	}
 
 }

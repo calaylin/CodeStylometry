@@ -290,6 +290,9 @@ public abstract class AbstractExtractor implements FeatureSet {
 	@Override
 	public Map<WhiteSpace, Integer> getWhiteSpace() {
 		MultiSet<WhiteSpace> whitespace = new MultiSet<WhiteSpace>();
+		whitespace.put(WhiteSpace.newLine, 0);
+		whitespace.put(WhiteSpace.tab, 0);
+		whitespace.put(WhiteSpace.space, 0);
 		for (int i = 0; i < this.code.length(); i++) {
 			if (this.code.charAt(i) == '\n') {
 				whitespace.add(WhiteSpace.newLine);

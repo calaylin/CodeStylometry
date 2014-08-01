@@ -252,6 +252,9 @@ public class ExtractorC extends AbstractExtractor {
 	@Override
 	public Map<Loops, Integer> getLoops() {
 		MultiSet<Loops> myLoops = new MultiSet<>();
+		myLoops.put(Loops.doWhileLoop, 0);
+		myLoops.put(Loops.forLoop, 0);
+		myLoops.put(Loops.whileLoop, 0);
 		for (String s : this.blocks.getPrototypesRecursively()) {
 			if (s.matches("do [\\w\\W]*")) {
 				myLoops.add(Loops.doWhileLoop);
@@ -267,6 +270,11 @@ public class ExtractorC extends AbstractExtractor {
 	@Override
 	public Map<ControlStatement, Integer> getControlStructures() {
 		MultiSet<ControlStatement> myControls = new MultiSet<>();
+		myControls.put(ControlStatement.elifStatement, 0);
+		myControls.put(ControlStatement.elseStatement, 0);
+		myControls.put(ControlStatement.ifStatement, 0);
+		myControls.put(ControlStatement.switchStatement, 0);
+		myControls.put(ControlStatement.ternaryOperator, 0);
 		for (String s : this.blocks.getPrototypesRecursively()) {
 			if (s.matches("else if[\\w\\W]*")) {
 				myControls.add(ControlStatement.elifStatement);
@@ -279,7 +287,7 @@ public class ExtractorC extends AbstractExtractor {
 			}
 		}
 		// get ternaries by splitting via "?"
-		myControls.put(ControlStatement.ternaryOperator, this.code.split("?").length - 1);
+		myControls.put(ControlStatement.ternaryOperator, this.code.split("\\?").length - 1);
 		return myControls;
 	}
 
