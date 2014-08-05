@@ -27,53 +27,37 @@ public class AppendArffFiles {
     public static void main(String[] args) throws Exception{
     	
     	String word = "@data";
-    	String file1 = "/Users/Aylin/Desktop/new_may/test_5.7_same25000_CONCENTRATE_APPEND.arff";
-    	String file2 = "/Users/Aylin/Desktop/new_may/samenumber_append.arff";
-		InputStream    fis;
-		BufferedReader br;
-		String         line;
+    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/173InstanceIDfs8CodeJam8.4_12_09_33.arff";
+    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/AndrewInstanceIDoutput4.arff";
+    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/merged4fs8.arff";
+
     	int atDataLineNumberFile1 = AppendArffFiles.grepLineNumber(file1, word);
     	int atDataLineNumberFile2 = AppendArffFiles.grepLineNumber(file2, word);
-
-
-//    	System.out.println(AppendArffFiles.readSpecificLineNumber(file1, atDataLineNumberFile1));
-//    	System.out.println(AppendArffFiles.readSpecificLineNumber(file2, atDataLineNumberFile2));
     	
-    	int numberOfInstances = 84;
-    	
+    	int numberOfInstances = 1038; //173 authors, each with 6 files
+		int file2LineNumberStart=atDataLineNumberFile2+numberOfInstances;
+		
     	for(int i = atDataLineNumberFile1+1; i <= atDataLineNumberFile1 + numberOfInstances; i++)
     	{
-    		int file2LineNumber=1;
-
-    	//	System.out.println(AppendArffFiles.getInstanceID(file1, i));
-    		fis = new FileInputStream(file2);
-    		br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-    		while ((line = br.readLine()) != null) {
-        		if (AppendArffFiles.getInstanceID(file1, i).equals(AppendArffFiles.getInstanceID(file2, file2LineNumber)))
+    		//make this ascending in general cases
+        	for(int j=file2LineNumberStart; j >= atDataLineNumberFile2 + 1; j--)
+        	{
+        		if (AppendArffFiles.getInstanceID(file1, i).equals(AppendArffFiles.getInstanceID(file2, j)))
         				{
-        		String firstPart = getInstance(file1, i);
-        		String secondPart = getInstanceVector(file2, file2LineNumber);
-        		System.out.println(firstPart);
-        			Util.writeFile( firstPart+ "," +secondPart + "\n", "/Users/Aylin/Desktop/new_may/samenumber_complete.txt", true);
+        					String firstPart = getInstance(file1, i);
+        					String secondPart = getInstanceVector(file2, j);
+        					System.out.println(firstPart);
+        					Util.writeFile( firstPart+ "," +secondPart + "\n", outputArffName, true);
+        					//just for andrew's file to save time, if random or, this needs to be fixed
+        					file2LineNumberStart=j; //remove this line in general cases
+        					j= atDataLineNumberFile2 + 1;
 
-        				}
-        				
-        				
-    		file2LineNumber++;
+        				}      				
     		}
 
-    		// Done with the file
-    		br.close();
-    		br = null;
-    		fis = null;    			
-    		
-    	}
-    	
+    	}     	
 
     }
-    
-    
-    
     public static String getInstanceID(String file, int lineNumber) throws IOException
     {
     	//will give an error if there is onl
@@ -98,7 +82,7 @@ public class AppendArffFiles {
     	
     	String line = AppendArffFiles.readSpecificLineNumber(file, lineNumber);
     	String arr[] = line.split(",", 2);
-    	String firstWord = arr[0];
+    //	String firstWord = arr[0];
     	String theRest = arr[1];
        	return theRest;
     }
