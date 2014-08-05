@@ -1,10 +1,18 @@
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 public class ARFFFactory2 extends ARFFFactory {
 	
+	protected Set<String> instanceIDs = new HashSet<>();
+	
 	@Override
 	protected void appendAttributes(FeatureSet f, StringBuffer x) {
+		x.append(((AbstractExtractor) f).getFile().getName() + ",");
+		instanceIDs.add(((AbstractExtractor) f).getFile().getName());
+		
 		x.append(f.numFunctions() + ",");
 		x.append(f.length() + ",");
 		x.append(f.numTokens() + ",");
@@ -30,10 +38,21 @@ public class ARFFFactory2 extends ARFFFactory {
 		x.append(f.getLoops().get(Loops.forLoop) + ",");
 		x.append(f.getLoops().get(Loops.whileLoop) + ",");
 		x.append(f.getLoops().get(Loops.doWhileLoop) + ",");
+		x.append(("" + f.newLineBrace()).toUpperCase() + ",");
 	}
 	
 	@Override
 	protected void arffAttributes(List<String> allLines) {
+		allLines.add("@attribute instanceID {");
+		Iterator<String> id = instanceIDs.iterator();
+		while (id.hasNext()) {
+			allLines.add(id.next());
+			if (id.hasNext()) {
+				allLines.add(",");
+			}
+		}
+		allLines.add("}\n");
+		
 		allLines.add("@attribute numFunctions numeric\n");
 		allLines.add("@attribute length numeric\n");
 		allLines.add("@attribute numTokens numeric\n");
@@ -59,7 +78,7 @@ public class ARFFFactory2 extends ARFFFactory {
 		allLines.add("@attribute numFor numeric\n");
 		allLines.add("@attribute numWhile numeric\n");
 		allLines.add("@attribute numDo numeric\n");
-		// TODO add instanceID
+		allLines.add("@attribute newLineBeforeOpeningBrace {TRUE, FALSE}\n");		
 	}
 }
 
