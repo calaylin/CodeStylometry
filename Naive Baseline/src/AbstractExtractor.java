@@ -22,7 +22,7 @@ public abstract class AbstractExtractor implements FeatureSet {
 	MultiSet<String> literals;
 	List<String> commentList;
 	CodeBlock<String> blocks;
-	final String code;
+	final String code; // source strippped of literals and comments
 	int length = 0;
 	int numWhiteSpaceChars = 0;
 	List<String> lines;
@@ -77,7 +77,6 @@ public abstract class AbstractExtractor implements FeatureSet {
 		/* separating the code by blocks */
 		this.blocks = new CodeBlock<String>(this.file.getName());
 		CodeBlock<String> currentBlock = blocks;
-
 		while (source.length() > 0) {
 			if (isPrototype(source)) {
 				// adding all statements into the previous block
@@ -186,7 +185,7 @@ public abstract class AbstractExtractor implements FeatureSet {
 	 * @param regex
 	 */
 	final void readBefore(StringBuffer source, StringBuffer sink, String regex) {
-		while (!source.substring(0, 1).matches(regex)) {
+		while (source.length() > 1 && !source.substring(0, 1).matches(regex)) {
 			this.extractChar(source, sink);
 		}
 	}
@@ -227,9 +226,17 @@ public abstract class AbstractExtractor implements FeatureSet {
 	@Override
 	public int numEmptyLines() {
 		int count = 0;
+		int bufferCount = 0;
+		boolean leadingFlag = false;
 		for (String line : this.lines) {
 			if (line.matches("[\\s]*")) {
-				count++;
+				if (leadingFlag) {
+					bufferCount++;
+				}
+			} else {
+				count += bufferCount;
+				bufferCount = 0;
+				leadingFlag = true;
 			}
 		}
 		return count;
@@ -259,6 +266,43 @@ public abstract class AbstractExtractor implements FeatureSet {
 	@Override
 	public double whiteSpaceRatio() {
 		return this.length / (double) this.numWhiteSpaceChars;
+	}
+	
+	@Override
+	public boolean tabsLeadLines() {
+		int tabs = 0;
+		int spaces = 0;
+		for (String s : this.code.split("\\n")) {
+			if (s.matches("\\t.*")) {
+				tabs++;
+			} else if (s.matches(" .*")) {
+				spaces++;
+			}
+		}
+		return tabs >= spaces;
+	}
+	
+	@Override
+	public String instanceID() {
+		return this.file.getName();
+	}
+	
+	@Override
+	public Map<WhiteSpace, Integer> getWhiteSpace() {
+		MultiSet<WhiteSpace> whitespace = new MultiSet<WhiteSpace>();
+		whitespace.put(WhiteSpace.newLine, 0);
+		whitespace.put(WhiteSpace.tab, 0);
+		whitespace.put(WhiteSpace.space, 0);
+		for (int i = 0; i < this.code.length(); i++) {
+			if (this.code.charAt(i) == '\n') {
+				whitespace.add(WhiteSpace.newLine);
+			} else if (this.code.charAt(i) == '\t') {
+				whitespace.add(WhiteSpace.tab);
+			} else if (this.code.charAt(i) == ' ') {
+				whitespace.add(WhiteSpace.space);
+			}
+		}
+		return whitespace;
 	}
 
 }

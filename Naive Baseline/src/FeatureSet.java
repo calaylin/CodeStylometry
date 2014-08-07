@@ -1,6 +1,5 @@
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public interface FeatureSet {
 
@@ -26,6 +25,8 @@ public interface FeatureSet {
 	public Map<String, Integer> getLiterals();
 
 	public Map<String, Integer> getReservedWords();
+	
+	public Map<String, Integer> getUserDefinedWords();
 
 	public Map<Loops, Integer> getLoops();
 
@@ -40,15 +41,30 @@ public interface FeatureSet {
 	 */
 	public Map<ControlStatement, Integer> getControlStructures();
 
+	/**
+	 * Does not count leading and trailing empty lines
+	 * 
+	 * @return
+	 */
 	public int numEmptyLines();
 
 	public double whiteSpaceRatio();
 
-	public Set<Integer> numFunctionParams();
+	public Map<Integer, Integer> numFunctionParams();
 
 	public double avgParamsPerFunction();
 
 	public Map<Integer, Integer> getVariableLocality();
+	
+	public Map<WhiteSpace, Integer> getWhiteSpace();
+	
+	public String instanceID();
+	
+//	public Map caseDistr();//////////////
+	
+	public int numMacros();
+	
+	public boolean tabsLeadLines();
 
 	// ++ vs += 1
 	// spaces vs tabs

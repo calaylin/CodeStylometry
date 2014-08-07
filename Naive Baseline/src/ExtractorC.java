@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,8 +10,18 @@ import java.util.Set;
 
 public class ExtractorC extends AbstractExtractor {
 
+	protected Set<String> reservedWords;
+
 	public ExtractorC(File program) throws IOException {
 		super(program);
+		this.prepareReservedWords();
+	}
+
+	protected void prepareReservedWords() {
+		this.reservedWords = new HashSet<String>();
+		for (String s : ReservedC.reservedWords) {
+			this.reservedWords.add(s);
+		}
 	}
 
 	@Override
@@ -86,6 +97,9 @@ public class ExtractorC extends AbstractExtractor {
 	@Override
 	boolean isPrototype(StringBuffer source) {
 		String s = source.toString();
+		if (s.matches(".*\\{[\\w\\W]*") || s.matches(".*\\n\\{[\\w\\W]*")) {
+			return true;
+		}
 		if (s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
 				|| s.matches("do [\\w\\W]*") || s.matches("struct[\\w\\W]*")
 				|| s.matches("if[\\w\\W]*") || s.matches("else[\\w\\W]*")
@@ -101,7 +115,7 @@ public class ExtractorC extends AbstractExtractor {
 				|| s.matches("double[\\w\\W]*") || s.matches("enum[\\w\\W]*")
 				|| s.matches("typedef[\\w\\W]*")
 				|| s.matches("register[\\w\\W]*")
-				|| s.matches("union[\\w\\W]*")) {
+				|| s.matches("union[\\w\\W]*") || s.matches("void[\\w\\W]*")) {
 			int braceIndex = s.indexOf('{');
 			int semicolonIndex = s.indexOf(';');
 			if (braceIndex == -1) {
@@ -118,8 +132,24 @@ public class ExtractorC extends AbstractExtractor {
 	@Override
 	String extractPrototype(StringBuffer source) {
 		StringBuffer sink = new StringBuffer();
+
+		String s = source.toString();
+		if (s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
+				|| s.matches("do [\\w\\W]*") || s.matches("struct[\\w\\W]*")
+				|| s.matches("if[\\w\\W]*") || s.matches("else[\\w\\W]*")
+				|| s.matches("switch[\\w\\W]*")) {
+			int lineIndex = s.indexOf("\n");
+			int braceIndex = s.indexOf("{");
+			if (braceIndex == -1 || braceIndex < lineIndex
+					|| s.substring(lineIndex, braceIndex).matches("[\\s]*")) {
+				this.readBefore(source, sink, "\\n");
+				return sink.toString();
+			}
+		}
+
 		this.readUntil(source, sink, "\\{");
-		return sink.substring(0, sink.length() - 1); // we don't want to include
+		return sink.substring(0, sink.length() - 1); // we don't want to
+														// include
 														// the '{'
 	}
 
@@ -127,9 +157,9 @@ public class ExtractorC extends AbstractExtractor {
 	boolean isBlockEnd(StringBuffer source, StringBuffer sink) {
 		if (source.charAt(0) == '}') {
 			source.deleteCharAt(0); // get rid of the '}'
-			if (source.charAt(0) == ';') {
+			if (source.length() > 0 && source.charAt(0) == ';') {
 				source.deleteCharAt(0); // get rid of the ';' after the '}'
-			} else if (source.toString().matches("[\\s]*while")) {
+			} else if (source.length() > 0 && source.toString().matches("[\\s]*while")) {
 				// in case of a do-while
 				int semicolonIndex = source.indexOf(";");
 				this.extractMultipleChars(source, sink, semicolonIndex + 1);
@@ -157,64 +187,150 @@ public class ExtractorC extends AbstractExtractor {
 
 	@Override
 	public boolean newLineBrace() {
-		// traverse thru lines list?
-		// TODO Auto-generated method stub
-		return false;
+		int onLineBrace = 0;
+		int newLineBrace = 0;
+		for (String s : this.code.split("\\{")) {
+			if (s.charAt(s.length() - 1) == '\n') {
+				newLineBrace++;
+			} else {
+				onLineBrace++;
+			}
+		}
+		return newLineBrace >= onLineBrace;
 	}
 
 	@Override
 	public int numFunctions() {
-		// traverse thru nary tree
-		// TODO Auto-generated method stub
-		return 0;
+		int count = 0;
+		for (String s : this.blocks.getPrototypesRecursively()) {
+			if (isFunction(s)) { // need to double check
+				count++;
+			}
+		}
+		return count;
+	}
+
+	protected static boolean isFunction(String s) {
+		return !(s.matches("for[\\w\\W]*") || s.matches("while[\\w\\W]*")
+				|| s.matches("do [\\w\\W]*") || s.matches("struct[\\w\\W]*")
+				|| s.matches("if[\\w\\W]*") || s.matches("else[\\w\\W]*")
+				|| s.matches("switch[\\w\\W]*") || s.matches("enum[\\w\\W]*")
+				|| s.matches("typedef[\\w\\W]*")
+				|| s.matches("register[\\w\\W]*") || s
+					.matches("union[\\w\\W]*"));
 	}
 
 	@Override
 	public int numTokens() {
-		// tricky
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		return this.code.split(tokenDelimiter).length;
+	} // need to double check
 
 	@Override
 	public Map<String, Integer> getReservedWords() {
-		// make text file first
-		// TODO Auto-generated method stub
-		return null;
+		MultiSet<String> reservedWords = new MultiSet<>();
+		String[] tokens = this.code.split(tokenDelimiter);
+		for (String token : tokens) {
+			if (this.reservedWords.contains(token)) {
+				reservedWords.add(token);
+			}
+		}
+		return reservedWords;
+	}
+
+	@Override
+	public Map<String, Integer> getUserDefinedWords() {
+		MultiSet<String> reservedWords = new MultiSet<>();
+		String[] tokens = this.code.split(tokenDelimiter);
+		for (String token : tokens) {
+			if (!this.reservedWords.contains(token)) {
+				reservedWords.add(token);
+			}
+		}
+		return reservedWords;
 	}
 
 	@Override
 	public Map<Loops, Integer> getLoops() {
-		// traverse thru nary tree
-		// TODO Auto-generated method stub
-		return null;
+		MultiSet<Loops> myLoops = new MultiSet<>();
+		myLoops.put(Loops.doWhileLoop, 0);
+		myLoops.put(Loops.forLoop, 0);
+		myLoops.put(Loops.whileLoop, 0);
+		for (String s : this.blocks.getPrototypesRecursively()) {
+			if (s.matches("do [\\w\\W]*")) {
+				myLoops.add(Loops.doWhileLoop);
+			} else if (s.matches("for [\\w\\W]*")) {
+				myLoops.add(Loops.forLoop);
+			} else if (s.matches("while [\\w\\W]*")) {
+				myLoops.add(Loops.whileLoop);
+			}
+		}
+		return myLoops;
 	}
 
 	@Override
 	public Map<ControlStatement, Integer> getControlStructures() {
-		// traverse thru nary tree
-		// TODO Auto-generated method stub
-		return null;
+		MultiSet<ControlStatement> myControls = new MultiSet<>();
+		myControls.put(ControlStatement.elifStatement, 0);
+		myControls.put(ControlStatement.elseStatement, 0);
+		myControls.put(ControlStatement.ifStatement, 0);
+		myControls.put(ControlStatement.switchStatement, 0);
+		myControls.put(ControlStatement.ternaryOperator, 0);
+		for (String s : this.blocks.getPrototypesRecursively()) {
+			if (s.matches("else if[\\w\\W]*")) {
+				myControls.add(ControlStatement.elifStatement);
+			} else if (s.matches("else [\\w\\W]*")) {
+				myControls.add(ControlStatement.elseStatement);
+			} else if (s.matches("if [\\w\\W]*")) {
+				myControls.add(ControlStatement.ifStatement);
+			} else if (s.matches("switch [\\w\\W]*")) {
+				myControls.add(ControlStatement.switchStatement);
+			}
+		}
+		// get ternaries by splitting via "?"
+		myControls.put(ControlStatement.ternaryOperator, this.code.split("\\?").length - 1);
+		return myControls;
 	}
 
 	@Override
-	public Set<Integer> numFunctionParams() {
-		// get functions, then count number of commas
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Integer, Integer> numFunctionParams() {
+		MultiSet<Integer> params = new MultiSet<>();
+		for (String s : this.blocks.getPrototypesRecursively()) {
+			if (!isFunction(s)) {
+				continue;
+			}
+			String[] s2 = s.split(",");
+			params.add(s2.length - 1);
+		}
+		return params;
 	}
 
 	@Override
 	public double avgParamsPerFunction() {
-		// TODO Auto-generated method stub
-		return 0;
+		Map<Integer, Integer> params = this.numFunctionParams();
+		Set<Integer> keys = params.keySet();
+		int totalParams = 0;
+		for (Integer key : keys) {
+			totalParams += key * params.get(key);
+		}
+		return totalParams / (double) this.numFunctions();
 	}
 
 	@Override
 	public Map<Integer, Integer> getVariableLocality() {
 		// check var in nary tree with its tree depth
 		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public int numMacros() {
+		int count = 0;
+		for (String s : this.code.split("\\n")) {
+			if (s.matches("#.*")) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 }
