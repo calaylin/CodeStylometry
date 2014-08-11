@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -7,7 +9,79 @@ import java.util.List;
 
 public class DatasetCreator 
 {
-	
+	public static void organizeByCountry(String parentDir, String outputFolderName, int year) throws IOException
+	{
+		 File file = new File(parentDir);
+		   String[] directories = file.list(new FilenameFilter() 
+		   {
+		     @Override
+		     public boolean accept(File current, String name) 
+		     {
+		       return new File(current, name).isDirectory();
+		     }
+		   });
+		   System.out.println(Arrays.toString(directories));
+		   
+		   String contestantInfo = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/CodeJamStatDBs/contestants"+ year +".csv" ;
+		
+		   
+		   for (int i =0; i< directories.length; i++)
+		   {
+			   //authorname is directoryname - 1 because Andrew put an extra 0 at the end of the authorname
+			   String authorName = directories[i].toString().substring(0, directories[i].toString().length()-1); 
+			   String authorDir = parentDir + directories[i] + "/";
+			   System.out.println(authorName);
+			   System.out.println(authorDir);
+
+			   BufferedReader br = null;
+				String line = "";
+				String cvsSplitBy = ",";
+				String country= null;
+					br = new BufferedReader(new FileReader(contestantInfo));
+					while ((line = br.readLine()) != null) 
+					{
+						String[] info = line.split(cvsSplitBy);
+						if(info[0].equals(authorName) )
+						{
+							System.out.println(info[0]+info[1]);
+
+							 country = info[1].toString();
+							 //copy authors folder to a folder named as the country
+							 
+							 
+							  File srcFolder = new File(authorDir);
+						    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
+							   +outputFolderName) ;
+						      	File destFolder = new File(destFolderParent +"/"+ country) ;
+						    	if(!destFolder.exists())
+						    	{
+									///System.out.println(file.getAbsolutePath());
+						    		destFolder.mkdirs();
+								}
+						    	//make sure source exists
+						    	if(!srcFolder.exists())
+						    	{
+						           System.out.println("Directory does not exist.");
+						           //just exit
+						           System.exit(0);
+						        }else
+						        {
+						 
+						           try
+						           {
+						        	Util.copyFolder(srcFolder,destFolder);
+						           }catch(IOException e)
+						           {
+						        	e.printStackTrace();
+						        	//error, just exit
+						                System.exit(0);
+						           } 
+						        }		 
+					}
+				}
+		   }		   
+	}
+
 	public static void mergeSameAuthors(String parentDir, String outputFolderName)
 	{
 		  File file = new File(parentDir);
@@ -144,16 +218,18 @@ public class DatasetCreator
 
 		public static void main(String[] args) throws Exception, IOException, InterruptedException 
 		{
-		String test_cpp_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/includingquals/OtherCPPCode/2014/";	
+		String test_cpp_dir = "test_cpp_dir";	
 		int fileCount = 6;
 //		copyAuthorsWithExactFileNumber(test_cpp_dir, fileCount);
-		String parentDir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/includingquals/OtherCPPCode/";	
+		String parentDir = "parentDir";	
 		String outputFolderName ="mergedAuthors";
 	//	mergeSameAuthors(parentDir, outputFolderName);
 		
-		String allYearsMergedAuthors="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/mergedAuthors/";
-		copyAuthorsWithExactFileNumber(allYearsMergedAuthors, 5);
-
+		String allYearsMergedAuthors="inputfolder";
+//		copyAuthorsWithExactFileNumber(allYearsMergedAuthors, 5);
+		
+		String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor/";
+		organizeByCountry(folder, "byCountry2014", 2014);
 
 	
 		}
