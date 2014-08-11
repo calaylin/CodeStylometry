@@ -152,7 +152,7 @@ public class DatasetCreator
 	//	mergeSameAuthors(parentDir, outputFolderName);
 		
 		String allYearsMergedAuthors="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/mergedAuthors/";
-		copyAuthorsWithExactFileNumber(allYearsMergedAuthors, 9);
+		copyAuthorsWithExactFileNumber(allYearsMergedAuthors, 5);
 
 
 	

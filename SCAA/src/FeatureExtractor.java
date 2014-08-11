@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
@@ -49,16 +50,28 @@ public class FeatureExtractor {
   	//Writing the test arff
   	//first specify relation
 	Util.writeFile("@relation CodeJamBoW"+"\n"+"\n", output_filename, true);
+	Util.writeFile("@attribute instanceID {", output_filename, true);
+   	List test_cpp_paths = Util.listCPPFiles(test_dir);
+   	for(int j=0; j < test_cpp_paths.size();j++ )
+	{
+		File fileCPP = new File(test_cpp_paths.get(j).toString());
+		String fileName = fileCPP.getName();
+		Util.writeFile(fileName+",", output_filename, true);
+		if ((j+1)==test_cpp_paths.size())
+			Util.writeFile(fileName+"}"+"\n", output_filename, true);
+	}
+
 	Util.writeFile("@attribute 'functionIDCount' numeric"+"\n", output_filename, true);
 	Util.writeFile("@attribute 'CFGNodeCount' numeric"+"\n", output_filename, true);
 	Util.writeFile("@attribute 'ASTFunctionIDCount' numeric"+"\n", output_filename, true);
-	Util.writeFile("@attribute 'AverageASTDepth' numeric"+"\n", output_filename, true);
+//	Util.writeFile("@attribute 'AverageASTDepth' numeric"+"\n", output_filename, true);
 
 	
     String[] APIsymbols = FeatureCalculators.uniqueAPISymbols(test_dir);
-    String[] ASTtypes = FeatureCalculators.uniqueASTTypes(test_dir);
-//DepASTTypes contain user input, so exclude it.
-    //    String[] DepASTTypes =FeatureCalculators.uniqueDepASTTypes(test_dir);
+    //uniqueASTTypes does not contain user input, such as function and variable names
+   // String[] ASTtypes = FeatureCalculators.uniqueASTTypes(test_dir);
+    //uniqueDepASTTypes contain user input, such as function and variable names
+    String[] ASTtypes =FeatureCalculators.uniqueDepASTTypes(test_dir);
 //    for (int i=0; i<APIsymbols.length; i++)	
 //    {	Util.writeFile("@attribute 'APIsymbols["+i+"]' numeric"+"\n", output_filename, true);}
     /*    for (int i=0; i<APIsymbols.length; i++)	
@@ -122,13 +135,15 @@ public class FeatureExtractor {
 	//EXTRACT LABELED FEATURES
    	for(int i=0; i< test_file_paths.size(); i++){
 		String featureText = Util.readFile(test_file_paths.get(i).toString());
-		System.out.println(FeatureCalculators.functionIDCount(featureText));
 		int testIDlength = test_file_paths.get(i).toString().length(); 
 //		String authorName = test_file_paths.get(i).toString().substring(83,testIDlength-((testIDlength-92)/2)-9);  
 		String authorName = test_file_paths.get(i).toString().substring(77,76+((testIDlength-100)/2));  
 
 		System.out.println(test_file_paths.get(i));
 		System.out.println(authorName);
+		File fileCPPID = new File(test_cpp_paths.get(i).toString());
+		String fileNameID = fileCPPID.getName();
+		Util.writeFile(fileNameID+",", output_filename, true);
 		Util.writeFile(FeatureCalculators.functionIDCount(featureText)+",", output_filename, true);
 		String ASTText = Util.readFile(test_file_paths.get(i).toString().substring(0,testIDlength-3)+"ast");
 		String DepASTText = Util.readFile(test_file_paths.get(i).toString().substring(0,testIDlength-3)+"dep");
@@ -136,7 +151,7 @@ public class FeatureExtractor {
 
 		Util.writeFile(FeatureCalculators.CFGNodeCount(ASTText)+",", output_filename, true);
 		Util.writeFile(FeatureCalculators.ASTFunctionIDCount(ASTText)+",", output_filename, true);
-		Util.writeFile(FeatureCalculators.averageASTDepth(ASTText)+",", output_filename, true);
+//		Util.writeFile(FeatureCalculators.averageASTDepth(ASTText)+",", output_filename, true);
 
 
 		//get count of each API symbol present	 

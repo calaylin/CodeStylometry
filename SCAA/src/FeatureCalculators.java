@@ -26,9 +26,11 @@ public class FeatureCalculators {
     
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
-    	
+    	String filepathTest = "/Users/Aylin/git/joern/testCode/testPaperCode.cpp";
+		preprocessDataToTXTdepAST(filepathTest);
+
     String test = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/IncrementsOf3FilesPerAuthor/";	
-    for (int j = 9; j<40; j=j+3)
+    for (int j = 7; j<=13; j=j+2)
     {
     	String test_cpp_dir = test + "/" + j + "FilesPerAuthor/";
     
@@ -40,10 +42,12 @@ public class FeatureCalculators {
 //    System.out.println(filePath);
 		
 //	preprocessDataToAPISymbols(filePath);
-	preprocessDataToASTFeatures(filePath);
+//		preprocessDataToTXTdepAST(filePath);
 	//preprocessDataToDetailedASTInformation(filePath);
     
-    }}
+    }
+    
+    }
 
 
   
@@ -752,6 +756,109 @@ public class FeatureCalculators {
 		
 	}
 	
+	public static void preprocessDataToTXTdepAST(String filePath) throws IOException, InterruptedException, ScriptException{
+		//should take filename to test each time
+		//just needs the name of the directory with the authors and their source files as an input
+		//and outputs .ast files in source file's corresponding directory - has AST information 
+	
+		 Runtime dbTime = Runtime.getRuntime();
+		 Runtime joernTime = Runtime.getRuntime();
+		 Runtime scriptTime = Runtime.getRuntime();
+	
+	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	       });
+	       stopDB.waitFor();
+	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+	       while(br.ready())
+	           System.out.println(br.readLine());
+	       
+	       Process deleteIndex = dbTime.exec(new String[]{"/bin/sh", "-c","rm -r /Users/Aylin/git/joern/.joernIndex"});
+	       deleteIndex.waitFor();
+	
+	       Process joernRun = joernTime.exec(new String[]{"/bin/sh", "-c", 
+	    		   "cd /Users/Aylin/git/joern"+"\n"+ "java -jar /Users/Aylin/git/joern/bin/joern.jar " + filePath });
+	       joernRun.waitFor();
+	       BufferedReader br1 = new BufferedReader(new InputStreamReader(joernRun.getInputStream()));
+	       while(br1.ready())
+	           System.out.println(br1.readLine());
+	
+	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
+	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	       });
+	       startDB.waitFor();
+	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
+	       while(br2.ready())
+	           System.out.println(br2.readLine());
+	
+	       String output_filename = filePath.substring(0, filePath.length()-3).concat("dep");
+	       String cmd1 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
+	       		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
+	       		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
+	       		+ "python /Users/Aylin/git/joern-tools/astLabel.py |  "
+	       		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
+	       		+ output_filename;
+	       
+	       Process joernscripts = dbTime.exec((new String[]{"/bin/sh","-c", cmd1}));
+	
+	       joernscripts.waitFor();
+	          BufferedReader br5 = new BufferedReader(new InputStreamReader(joernscripts.getInputStream()));
+	          while(br5.ready())
+	              System.out.println(br5.readLine());
+	         
+	          BufferedReader br6 = new BufferedReader(new InputStreamReader(joernscripts.getErrorStream()));
+	          while(br6.ready())
+	              System.out.println(br6.readLine());
+	    
+	    	    
+	          
+		       String output_filename1 = filePath.substring(0, filePath.length()-3).concat("ast");
+		       String cmd2 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
+		       		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
+		       		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
+		       		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
+		       		+ output_filename1;
+		       
+		       Process joernscripts2 = dbTime.exec((new String[]{"/bin/sh","-c", cmd2}));
+		
+		       joernscripts2.waitFor();
+		          BufferedReader br7 = new BufferedReader(new InputStreamReader(joernscripts2.getInputStream()));
+		          while(br7.ready())
+		              System.out.println(br7.readLine());
+		         
+		          BufferedReader br8 = new BufferedReader(new InputStreamReader(joernscripts2.getErrorStream()));
+		          while(br8.ready())
+		              System.out.println(br8.readLine());	          
+	          
+	          
+	      
+		          Process runScript = scriptTime.exec(new String[]{"/bin/sh", "-c", 
+		       		   "cd /Users/Aylin/git/joern-tools"+"\n"+ "python /Users/Aylin/git/joern-tools/template.py"
+		          });
+		          runScript.waitFor();
+		          
+		          
+		          BufferedReader br3 = new BufferedReader(new InputStreamReader(runScript.getInputStream()));
+		          String output_filename3 = filePath.substring(0, filePath.length()-3).concat("txt");
+		      	while(br3.ready())
+		          { //   System.out.println(br3.readLine());
+		          Util.writeFile(br3.readLine().toString() +"\n",output_filename3, true);
+		   	   }		          
+		          
+		          
+	          
+	          
+	          
+	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    });
+	    stopDB.waitFor();
+	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+	    while(br4.ready())
+	        System.out.println(br4.readLine());
+	
+		
+	}
 	
 	
 	

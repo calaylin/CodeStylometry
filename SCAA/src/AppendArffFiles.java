@@ -27,30 +27,36 @@ public class AppendArffFiles {
     public static void main(String[] args) throws Exception{
     	
     	String word = "@data";
-    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/173InstanceIDfs8CodeJam8.4_12_09_33.arff";
-    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/AndrewInstanceIDoutput4.arff";
-    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/merged4fs8.arff";
+    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/merged5fs8_ready.arff";
+    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/ngrams/173instanceIDLetter1234GramTop100NoSpace.arff";
+    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/merged5fs8ngrams.arff";
 
     	int atDataLineNumberFile1 = AppendArffFiles.grepLineNumber(file1, word);
     	int atDataLineNumberFile2 = AppendArffFiles.grepLineNumber(file2, word);
     	
     	int numberOfInstances = 1038; //173 authors, each with 6 files
-		int file2LineNumberStart=atDataLineNumberFile2+numberOfInstances;
+		int file2LineNumberStart=atDataLineNumberFile2+1;
 		
     	for(int i = atDataLineNumberFile1+1; i <= atDataLineNumberFile1 + numberOfInstances; i++)
     	{
-    		//make this ascending in general cases
-        	for(int j=file2LineNumberStart; j >= atDataLineNumberFile2 + 1; j--)
+
+        	for(int j=file2LineNumberStart; j <= atDataLineNumberFile2+numberOfInstances; j++)
         	{
+				System.out.println(j);
+
         		if (AppendArffFiles.getInstanceID(file1, i).equals(AppendArffFiles.getInstanceID(file2, j)))
         				{
         					String firstPart = getInstance(file1, i);
         					String secondPart = getInstanceVector(file2, j);
         					System.out.println(firstPart);
         					Util.writeFile( firstPart+ "," +secondPart + "\n", outputArffName, true);
-        					//just for andrew's file to save time, if random or, this needs to be fixed
-        					file2LineNumberStart=j; //remove this line in general cases
-        					j= atDataLineNumberFile2 + 1;
+        		    		System.out.println(j);
+        		    	//	if(j<atDataLineNumberFile2+numberOfInstances-6){
+        		    	//	file2LineNumberStart=j+6;
+        		    		//}
+        		    		
+        		    			
+        					j=  atDataLineNumberFile2+numberOfInstances+1;
 
         				}      				
     		}
