@@ -26,17 +26,48 @@ public class FeatureCalculators {
     
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
-    	String filepathTest = "/Users/Aylin/git/joern/testCode/testPaperCode.cpp";
-		preprocessDataToTXTdepAST(filepathTest);
+/*    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/Morocco/";
+        List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+        for(int i=0; i< test_file_paths.size(); i++){
+        	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
+        //	preprocessDataToTXTdepAST(testFolder+"p5756407898963968.MrTensai0.cpp");
+        }*/
+        
+        //if dep file is not created because of the unknown bug, create the dep file again
+        String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/Morocco/";
+        String depFileName=null;
+        List test_dep_paths = Util.listDepFiles(testFolder); //use this for preprocessing       
+      
+        File dep_file=null;
+        for(int i=0; i< test_dep_paths.size(); i++){
+        	dep_file = new File(test_dep_paths.get(i).toString());
+        	System.out.println(test_dep_paths.get(i).toString());
+        	//if dep file is not created properly, the file size is 0 bytes
+        	if(dep_file.length()==0)
+        	{
+        		depFileName = test_dep_paths.get(i).toString();
+        		preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");      
+        		}  	
+        }
+        
+        
+        
+        
+        
+        
+        
+//    	String testFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/Austria/p5658068650033152.nicon0.cpp";
+//      	preprocessDataToASTFeatures(testFile);
 
-    String test = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/IncrementsOf3FilesPerAuthor/";	
-    for (int j = 7; j<=13; j=j+2)
+/*    String test = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/IncrementsOf3FilesPerAuthor/";	
+    for (int j =p 7; j<=13; j=j+2)
     {
     	String test_cpp_dir = test + "/" + j + "FilesPerAuthor/";
     
       List test_file_paths = Util.listCPPFiles(test_cpp_dir); //use this for preprocessing       
  //   List test_file_paths = Util.listTextFiles(test_cpp_dir); // use this to list txt files with API symbols
-    for(int i=0; i< test_file_paths.size(); i++){
+    
+      for(int i=0; i< test_file_paths.size(); i++){
 //		int testIDlength = test_file_paths.get(i).toString().length();    		
 		String filePath = test_file_paths.get(i).toString();  
 //    System.out.println(filePath);
@@ -44,13 +75,14 @@ public class FeatureCalculators {
 //	preprocessDataToAPISymbols(filePath);
 //		preprocessDataToTXTdepAST(filePath);
 	//preprocessDataToDetailedASTInformation(filePath);
+	 }
+*/    
+   
     
-    }
     
-    }
 
 
-  
+/*  
    //Get API symbols and their count in each txt file
 //   String[] APIsymbols = uniqueAPISymbols(test);
 	String dataDir= "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/";
@@ -59,19 +91,19 @@ public class FeatureCalculators {
     String[] DepASTTypes = uniqueASTTypes(dataDir1);
 
 	String featureText = Util.readFile("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/for/simpleforlabels.dep");
-/*	for (int i=0; i<ASTTypes.length; i++)
-    { System.out.println(ASTTypes[i]);}*/
+	for (int i=0; i<ASTTypes.length; i++)
+    { System.out.println(ASTTypes[i]);}
 	for (int i=0; i<DepASTTypes.length; i++)
     { System.out.println(i+": "+DepASTTypes[i]);}
-/*//    int[] symCount = APISymbolCount(featureText, APIsymbols );
+//    int[] symCount = APISymbolCount(featureText, APIsymbols );
     float[] symCount = DepASTTypeTFIDF(featureText, dataDir, DepASTTypes );
     float[] symCount1 = DepASTTypeTF(featureText, DepASTTypes );
 
     for (int i=0; i<DepASTTypes.length; i++)
     {    float idf = DepASTTypeIDF( dataDir, DepASTTypes[i].toString() );
-    	System.out.println("tfidf: "+symCount[i] + " tf: " +symCount1[i] + " idf: " + idf );}*/
+    	System.out.println("tfidf: "+symCount[i] + " tf: " +symCount1[i] + " idf: " + idf );}
     
-    
+    */
     }
      
 
