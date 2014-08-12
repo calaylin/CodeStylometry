@@ -47,7 +47,7 @@ public class DatasetCreator
 						{
 							System.out.println(info[0]+info[1]);
 
-							 country = info[1].toString();
+							 country = info[1].toString().trim();
 							 //copy authors folder to a folder named as the country
 							 
 							 
@@ -323,6 +323,6 @@ public class DatasetCreator
 		copyAuthorsWithAtLeastFileNumber(byCountryFolderName, 6);
 
 
-
+	
 		}
 }
