@@ -42,7 +42,9 @@ public class FeatureExtractor {
     	dayOfMonth + "_"+ time +".arff" ;
      
 //    String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/";	
-      String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor/";	
+    //  String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor/";
+      String test_dir ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/";
+
 
        	List test_file_paths = Util.listTextFiles(test_dir);
 
@@ -92,12 +94,13 @@ public class FeatureExtractor {
     for (int i=0; i<cppKeywords.length; i++)	
   {	Util.writeFile("@attribute 'cppKeyword["+i+"]' numeric"+"\n", output_filename, true);}
 
+    File authorFileName = null;
 	//Writing the classes (authorname)
 	Util.writeFile("@attribute 'authorName' {",output_filename, true);
 	for(int i=0; i< test_file_paths.size(); i++){
-		int testIDlength = test_file_paths.get(i).toString().length();    		
-		String authorName = test_file_paths.get(i).toString().substring(77,76+((testIDlength-100)/2));  
-//		String authorName = test_file_paths.get(i).toString().substring(83,testIDlength-((testIDlength-92)/2)-9);  
+		int testIDlength = test_file_paths.get(i).toString().length();   
+		authorFileName= new File(test_file_paths.get(i).toString());
+		String authorName= authorFileName.getParentFile().getName();
 
 		text = text.concat(authorName + ",");  
 		String[] words = text.split( ",");
@@ -136,8 +139,8 @@ public class FeatureExtractor {
    	for(int i=0; i< test_file_paths.size(); i++){
 		String featureText = Util.readFile(test_file_paths.get(i).toString());
 		int testIDlength = test_file_paths.get(i).toString().length(); 
-//		String authorName = test_file_paths.get(i).toString().substring(83,testIDlength-((testIDlength-92)/2)-9);  
-		String authorName = test_file_paths.get(i).toString().substring(77,76+((testIDlength-100)/2));  
+		authorFileName= new File(test_file_paths.get(i).toString());
+		String authorName= authorFileName.getParentFile().getName();
 
 		System.out.println(test_file_paths.get(i));
 		System.out.println(authorName);
