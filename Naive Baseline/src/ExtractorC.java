@@ -190,6 +190,9 @@ public class ExtractorC extends AbstractExtractor {
 		int onLineBrace = 0;
 		int newLineBrace = 0;
 		for (String s : this.code.split("\\{")) {
+			if (s.length() == 0) {
+				continue;
+			}
 			if (s.charAt(s.length() - 1) == '\n') {
 				newLineBrace++;
 			} else {

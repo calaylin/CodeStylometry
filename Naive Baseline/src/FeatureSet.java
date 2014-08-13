@@ -13,6 +13,8 @@ public interface FeatureSet {
 	public int numFunctions();
 
 	public int nestingDepth();
+	
+	public double branchingFactor();
 
 	public int length();
 
