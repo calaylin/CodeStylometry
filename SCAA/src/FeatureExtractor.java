@@ -59,8 +59,8 @@ public class FeatureExtractor {
 		File fileCPP = new File(test_cpp_paths.get(j).toString());
 		String fileName = fileCPP.getName();
 		Util.writeFile(fileName+",", output_filename, true);
-		if ((j)==test_cpp_paths.size())
-			Util.writeFile(fileName+"}"+"\n", output_filename, true);
+		if ((j+1)==test_cpp_paths.size())
+			Util.writeFile("}"+"\n", output_filename, true);
 	}
 
 	Util.writeFile("@attribute 'functionIDCount' numeric"+"\n", output_filename, true);
