@@ -59,13 +59,15 @@ public class FeatureExtractor {
 		File fileCPP = new File(test_cpp_paths.get(j).toString());
 		String fileName = fileCPP.getName();
 		Util.writeFile(fileName+",", output_filename, true);
-		if ((j+1)==test_cpp_paths.size())
+		if ((j)==test_cpp_paths.size())
 			Util.writeFile(fileName+"}"+"\n", output_filename, true);
 	}
 
 	Util.writeFile("@attribute 'functionIDCount' numeric"+"\n", output_filename, true);
 	Util.writeFile("@attribute 'CFGNodeCount' numeric"+"\n", output_filename, true);
 	Util.writeFile("@attribute 'ASTFunctionIDCount' numeric"+"\n", output_filename, true);
+	Util.writeFile("@attribute 'getMaxDepthASTLeaf' numeric"+"\n", output_filename, true);
+
 //	Util.writeFile("@attribute 'AverageASTDepth' numeric"+"\n", output_filename, true);
 
 	
@@ -86,13 +88,17 @@ public class FeatureExtractor {
 */
     
     for (int i=0; i<ASTtypes.length; i++)	
-    {	Util.writeFile("@attribute 'ASTNodeTypesTF["+i+"]' numeric"+"\n", output_filename, true);}
+    	
+  {  	ASTtypes[i] = ASTtypes[i].replace("'", "apostrophesymbol");
+    	Util.writeFile("@attribute 'ASTNodeTypesTF "+i+"=["+ASTtypes[i]+"]' numeric"+"\n", output_filename, true);}
     for (int i=0; i<ASTtypes.length; i++)	
-  {	Util.writeFile("@attribute 'ASTNodeTypesTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
+  {	    ASTtypes[i] = ASTtypes[i].replace("'", "apostrophesymbol");
+    	Util.writeFile("@attribute 'ASTNodeTypesTFIDF "+i+"=["+ASTtypes[i]+"]' numeric"+"\n", output_filename, true);}
     for (int i=0; i<ASTtypes.length; i++)	
-  {	Util.writeFile("@attribute 'ASTNodeTypeAvgDep["+i+"]' numeric"+"\n", output_filename, true);}
+  {	    ASTtypes[i] = ASTtypes[i].replace("'", "apostrophesymbol");
+    	Util.writeFile("@attribute 'ASTNodeTypeAvgDep "+i+"=["+ASTtypes[i]+"]' numeric"+"\n", output_filename, true);}
     for (int i=0; i<cppKeywords.length; i++)	
-  {	Util.writeFile("@attribute 'cppKeyword["+i+"]' numeric"+"\n", output_filename, true);}
+  {	Util.writeFile("@attribute 'cppKeyword "+i+"=["+cppKeywords[i]+"]' numeric"+"\n", output_filename, true);}
 
     File authorFileName = null;
 	//Writing the classes (authorname)
@@ -154,6 +160,11 @@ public class FeatureExtractor {
 
 		Util.writeFile(FeatureCalculators.CFGNodeCount(ASTText)+",", output_filename, true);
 		Util.writeFile(FeatureCalculators.ASTFunctionIDCount(ASTText)+",", output_filename, true);
+		Util.writeFile(DepthASTNode.getMaxDepthASTLeaf(DepASTText, ASTtypes)+",", output_filename, true);
+		
+//		
+		
+		
 //		Util.writeFile(FeatureCalculators.averageASTDepth(ASTText)+",", output_filename, true);
 
 
