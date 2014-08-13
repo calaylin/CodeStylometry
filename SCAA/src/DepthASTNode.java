@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -8,6 +10,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -30,8 +33,8 @@ public class DepthASTNode {
 	{
 		int [] lines = getASTDepLines(featureText);
 		float [] occurrences=new float[ASTTypes.length];
-		float [] totalDepth=new float[ASTTypes.length];;
-		float [] avgDepth=new float[ASTTypes.length];;
+		float [] totalDepth=new float[ASTTypes.length];
+		float [] avgDepth=new float[ASTTypes.length];
 
 		String textAST=null;
 		for (int i=0; i<lines.length; i++)
@@ -62,7 +65,9 @@ public class DepthASTNode {
 			  	 }
 			  	 
 			  	 if(occurrences[j]==0)
-			  		avgDepth[j]=-1;
+//			  		avgDepth[j]=-1;
+			  		avgDepth[j]=0;
+
 			  	 else if (totalDepth[j]==0)
 			  		 avgDepth[j]=0;
 			  	 else
@@ -72,8 +77,54 @@ public class DepthASTNode {
 		return avgDepth;
 	}
 
-    
-    
+   
+	
+	
+	public static int getMaxDepthASTLeaf(String featureText, String[] ASTTypes) throws IOException
+	{
+		int [] lines = getASTDepLines(featureText);
+		int [] occurrences=new int[ASTTypes.length];
+		int [] maxDepth=new int[ASTTypes.length];
+
+		String textAST=null;
+		for (int i=0; i<lines.length; i++)
+		{
+			textAST = readLineNumber(featureText, lines[i]);
+			for (int j=0; j< ASTTypes.length; j++)
+			{
+			  	 String str = ASTTypes[j].toString();
+		         WholeWordIndexFinder finder = new WholeWordIndexFinder(textAST);
+		         List<IndexWrapper> occurrencesHere = finder.findIndexesForKeyword(str);
+			  	 occurrences[j] = occurrences[j] + occurrencesHere.size();
+			  	 
+
+			  	 for(int k=0; k<occurrencesHere.size(); k++)
+			  	 {
+			  	   int rightParanthesis =0;//(
+			  	   int leftParanthesis =0;//)
+
+			  	   for (Character c: textAST.substring(0,occurrencesHere.get(k).getStart()).toCharArray()) {
+			  	       if (c.equals('(')) {
+			  	    	 rightParanthesis++;
+			  	       }
+			  	     if (c.equals(')')) {
+			  	    	 leftParanthesis++;
+			  	       }
+			  	   }
+
+				if((rightParanthesis-leftParanthesis) > maxDepth[j])
+					maxDepth[j]= rightParanthesis-leftParanthesis;
+				}
+			  	 
+			  	 if(occurrences[j]==0)
+			  		maxDepth[j]=0;		  	 
+			}		
+		}
+	        List maxDepthall = Arrays.asList(ArrayUtils.toObject(maxDepth));
+	        return Collections.max(maxDepthall);
+	   
+	}
+ 
     //line number starts from 0
 	public static int[] getASTDepLines(String featureText)
 	{		
@@ -114,7 +165,6 @@ public class DepthASTNode {
 	       return ASTDepLines;        
 	}
     
-	
 	
 	//starts from 0
     public static String readLineNumber (String featureText, int lineNumber) throws IOException
