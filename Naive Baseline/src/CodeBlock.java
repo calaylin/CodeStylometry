@@ -24,7 +24,7 @@ public class CodeBlock<T> {
 
 	private String prototype;
 	private List<T> statements;
-	private List<CodeBlock<T>> children;
+	List<CodeBlock<T>> children;
 	private CodeBlock<T> parent;
 
 	/**
@@ -55,6 +55,7 @@ public class CodeBlock<T> {
 	 *            CodeBlock to copy.
 	 */
 	public CodeBlock(CodeBlock<T> copy) {
+		this();
 		this.parent = copy.parent;
 		this.prototype = copy.prototype;
 		this.addStatements(copy.statements);

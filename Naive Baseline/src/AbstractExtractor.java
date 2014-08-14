@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Stack;
 
 /**
  * Two big assumptions: the code is valid and no silly macros
@@ -201,6 +202,28 @@ public abstract class AbstractExtractor implements FeatureSet {
 	@Override
 	public int nestingDepth() {
 		return this.blocks.getHeight();
+	}
+	
+	@Override
+	public double branchingFactor() {
+		List<Integer> numChildren = new LinkedList<>();
+		Stack<CodeBlock<String>> stack = new Stack<>();
+		stack.add(this.blocks);
+		while (!stack.empty()) {
+			CodeBlock<String> myBlock = stack.pop();
+			if (myBlock.children.size() > 0) {
+				numChildren.add(myBlock.children.size());
+				for (CodeBlock<String> c : myBlock.children) {
+					stack.add(c);
+				}
+			}
+		}
+		int sum = 0;
+		double size = numChildren.size();
+		for (Integer i : numChildren) {
+			sum += i;
+		}
+		return sum / size;
 	}
 
 	@Override
