@@ -63,7 +63,7 @@ public class AppendArffFiles {
         		    		j=file2LineNumberStart-1;
         		    		//end of descending order 
         		    		
-        		    	//for normal case		
+        		    	//if file2 is in ascending order		
         				//	j=  atDataLineNumberFile2+numberOfInstances+1;
 
         				}      				
