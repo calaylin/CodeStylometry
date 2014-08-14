@@ -27,20 +27,24 @@ public class AppendArffFiles {
     public static void main(String[] args) throws Exception{
     	
     	String word = "@data";
-    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/merged5fs8_ready.arff";
-    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/ngrams/173instanceIDLetter1234GramTop100NoSpace.arff";
-    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/merged5fs8ngrams.arff";
+    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/173AuthorsArffs/173InstanceIDfs8CodeJam8.4_12_09_33.arff";
+    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/173AuthorsArffs/173authorsAndrewoutput7.arff";
+    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/173AuthorsFS8Anrew7mergedoutput.arff";
 
     	int atDataLineNumberFile1 = AppendArffFiles.grepLineNumber(file1, word);
     	int atDataLineNumberFile2 = AppendArffFiles.grepLineNumber(file2, word);
     	
     	int numberOfInstances = 1038; //173 authors, each with 6 files
+//    	int numberOfInstances = 480; //80 authors, each with 6 files/authors
+
 		int file2LineNumberStart=atDataLineNumberFile2+1;
 		
     	for(int i = atDataLineNumberFile1+1; i <= atDataLineNumberFile1 + numberOfInstances; i++)
     	{
-
-        	for(int j=file2LineNumberStart; j <= atDataLineNumberFile2+numberOfInstances; j++)
+    		//Use this if the second file is in descending order
+        	for(int j=atDataLineNumberFile2+numberOfInstances;j>=file2LineNumberStart; j--)
+//for normal case in ascending order
+//        	for(int j=file2LineNumberStart; j <= atDataLineNumberFile2+numberOfInstances; j++)
         	{
 				System.out.println(j);
 
@@ -51,12 +55,16 @@ public class AppendArffFiles {
         					System.out.println(firstPart);
         					Util.writeFile( firstPart+ "," +secondPart + "\n", outputArffName, true);
         		    		System.out.println(j);
-        		    	//	if(j<atDataLineNumberFile2+numberOfInstances-6){
-        		    	//	file2LineNumberStart=j+6;
-        		    		//}
         		    		
-        		    			
-        					j=  atDataLineNumberFile2+numberOfInstances+1;
+        		    		//Use this if the second file is in descending order
+        		    		if(j<atDataLineNumberFile2+numberOfInstances-6){
+        		    			atDataLineNumberFile2=j - numberOfInstances +6;
+        		    		}
+        		    		j=file2LineNumberStart-1;
+        		    		//end of descending order 
+        		    		
+        		    	//for normal case		
+        				//	j=  atDataLineNumberFile2+numberOfInstances+1;
 
         				}      				
     		}
