@@ -19,7 +19,7 @@ import java.util.Stack;
 public abstract class AbstractExtractor implements FeatureSet {
 
 	private File file;
-	static String tokenDelimiter = "[*;\\{\\}\\[\\]()+=\\-&/|%!?:,<>~`\\s]";
+	static String tokenDelimiter = "[*;\\{\\}\\[\\]()+=\\-&/|%!?:,<>~`\\s\"]";
 	MultiSet<String> literals;
 	List<String> commentList;
 	CodeBlock<String> blocks;

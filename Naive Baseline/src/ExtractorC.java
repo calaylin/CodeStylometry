@@ -50,6 +50,7 @@ public class ExtractorC extends AbstractExtractor {
 				if (prev != '\\' && next == '"') {
 					break;
 				}
+				prev = next;
 			}
 		} else if (source.charAt(0) == '\'') {
 			// characters
