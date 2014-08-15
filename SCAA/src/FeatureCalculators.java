@@ -893,20 +893,14 @@ public class FeatureCalculators {
 		
 	}
 	
-	public static float [] InfoGainsDepASTTypeTF(String featureText){
-			
-			  String [] infoGainDictionary = {"T","t","freopen","stdin","printf","stdout","UnaryExpression",
-		"ShiftExpression","cout","scanf","solve","cin","endl","IncDecOp","test","tt", "tc",
-		"REP","fin","fout","rep","ifstream"};
-	
-			  
-			    float symbolCount = infoGainDictionary.length;
+	public static float [] InfoGainsDepASTTypeTF(String featureText,String[] ASTtypesTF){	  
+			    float symbolCount = ASTtypesTF.length;
 			     float [] counter = new float[(int) symbolCount];
 			     for (int i =0; i<symbolCount; i++){
 			//if case insensitive, make lowercase
 			//   String str = APISymbols[i].toString().toLowerCase();
 			//do they ever appear withuot the paranthesis?
-			  	 String str = infoGainDictionary[i].toString();
+			  	 String str = ASTtypesTF[i].toString();
 			  	 String str1 = "(" + str + ")";
 			  	 String str2 = "(" + str + "(";
 			  	 String str3 = ")" + str + ")";
@@ -919,20 +913,15 @@ public class FeatureCalculators {
 			  			 +StringUtils.countMatches(featureText, str3)
 			  			 +StringUtils.countMatches(featureText, str4)
 			  			 ;  	   
-
 			     }
 			     return counter;		  
 	}
 	
-	public static float [] InfoGainsDepASTTypeTFIDF (String featureText, String datasetDir ) throws IOException
+	public static float [] InfoGainsDepASTTypeTFIDF (String featureText, String datasetDir, String[] ASTtypesTFIDF ) throws IOException
 	   {    
-	  
-		String [] infoGainDictionary = {"T","freopen","stdin","stdout",
-				"ShiftExpression","cout","cin","endl","test","tt",
-				"REP","fout","rep","ifstream"};
-		float symbolCount = infoGainDictionary.length;
+		float symbolCount = ASTtypesTFIDF.length;
 	   float idf = 0;
-	   float[] tf = DepASTTypeTF(featureText, infoGainDictionary);
+	   float[] tf = DepASTTypeTF(featureText, ASTtypesTFIDF);
 	   float [] counter = new float[(int) symbolCount];
 	//   tf = StringUtils.countMatches(featureText, str);  	
 
@@ -944,7 +933,7 @@ public class FeatureCalculators {
 	//if case insensitive, make lowercase
 	// strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
 		 if ((tf[i] != 0) ){
-		 idf = DepASTTypeIDF(datasetDir, infoGainDictionary[i].toString());}
+		 idf = DepASTTypeIDF(datasetDir, ASTtypesTFIDF[i].toString());}
 		 else {
 			 idf =0;
 		 }
@@ -956,12 +945,8 @@ public class FeatureCalculators {
 	   return counter;
 	   }
 
-	  public static float [] InfoGainsgetCPPKeywordsTF(String sourceCode)
-	  {
-		  //84 reserved cpp keywords + override and final
-		  String [] cppKeywords = {"typedef","const",	"template","case","unsigned","signed",  "class",
-				  "operator","inline","compl","typename"};
-		  
+	  public static float [] InfoGainsgetCPPKeywordsTF(String sourceCode, String [] cppKeywords )
+	  {		  
 		     float symbolCount = cppKeywords.length;
 		     float [] counter = new float[(int) symbolCount];
 		     for (int i =0; i<symbolCount; i++){

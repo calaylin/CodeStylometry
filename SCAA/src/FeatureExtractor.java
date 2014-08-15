@@ -42,8 +42,8 @@ public class FeatureExtractor {
     	dayOfMonth + "_"+ time +".arff" ;
      
 //    String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/";	
-    //  String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor/";
-      String test_dir ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/";
+      String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor/";
+//      String test_dir ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/";
 
 
        	List test_file_paths = Util.listTextFiles(test_dir);

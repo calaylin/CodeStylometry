@@ -173,26 +173,21 @@ public class DepthASTNode {
     	return lines.get(lineNumber);
     }
     
-	public static float[] InfoGainsgetAvgDepthASTNode(String featureText) throws IOException
+	public static float[] InfoGainsgetAvgDepthASTNode(String featureText, String[] ASTtypesAvgDepth) throws IOException
 	{
-		
-		String [] ASTTypes = {"T","t","case","scanf","printf","ShiftExpression","in","cout",
-				"d","UnaryExpression","w","out","r","txt","stdin","freopen",
-				"stdout","cin","small","IncDecOp","test","solve","input","tt","output","fout","tc","fin",
-				"sync_with_stdio","REP","ifstream","inline"};
 			
 		int [] lines = getASTDepLines(featureText);
-		float [] occurrences=new float[ASTTypes.length];
-		float [] totalDepth=new float[ASTTypes.length];
-		float [] avgDepth=new float[ASTTypes.length];
+		float [] occurrences=new float[ASTtypesAvgDepth.length];
+		float [] totalDepth=new float[ASTtypesAvgDepth.length];
+		float [] avgDepth=new float[ASTtypesAvgDepth.length];
 
 		String textAST=null;
 		for (int i=0; i<lines.length; i++)
 		{
 			textAST = readLineNumber(featureText, lines[i]);
-			for (int j=0; j< ASTTypes.length; j++)
+			for (int j=0; j< ASTtypesAvgDepth.length; j++)
 			{
-			  	 String str = ASTTypes[j].toString();
+			  	 String str = ASTtypesAvgDepth[j].toString();
 		         WholeWordIndexFinder finder = new WholeWordIndexFinder(textAST);
 		         List<IndexWrapper> occurrencesHere = finder.findIndexesForKeyword(str);
 			  	 occurrences[j] = occurrences[j] + occurrencesHere.size();

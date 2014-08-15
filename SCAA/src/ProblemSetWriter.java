@@ -13,9 +13,9 @@ public class ProblemSetWriter {
 	
 	//problemSetFilename: the xml file that contains the problem set, all training set for cross validation
        	String problemSetFilename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
-       			+ "173Authors6Files.xml";
+       			+ "173Authors6Filesfrom13Files.xml";
     //test_dir: the folder that has the author files
-        String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor/";	
+        String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/13FilesPerAuthor/";	
 		File file = new File(test_dir);
         String[] authorName = file.list(new FilenameFilter() 
 		   {
