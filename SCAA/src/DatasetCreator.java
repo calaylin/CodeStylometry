@@ -305,8 +305,11 @@ public class DatasetCreator
 			    }
 			}
 
-
-
+		
+		
+		
+		
+		
 		public static void main(String[] args) throws Exception, IOException, InterruptedException 
 		{
 		String test_cpp_dir = "test_cpp_dir";	
@@ -319,7 +322,7 @@ public class DatasetCreator
 	
 		String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/includingquals/OtherCPPCode/2014/";
 //		organizeByCountry(folder, "byCountry2014", 2014);
-		String byCountryFolderName = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry2014/";
+		String byCountryFolderName = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/13FilesPerAuthor/";
 		copyAuthorsWithAtLeastFileNumber(byCountryFolderName, 6);
 
 

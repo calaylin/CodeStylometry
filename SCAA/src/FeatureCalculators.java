@@ -26,15 +26,17 @@ public class FeatureCalculators {
     
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
-/*    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/Morocco/";
-        List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/13FilesPerAuthor_notreadypart/";
+ //       String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/Sweden/";
+
+    	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
         for(int i=0; i< test_file_paths.size(); i++){
         	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
         //	preprocessDataToTXTdepAST(testFolder+"p5756407898963968.MrTensai0.cpp");
-        }*/
+        }
         
-        //if dep file is not created because of the unknown bug, create the dep file again
-        String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/Morocco/";
+/*        //if dep file is not created because of the unknown bug, create the dep file again
+        String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/";
         String depFileName=null;
         List test_dep_paths = Util.listDepFiles(testFolder); //use this for preprocessing       
       
@@ -48,7 +50,7 @@ public class FeatureCalculators {
         		depFileName = test_dep_paths.get(i).toString();
         		preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");      
         		}  	
-        }
+        }*/
         
         
         
@@ -497,7 +499,6 @@ public class FeatureCalculators {
    
    
    
-   
    public static int DictionaryIndex (String inputText)
    {
 	   
@@ -892,6 +893,83 @@ public class FeatureCalculators {
 		
 	}
 	
+	public static float [] InfoGainsDepASTTypeTF(String featureText){
+			
+			  String [] infoGainDictionary = {"T","t","freopen","stdin","printf","stdout","UnaryExpression",
+		"ShiftExpression","cout","scanf","solve","cin","endl","IncDecOp","test","tt", "tc",
+		"REP","fin","fout","rep","ifstream"};
 	
+			  
+			    float symbolCount = infoGainDictionary.length;
+			     float [] counter = new float[(int) symbolCount];
+			     for (int i =0; i<symbolCount; i++){
+			//if case insensitive, make lowercase
+			//   String str = APISymbols[i].toString().toLowerCase();
+			//do they ever appear withuot the paranthesis?
+			  	 String str = infoGainDictionary[i].toString();
+			  	 String str1 = "(" + str + ")";
+			  	 String str2 = "(" + str + "(";
+			  	 String str3 = ")" + str + ")";
+			  	 String str4 = ")" + str + "(";
+
+			//if case insensitive, make lowercase
+			//   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
+			  	 counter[i] = StringUtils.countMatches(featureText, str1) 
+			  			 +StringUtils.countMatches(featureText, str2)
+			  			 +StringUtils.countMatches(featureText, str3)
+			  			 +StringUtils.countMatches(featureText, str4)
+			  			 ;  	   
+
+			     }
+			     return counter;		  
+	}
 	
+	public static float [] InfoGainsDepASTTypeTFIDF (String featureText, String datasetDir ) throws IOException
+	   {    
+	  
+		String [] infoGainDictionary = {"T","freopen","stdin","stdout",
+				"ShiftExpression","cout","cin","endl","test","tt",
+				"REP","fout","rep","ifstream"};
+		float symbolCount = infoGainDictionary.length;
+	   float idf = 0;
+	   float[] tf = DepASTTypeTF(featureText, infoGainDictionary);
+	   float [] counter = new float[(int) symbolCount];
+	//   tf = StringUtils.countMatches(featureText, str);  	
+
+	   for (int i =0; i<symbolCount; i++){
+	//if case insensitive, make lowercase
+	// String str = APISymbols[i].toString().toLowerCase();
+	//	 String str = DepASTTypes[i].toString();
+		 
+	//if case insensitive, make lowercase
+	// strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
+		 if ((tf[i] != 0) ){
+		 idf = DepASTTypeIDF(datasetDir, infoGainDictionary[i].toString());}
+		 else {
+			 idf =0;
+		 }
+		 if ((tf[i] != 0) && (idf != 0))
+		 counter[i] = tf[i] * idf;
+		 else
+			 counter[i]=0;
+	   }
+	   return counter;
+	   }
+
+	  public static float [] InfoGainsgetCPPKeywordsTF(String sourceCode)
+	  {
+		  //84 reserved cpp keywords + override and final
+		  String [] cppKeywords = {"typedef","const",	"template","case","unsigned","signed",  "class",
+				  "operator","inline","compl","typename"};
+		  
+		     float symbolCount = cppKeywords.length;
+		     float [] counter = new float[(int) symbolCount];
+		     for (int i =0; i<symbolCount; i++){
+		  	 String str = cppKeywords[i].toString();
+		  	 counter[i] = StringUtils.countMatches(sourceCode, str);  	   
+
+		     }
+		     return counter;
+	  }
+	  
 }

@@ -172,5 +172,60 @@ public class DepthASTNode {
     	List<String> lines = IOUtils.readLines(new StringReader(featureText));  	
     	return lines.get(lineNumber);
     }
+    
+	public static float[] InfoGainsgetAvgDepthASTNode(String featureText) throws IOException
+	{
+		
+		String [] ASTTypes = {"T","t","case","scanf","printf","ShiftExpression","in","cout",
+				"d","UnaryExpression","w","out","r","txt","stdin","freopen",
+				"stdout","cin","small","IncDecOp","test","solve","input","tt","output","fout","tc","fin",
+				"sync_with_stdio","REP","ifstream","inline"};
+			
+		int [] lines = getASTDepLines(featureText);
+		float [] occurrences=new float[ASTTypes.length];
+		float [] totalDepth=new float[ASTTypes.length];
+		float [] avgDepth=new float[ASTTypes.length];
+
+		String textAST=null;
+		for (int i=0; i<lines.length; i++)
+		{
+			textAST = readLineNumber(featureText, lines[i]);
+			for (int j=0; j< ASTTypes.length; j++)
+			{
+			  	 String str = ASTTypes[j].toString();
+		         WholeWordIndexFinder finder = new WholeWordIndexFinder(textAST);
+		         List<IndexWrapper> occurrencesHere = finder.findIndexesForKeyword(str);
+			  	 occurrences[j] = occurrences[j] + occurrencesHere.size();
+			  	 
+
+			  	 for(int k=0; k<occurrencesHere.size(); k++)
+			  	 {
+			  	   int rightParanthesis =0;//(
+			  	   int leftParanthesis =0;//)
+
+			  	   for (Character c: textAST.substring(0,occurrencesHere.get(k).getStart()).toCharArray()) {
+			  	       if (c.equals('(')) {
+			  	    	 rightParanthesis++;
+			  	       }
+			  	     if (c.equals(')')) {
+			  	    	 leftParanthesis++;
+			  	       }
+			  	   }
+			  	 totalDepth[j]= totalDepth[j]+rightParanthesis-leftParanthesis;		  	   
+			  	 }
+			  	 
+			  	 if(occurrences[j]==0)
+//			  		avgDepth[j]=-1;
+			  		avgDepth[j]=0;
+
+			  	 else if (totalDepth[j]==0)
+			  		 avgDepth[j]=0;
+			  	 else
+			  	 avgDepth[j]= totalDepth[j]/occurrences[j];		  	 
+			}		
+		}
+		return avgDepth;
+	}
+
 	
 }
