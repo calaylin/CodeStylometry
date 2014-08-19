@@ -96,6 +96,7 @@ public abstract class AbstractExtractor implements FeatureSet {
 				currentBlock = currentBlock.getParent();
 			} else {
 				readUntilNextToken(source, sink);
+//				extractChar(source, sink);
 			}
 		}
 		Scanner sc = new Scanner(this.file);
