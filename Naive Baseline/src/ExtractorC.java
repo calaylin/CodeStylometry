@@ -28,6 +28,11 @@ public class ExtractorC extends AbstractExtractor {
 	void readUntilNextToken(StringBuffer source, StringBuffer sink) {
 		this.readUntil(source, sink, tokenDelimiter);
 	}
+	
+	@Override
+	void readBeforeNextToken(StringBuffer source, StringBuffer sink) {
+		this.readBefore(source, sink, tokenDelimiter);
+	}
 
 	@Override
 	boolean matchesLiteral(StringBuffer source) {

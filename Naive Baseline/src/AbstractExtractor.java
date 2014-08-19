@@ -64,8 +64,8 @@ public abstract class AbstractExtractor implements FeatureSet {
 				// read in the comment
 				this.commentList.add(readNextComment(source));
 			} else {
-				// read in the code until after the next delimiter
-				readUntilNextToken(source, sink);
+				// read in next character
+				extractChar(source, sink);
 			}
 		}
 
@@ -96,7 +96,6 @@ public abstract class AbstractExtractor implements FeatureSet {
 				currentBlock = currentBlock.getParent();
 			} else {
 				readUntilNextToken(source, sink);
-//				extractChar(source, sink);
 			}
 		}
 		Scanner sc = new Scanner(this.file);
@@ -115,6 +114,8 @@ public abstract class AbstractExtractor implements FeatureSet {
 	 * @param sink
 	 */
 	abstract void readUntilNextToken(StringBuffer source, StringBuffer sink);
+	
+	abstract void readBeforeNextToken(StringBuffer source, StringBuffer sink);
 
 	abstract boolean matchesLiteral(StringBuffer source);
 
