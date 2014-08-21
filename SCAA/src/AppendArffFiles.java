@@ -27,15 +27,15 @@ public class AppendArffFiles {
     public static void main(String[] args) throws Exception{
     	
     	String word = "@data";
-    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/173AuthorsFS9Anrew7mergedoutputwithID.arff";
-    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/ngrams/173instanceIDLetter1234GramTop100NoSpace.arff";
-    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/173Authors1234ngramstop100FS9Anrew7mergedoutputwithID.arff";
+    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/InfoGain2014FS9AndrewIGwithID_6Files173AuthorsCodeJam2008.arff";
+    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/validation/InfoGainof2008FS9AndrewIGNoIDnoExtraAuthor_6Files173AuthorsCodeJam2008.arff";
+    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/InfoGainof2014and2008FS9AndrewIGNoIDnoExtraAuthor_6Files173AuthorsCodeJam2008.arff.arff";
 
     	
 
-//    	int atDataLineNumberFile1 = AppendArffFiles.grepLineNumber(file1, word);
+    	int atDataLineNumberFile1 = AppendArffFiles.grepLineNumber(file1, word);
     	int atDataLineNumberFile2 = AppendArffFiles.grepLineNumber(file2, word);
-    	int atDataLineNumberFile1 = 0;
+//    	int atDataLineNumberFile1 = 0;
     	int numberOfInstances = 1038; //173 authors, each with 6 files
 //    	int numberOfInstances = 480; //80 authors, each with 6 files/authors
 
@@ -58,15 +58,14 @@ public class AppendArffFiles {
         					Util.writeFile( firstPart+ "," +secondPart + "\n", outputArffName, true);
         		    		System.out.println(j);
         		    		
-/*        		    		//Use this if the second file is in descending order
-        		    		if(j<atDataLineNumberFile2+numberOfInstances-6){
+        		    		//Use this if the second file is in descending order
+        		/*    		if(j<atDataLineNumberFile2+numberOfInstances-6){
         		    			atDataLineNumberFile2=j - numberOfInstances +6;
         		    		}
         		    		j=file2LineNumberStart-1;
-        		    		//end of descending order 
-*/        		    		
+        		    		//end of descending order  */
+        		    		
         		    	//if file2 is in ascending order		
-        				//	j=  atDataLineNumberFile2+numberOfInstances+1;
         		    		file2LineNumberStart= j -1;
         		    		j = atDataLineNumberFile2+numberOfInstances;
         				}      				

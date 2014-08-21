@@ -26,17 +26,16 @@ public class FeatureCalculators {
     
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
-    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/13FilesPerAuthor_notreadypart/";
+    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor_withcomments/";
  //       String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/Sweden/";
 
-    	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+ /*   	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
         for(int i=0; i< test_file_paths.size(); i++){
         	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
         //	preprocessDataToTXTdepAST(testFolder+"p5756407898963968.MrTensai0.cpp");
         }
-        
-/*        //if dep file is not created because of the unknown bug, create the dep file again
-        String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/";
+  */      
+       //if dep file is not created because of the unknown bug, create the dep file again
         String depFileName=null;
         List test_dep_paths = Util.listDepFiles(testFolder); //use this for preprocessing       
       
@@ -50,7 +49,7 @@ public class FeatureCalculators {
         		depFileName = test_dep_paths.get(i).toString();
         		preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");      
         		}  	
-        }*/
+        }
         
         
         
