@@ -274,6 +274,41 @@ public class Util {
         return textFiles;
 
 }
+    
+    public static List <File> listAllFiles(String dirPath)
+    {
+
+        File topDir = new File(dirPath);
+
+        List<File> directories = new ArrayList<>();
+        directories.add(topDir);
+
+        List<File> textFiles = new ArrayList<>();
+
+        List<String> filterWildcards = new ArrayList<>();
+        filterWildcards.add("*.*");
+
+        FileFilter typeFilter = new WildcardFileFilter(filterWildcards);
+
+        while (directories.isEmpty() == false)
+        {
+            List<File> subDirectories = new ArrayList<File>();
+
+            for(File f : directories)
+            {
+                subDirectories.addAll(Arrays.asList(f.listFiles((FileFilter)DirectoryFileFilter.INSTANCE)));
+                textFiles.addAll(Arrays.asList(f.listFiles(typeFilter)));
+            }
+
+            directories.clear();
+            directories.addAll(subDirectories);
+
+
+        }
+
+        return textFiles;
+
+}
     public static List <File> listCPPFiles(String dirPath)
     {
 
