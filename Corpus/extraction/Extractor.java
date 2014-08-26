@@ -79,6 +79,10 @@ public class Extractor {
 	   catch (FileNotFoundException e) {
 		   System.out.println("No File");		   
 		   }
+	   catch (IOException e) {
+		   System.out.println("IOException");		   
+		   }
+	   
 
 	}
 
