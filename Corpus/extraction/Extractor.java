@@ -24,10 +24,10 @@ import java.util.zip.ZipInputStream;
 public class Extractor {
 
 	public static void getDownloadURL(int round_numbers_2014, long problem_numbers_2014,
-			String name) throws IOException {
+			String name) throws IOException   {
 		
 
-	            // get URL content
+	   try{         // get URL content
 	          String url_open= "http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest="
 				+ round_numbers_2014
 				+ "&problem="
@@ -75,10 +75,14 @@ public class Extractor {
 		          List cpp_file_paths = Util.listAllFiles(contestantFolder);	         
 		          if(cpp_file_paths.size()==0)
 	        		aFile.delete();
+	   }
+	   catch (FileNotFoundException e) {
+		   System.out.println("No File");		   
+		   }
 
 	}
 
-	private static void unzip(String zipFilePath, String destDir) {
+	private static void unzip(String zipFilePath, String destDir) throws FileNotFoundException {
         File dir = new File(destDir);
         // create output directory if it doesn't exist
         if(!dir.exists()) dir.mkdirs();
@@ -92,7 +96,7 @@ public class Extractor {
             while(ze != null){
                 String fileName = ze.getName();
                 File newFile = new File(destDir + File.separator + fileName);
-                System.out.println("Unzipping to "+newFile.getAbsolutePath());
+           //     System.out.println("Unzipping to "+newFile.getAbsolutePath());
                 //create directories for sub directories in zip
                 new File(newFile.getParent()).mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);
@@ -172,18 +176,15 @@ public class Extractor {
         }
 
         String[] contestant_username_2014 = list.toArray(new String[0]);    	
+   //     getDownloadURL(2974486, 5756407898963968L, "140454");
 
-        String url_open ="http://code.google.com/codejam/contest/scoreboard/do?cmd="
-        		+ "GetSourceCode&contest=2974486&problem=5756407898963968&io_set_id=0&username=14gautam";
-    //    java.awt.Desktop.getDesktop().browse(java.net.URI.create(url_open));
-        
-
-        
         for (int i=0; i< round_numbers_2014.length; i++){
         	for(int j=0; j<4; j++){
                 for(int k=0; k< contestant_username_2014.length; k++){
                 	getDownloadURL(round_numbers_2014[i],  problem_numbers_2014[i][j],
-                			contestant_username_2014[k].toString());                	
+                			contestant_username_2014[k].toString());    
+                	System.out.println(round_numbers_2014[i]+ "_"+ problem_numbers_2014[i][j]+"_"+
+                			contestant_username_2014[k].toString());
                 }
         	}        	
         }
