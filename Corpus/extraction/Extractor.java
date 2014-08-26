@@ -54,6 +54,7 @@ public class Extractor {
 	      			if(!all_file_paths.get(j).toString().substring(fileNamelength-3, fileNamelength).contains("cpp")
 	      					&
 	      					!all_file_paths.get(j).toString().substring(fileNamelength-2, fileNamelength).contains("cc"))
+	      			
 	      			{
 	      				File allFiles = new File(all_file_paths.get(j).toString());		
 	      		      	allFiles.delete();	
@@ -71,6 +72,9 @@ public class Extractor {
 	      			}	
 	      				
 	    	}
+		          List cpp_file_paths = Util.listAllFiles(contestantFolder);	         
+		          if(cpp_file_paths.size()==0)
+	        		aFile.delete();
 
 	}
 
