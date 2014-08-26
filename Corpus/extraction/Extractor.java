@@ -10,12 +10,12 @@ import java.util.List;
 
 public class Extractor {
 
-	public static String getDownloadURL(String roundNum, String problemNum,
+	public static String getDownloadURL(int round_numbers_2014, long problem_numbers_2014,
 			String name) {
 		return "http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest="
-				+ roundNum
+				+ round_numbers_2014
 				+ "&problem="
-				+ problemNum
+				+ problem_numbers_2014
 				+ "&io_set_id=0&username=" + name;
 	}
 	
@@ -50,17 +50,17 @@ public class Extractor {
     	problem_numbers_2014[2][0] = 5751500831719424L;
     	problem_numbers_2014[2][1] = 5658282861527040L;
     	problem_numbers_2014[2][2] = 5731331665297408L;
-    	problem_numbers_2014[3][1] = 5706278382862336L;
-    	problem_numbers_2014[3][2] = 5669245564223488L;
-    	problem_numbers_2014[3][3] = 5658068650033152L;
-    	problem_numbers_2014[4][1] = 5737429512224768L;
-    	problem_numbers_2014[4][2] = 5721094409420800L;
-    	problem_numbers_2014[4][3] = 5158144455999488L;
-    	problem_numbers_2014[4][4] = 5649687893770240L;
-    	problem_numbers_2014[5][1] = 5645447150436352L;
-    	problem_numbers_2014[5][2] = 5724427840913408L;
-    	problem_numbers_2014[5][3] = 5690270771314688L;
-    	problem_numbers_2014[5][4] = 5670781216358400L;
+    	problem_numbers_2014[3][0] = 5706278382862336L;
+    	problem_numbers_2014[3][1] = 5669245564223488L;
+    	problem_numbers_2014[3][2] = 5658068650033152L;
+    	problem_numbers_2014[4][0] = 5737429512224768L;
+    	problem_numbers_2014[4][1] = 5721094409420800L;
+    	problem_numbers_2014[4][2] = 5158144455999488L;
+    	problem_numbers_2014[4][3] = 5649687893770240L;
+    	problem_numbers_2014[5][0] = 5645447150436352L;
+    	problem_numbers_2014[5][1] = 5724427840913408L;
+    	problem_numbers_2014[5][2] = 5690270771314688L;
+    	problem_numbers_2014[5][3] = 5670781216358400L;
 
     			
 
@@ -68,7 +68,7 @@ public class Extractor {
     			
     			
     			
-    	BufferedReader in = new BufferedReader(new FileReader("users/2014_fromDB.txt"));
+    	BufferedReader in = new BufferedReader(new FileReader("users/2014.txt"));
         String str;
 
         List<String> list = new ArrayList<String>();
@@ -76,9 +76,19 @@ public class Extractor {
             list.add(str);
         }
 
-        String[] stringArr = list.toArray(new String[0]);    	
-        for(int i=0; i< stringArr.length; i++)
-        	System.out.println(stringArr[i]);
+        String[] contestant_username_2014 = list.toArray(new String[0]);    	
+
+        
+        for (int i=0; i< round_numbers_2014.length; i++){
+        	for(int j=0; j<4; j++){
+                for(int k=0; k< contestant_username_2014.length; k++){
+                	getDownloadURL(round_numbers_2014[i],  problem_numbers_2014[i][j],
+                			contestant_username_2014[k].toString());                	
+                }
+        	}        	
+        }
+        
+        
         }
 
 }
