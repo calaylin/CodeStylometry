@@ -1,11 +1,15 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,44 +19,29 @@ import java.util.List;
 public class Extractor {
 
 	public static void getDownloadURL(int round_numbers_2014, long problem_numbers_2014,
-			String name) {
+			String name) throws IOException {
 		
-		
-		  URL url;
-		  
 
-	        try {
 	            // get URL content
-	        	String a= "http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest="
+	          String url_open= "http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest="
 				+ round_numbers_2014
 				+ "&problem="
 				+ problem_numbers_2014
 				+ "&io_set_id=0&username=" + name;
 	    		
-	        	
-	        	url = new URL(a);
-	            URLConnection conn = url.openConnection();
-
-	            // open the stream and put it into BufferedReader
-	            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-	            String inputLine;
-	            while ((inputLine = br.readLine()) != null) {
-	                    System.out.println(inputLine);
-	            }
-	            br.close();
-
-	            System.out.println("Done");
-
-	        } catch (MalformedURLException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-
-		
-		
-		
+	          URL website = new URL(url_open);
+	          ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+	          String aFileName = "2014data/"+name+"/";
+	          File aFile = new File(aFileName);			
+	          if(aFile.exists() == false)
+	 	    		aFile.mkdir();
+	          String fileName = aFileName+round_numbers_2014+"_"+problem_numbers_2014+"_"+name+".zip";
+	          FileOutputStream fos = new FileOutputStream(fileName);
+	          File bFile = new File(fileName);			
+	          if(bFile.exists() == false)
+	 	    		bFile.createNewFile();
+	          fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);        	
+	
 
 	}
 	
@@ -117,16 +106,18 @@ public class Extractor {
 
         String url_open ="http://code.google.com/codejam/contest/scoreboard/do?cmd="
         		+ "GetSourceCode&contest=2974486&problem=5756407898963968&io_set_id=0&username=14gautam";
-        java.awt.Desktop.getDesktop().browse(java.net.URI.create(url_open));
+    //    java.awt.Desktop.getDesktop().browse(java.net.URI.create(url_open));
         
-/*        for (int i=0; i< round_numbers_2014.length; i++){
+
+        
+        for (int i=0; i< round_numbers_2014.length; i++){
         	for(int j=0; j<4; j++){
                 for(int k=0; k< contestant_username_2014.length; k++){
                 	getDownloadURL(round_numbers_2014[i],  problem_numbers_2014[i][j],
                 			contestant_username_2014[k].toString());                	
                 }
         	}        	
-        }*/
+        }
         
         
         }
