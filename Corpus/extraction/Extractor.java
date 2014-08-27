@@ -72,9 +72,7 @@ public class Extractor {
 	      			}	
 	      				
 	    	}
-		          List cpp_file_paths = Util.listAllFiles(contestantFolder);	         
-		          if(cpp_file_paths.size()==0)
-	        		aFile.delete();
+
 	   }
 	   catch (FileNotFoundException e) {
 		   System.out.println("No File");		   
@@ -100,7 +98,7 @@ public class Extractor {
             while(ze != null){
                 String fileName = ze.getName();
                 File newFile = new File(destDir + File.separator + fileName);
-           //     System.out.println("Unzipping to "+newFile.getAbsolutePath());
+           //     System.out.println("Unzipping to "+newFile.getAbsolutePath());                             
                 //create directories for sub directories in zip
                 new File(newFile.getParent()).mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);
@@ -109,6 +107,9 @@ public class Extractor {
                 fos.write(buffer, 0, len);
                 }
                 fos.close();
+                
+                
+                
                 //close this ZipEntry
                 zis.closeEntry();
                 ze = zis.getNextEntry();
@@ -134,14 +135,7 @@ public class Extractor {
 //http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest=2974486&problem=5756407898963968&io_set_id=0&username=Gennady.Korotkevich
 */
 
-    	int[] round_numbers_2014 ={2974486, 2984486, 2994486, 3004486, 3014486, 3024486};
-/*    	long[] problem_numbers_2014 = {5756407898963968L,5709773144064000L,5690574640250880L,5644738749267968L,
-	5634947029139456L,5766201229705216L,5752104073297920L,//round2
-	5751500831719424L,5658282861527040L,5731331665297408L,//round3
-	5706278382862336L,5669245564223488L,5658068650033152L,//round4
-	5737429512224768L,5721094409420800L,5158144455999488L,5649687893770240L,//round5
-	5645447150436352L,5724427840913408L,5690270771314688L,5670781216358400L};//round6
-*/    	
+    	int[] round_numbers_2014 ={2974486, 2984486, 2994486, 3004486, 3014486, 3024486};	
     	long[][] problem_numbers_2014 = new long[6][4];
     	problem_numbers_2014[0][0] = 5756407898963968L;
     	problem_numbers_2014[0][1] = 5709773144064000L;
@@ -169,10 +163,8 @@ public class Extractor {
 
     			
     			
-    			
-    			
-    	BufferedReader in = new BufferedReader(new FileReader("users/2014_fromDB_cpp.txt"));
-        String str;
+    	BufferedReader in = new BufferedReader(new FileReader("users/2014_selected_morecode.txt"));
+    	String str;
 
         List<String> list = new ArrayList<String>();
         while((str = in.readLine()) != null){
