@@ -58,18 +58,22 @@ public class Extractor {
 	      			{
 	      				File allFiles = new File(all_file_paths.get(j).toString());		
 	      		      	allFiles.delete();	
-	      			}    
+	      			} 
 	      			
-	      			if(all_file_paths.get(j).toString().substring(fileNamelength-3, fileNamelength).contains("cpp"))
+	      			if((all_file_paths.get(j).toString().substring(fileNamelength-3, fileNamelength).contains("cpp") )
+	      					& !(new File(all_file_paths.get(j).toString()).getName().contains(name)) )
 	      			{
 	      				File cppFiles = new File(all_file_paths.get(j).toString());		
       		      	cppFiles.renameTo(new File(fileName.substring(0, fileName.length()-3)+"cpp"));	
 	      			}	
-	      			if(all_file_paths.get(j).toString().substring(fileNamelength-2, fileNamelength).contains("cc"))
+	      			
+	      			if(all_file_paths.get(j).toString().substring(fileNamelength-2, fileNamelength).contains("cc")
+	      					& !(new File(all_file_paths.get(j).toString()).getName().contains(name)) )
 	      			{
 	      				File cppFiles = new File(all_file_paths.get(j).toString());		
       		      	cppFiles.renameTo(new File(fileName.substring(0, fileName.length()-3)+"cpp"));	
 	      			}	
+	      			  
 	      				
 	    	}
 
