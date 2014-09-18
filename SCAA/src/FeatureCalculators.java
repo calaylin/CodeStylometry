@@ -26,15 +26,30 @@ public class FeatureCalculators {
     
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
-    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor_withcomments/";
- //       String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/Sweden/";
-
- /*   	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+    	//3 folders to do
+    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/4FilesPerAuthor_2014/";
+   	
+/*
+    //Clean non cpp files from folder
+    	List test_file_paths = Util.listAllFiles(testFolder); //use this for preprocessing       
         for(int i=0; i< test_file_paths.size(); i++){
-        	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
-        //	preprocessDataToTXTdepAST(testFolder+"p5756407898963968.MrTensai0.cpp");
-        }
-  */      
+  			if(!test_file_paths.get(i).toString().substring(test_file_paths.get(i).toString().length()-3, test_file_paths.get(i).toString().length()).contains("cpp"))
+  			{
+  				File testFiles = new File(test_file_paths.get(i).toString());		
+  				testFiles.delete();
+  			}}
+       */
+    	
+    	
+    	
+    	
+/*    	//preprocess to get ast dep and txt files for each cpp file
+    	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+    	for(int i=0; i< test_file_paths.size(); i++){
+      	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
+
+        }*/
+        
        //if dep file is not created because of the unknown bug, create the dep file again
         String depFileName=null;
         List test_dep_paths = Util.listDepFiles(testFolder); //use this for preprocessing       
@@ -50,6 +65,7 @@ public class FeatureCalculators {
         		preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");      
         		}  	
         }
+        
         
         
         
@@ -630,7 +646,7 @@ public class FeatureCalculators {
 	       String cmd1 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
 	       		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
 	       		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
-	       		+ "python /Users/Aylin/git/joern-tools/astLabel.py |  "
+	       		+ "python /Users/Aylin/git/joern-tools/astlabel.py |  "
 	       		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
 	       		+ output_filename;
 	       
@@ -657,6 +673,8 @@ public class FeatureCalculators {
 		
 	}
 
+	
+	
 	public static void preprocessDataToAPISymbols(String filePath) throws IOException, InterruptedException{
 	//should take filename to test each time
 	//just needs the name of the directory with the authors and their source files as an input
@@ -827,7 +845,7 @@ public class FeatureCalculators {
 	       String cmd1 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
 	       		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
 	       		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
-	       		+ "python /Users/Aylin/git/joern-tools/astLabel.py |  "
+	       		+ "python /Users/Aylin/git/joern-tools/astlabel.py |  "
 	       		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
 	       		+ output_filename;
 	       
@@ -891,6 +909,11 @@ public class FeatureCalculators {
 	
 		
 	}
+	
+	
+	
+	
+	
 	
 	public static float [] InfoGainsDepASTTypeTF(String featureText,String[] ASTtypesTF){	  
 			    float symbolCount = ASTtypesTF.length;

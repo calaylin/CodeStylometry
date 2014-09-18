@@ -322,6 +322,8 @@ public class Util {
         List<String> filterWildcards = new ArrayList<>();
         filterWildcards.add("*.cpp");
         filterWildcards.add("*.c++");
+        filterWildcards.add("*.cc");
+
 
         FileFilter typeFilter = new WildcardFileFilter(filterWildcards);
 
