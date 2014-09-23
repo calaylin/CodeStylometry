@@ -26,18 +26,29 @@ public class AppendArffFiles {
 	//append file2's that line to file1 and move
     public static void main(String[] args) throws Exception{
     	
+    	
+    	for(int numberFiles = 2; numberFiles <15; numberFiles++){
+ 
     	String word = "@data";
-    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/CodeJam_10FilesPerAuthor_2014_8_28.arff";
-    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/Andrew_14FilesPerAuthor_2014.arff";
-    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/FS9AndrewCodeJam_10FilesPerAuthor_2014_8_28.arff";
+    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/CodeJam_"+numberFiles+"FilesPerAuthor.arff";
+    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/andrews/"+numberFiles+"files2014Andrew.arff";
+    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"files2014FS9Andrew.arff";
 
     	
 
     	int atDataLineNumberFile1 = AppendArffFiles.grepLineNumber(file1, word);
     	int atDataLineNumberFile2 = AppendArffFiles.grepLineNumber(file2, word);
+    	
+    	for(int firstFileAttributes=1; firstFileAttributes <atDataLineNumberFile1; firstFileAttributes++ )
+    	{Util.writeFile(readSpecificLineNumber(file1, firstFileAttributes) + "\n", outputArffName, true);}
+    	
+    	for(int secondFileAttributes=4; secondFileAttributes <=atDataLineNumberFile2; secondFileAttributes++ )
+    	{Util.writeFile(readSpecificLineNumber(file2, secondFileAttributes) + "\n", outputArffName, true);}
+
 //    	int atDataLineNumberFile1 = 0;
 //    	int numberOfInstances = 1038; //173 authors, each with 6 files
-    	int numberOfInstances = 360; 
+   // 	int numberFiles = 2;
+    	int numberOfInstances = 62 * numberFiles; 
 
 		int file2LineNumberStart=atDataLineNumberFile2+1;
 
@@ -45,7 +56,8 @@ public class AppendArffFiles {
     	{
     		//Use this if the second file is in descending order
         	for(int j=atDataLineNumberFile2+numberOfInstances;j>=file2LineNumberStart; j--)
-//for normal case in ascending order
+
+        		//for normal case in ascending order
 //        	for(int j=file2LineNumberStart; j <= atDataLineNumberFile2+numberOfInstances; j++)
         	{
 				System.out.println(j);
@@ -59,8 +71,8 @@ public class AppendArffFiles {
         		    		System.out.println(j);
         		    		
         		    		//Use this if the second file is in descending order
-        		   		if(j<atDataLineNumberFile2+numberOfInstances-10){
-        		    			atDataLineNumberFile2=j - numberOfInstances +10;
+        		   		if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
+        		    			atDataLineNumberFile2=j - numberOfInstances +numberFiles;
         		    		}
         		    		j=file2LineNumberStart-1;
         		    		//end of descending order  
@@ -70,8 +82,8 @@ public class AppendArffFiles {
         		    		j = atDataLineNumberFile2+numberOfInstances;*/
         				}      				
     		}
-
-    	}     	
+    	}
+    	}    	
 
     }
     public static String getInstanceID(String file, int lineNumber) throws IOException

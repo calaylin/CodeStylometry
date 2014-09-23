@@ -172,7 +172,7 @@ public class DatasetCreator
 	 
 
 		public static void copyAuthorsWithExactFileNumber(String test_cpp_dir, int fileCount){
-		File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/"
+		File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
 					   +fileCount+"FilesPerAuthor_2014") ;
 	  	if(!destFolderParent.exists())
     	{
@@ -222,7 +222,7 @@ public class DatasetCreator
 //		   if(test_file_paths.size() == fileCount)
 
 // Use this if you want to have a specific number of authors in the folder		 	
-			   if(test_file_paths.size() == fileCount && authors.length < 62)
+			   if(test_file_paths.size() == fileCount && authors.length < 92)
 			   {
 				   System.out.println(author_cpp_dir);
 
@@ -349,9 +349,8 @@ public class DatasetCreator
 	
 		String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp/";
 //		organizeByCountry(folder, "byCountry2014", 2014);
-		String byCountryFolderName = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/13FilesPerAuthor/";
 //		copyAuthorsWithAtLeastFileNumber(folder, 6);
-		for(int i=2; i<15; i++){
+		for(int i=15; i<22; i++){
 		copyAuthorsWithExactFileNumber(folder, i);}
 
 

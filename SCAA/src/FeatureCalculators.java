@@ -27,8 +27,10 @@ public class FeatureCalculators {
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
     	//3 folders to do
-    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/4FilesPerAuthor_2014/";
-   	
+//    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/11FilesPerAuthor_2014/BigWaterMan/";
+    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/14FilesPerAuthor_2014/Tomato/";
+
+    	
 /*
     //Clean non cpp files from folder
     	List test_file_paths = Util.listAllFiles(testFolder); //use this for preprocessing       
@@ -43,12 +45,12 @@ public class FeatureCalculators {
     	
     	
     	
-/*    	//preprocess to get ast dep and txt files for each cpp file
+    	//preprocess to get ast dep and txt files for each cpp file
     	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
     	for(int i=0; i< test_file_paths.size(); i++){
       	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
 
-        }*/
+        }
         
        //if dep file is not created because of the unknown bug, create the dep file again
         String depFileName=null;
@@ -62,7 +64,7 @@ public class FeatureCalculators {
         	if(dep_file.length()==0)
         	{
         		depFileName = test_dep_paths.get(i).toString();
-        		preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");      
+        		preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");      
         		}  	
         }
         

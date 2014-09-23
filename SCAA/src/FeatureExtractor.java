@@ -38,10 +38,11 @@ public class FeatureExtractor {
        	int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
        	String time = sdf.format(cal.getTime());
     	//TODO when time changes, output_filename changes every time which needs to be corrected
-       	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_4FilesPerAuthor_2014_"+ (month+1) + "." + 
-    	dayOfMonth + "_"+ time +".arff" ;
+//       	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_14FilesPerAuthor_2014_"+ (month+1) + "." + 
+//    	dayOfMonth + "_"+ time +".arff" ;
+    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_11FilesPerAuthor.arff" ;
      
-    	String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/4FilesPerAuthor_2014/";
+    	String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/11FilesPerAuthor_2014/";
 
 
        	List test_file_paths = Util.listTextFiles(test_dir);
@@ -49,7 +50,7 @@ public class FeatureExtractor {
 	String text = "";
   	//Writing the test arff
   	//first specify relation
-	Util.writeFile("@relation 4FilesPerAuthorIncremental_2014 "+"\n"+"\n", output_filename, true);
+	Util.writeFile("@relation 11FilesPerAuthorIncremental_2014 "+"\n"+"\n", output_filename, true);
 	Util.writeFile("@attribute instanceID {", output_filename, true);
    	List test_cpp_paths = Util.listCPPFiles(test_dir);
    	for(int j=0; j < test_cpp_paths.size();j++ )
