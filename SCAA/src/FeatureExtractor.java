@@ -40,9 +40,10 @@ public class FeatureExtractor {
     	//TODO when time changes, output_filename changes every time which needs to be corrected
 //       	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_14FilesPerAuthor_2014_"+ (month+1) + "." + 
 //    	dayOfMonth + "_"+ time +".arff" ;
-    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_11FilesPerAuthor.arff" ;
+       	for(int numberFiles=2; numberFiles<15; numberFiles++){
+    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_"+numberFiles+"FilesPerAuthor_syntactic.arff" ;
      
-    	String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/11FilesPerAuthor_2014/";
+    	String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/"+numberFiles+"FilesPerAuthor_2014/";
 
 
        	List test_file_paths = Util.listTextFiles(test_dir);
@@ -50,7 +51,7 @@ public class FeatureExtractor {
 	String text = "";
   	//Writing the test arff
   	//first specify relation
-	Util.writeFile("@relation 11FilesPerAuthorIncremental_2014 "+"\n"+"\n", output_filename, true);
+	Util.writeFile("@relation "+numberFiles+"FilesPerAuthorIncremental_2014 "+"\n"+"\n", output_filename, true);
 	Util.writeFile("@attribute instanceID {", output_filename, true);
    	List test_cpp_paths = Util.listCPPFiles(test_dir);
    	for(int j=0; j < test_cpp_paths.size();j++ )
@@ -72,14 +73,14 @@ public class FeatureExtractor {
 	
     String[] APIsymbols = FeatureCalculators.uniqueAPISymbols(test_dir);
     //uniqueASTTypes does not contain user input, such as function and variable names
-   // String[] ASTtypes = FeatureCalculators.uniqueASTTypes(test_dir);
     //uniqueDepASTTypes contain user input, such as function and variable names
     
 //Use the following for syntactic inner nodes and code leaves (remember to change astlabel.py accordingly!
+    //if all the dep nodes are syntactic, this can be used for the syntactic case
         String[] ASTtypes =FeatureCalculators.uniqueDepASTTypes(test_dir);
     
-    //if only interested in syntactic features use this    
- //   String[] ASTtypes =FeatureCalculators.uniqueASTTypes(test_dir);
+    //if only interested in syntactic features use this if the dep file contains user input    
+   // String[] ASTtypes =FeatureCalculators.uniqueASTTypes(test_dir);
 
     
 //    for (int i=0; i<APIsymbols.length; i++)	
@@ -217,8 +218,8 @@ public class FeatureExtractor {
 		Util.writeFile(authorName+"\n", output_filename, true);
 
    	
-   	}
-
+   			}
+       	}
    	}
    
 	  
