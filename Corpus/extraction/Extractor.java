@@ -36,7 +36,7 @@ public class Extractor {
 	    		
 	          URL website = new URL(url_open);
 	          ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-	          String contestantFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014data_unzip/"+name+"/";
+	          String contestantFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014finals_cpp/"+name+"/";
 	          File aFile = new File(contestantFolder);			
 	          if(aFile.exists() == false)
 	 	    		aFile.mkdir();
@@ -139,8 +139,9 @@ public class Extractor {
 //http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest=2974486&problem=5756407898963968&io_set_id=0&username=Gennady.Korotkevich
 */
 
-    	int[] round_numbers_2014 ={2974486, 2984486, 2994486, 3004486, 3014486, 3024486};	
-    	long[][] problem_numbers_2014 = new long[6][4];
+    	int[] round_numbers_2014 ={2974486, 2984486, 2994486, 3004486, 3014486, 3024486, 7214486};	
+    	long[][] problem_numbers_2014 = new long[7][6];
+    	//21 problems in total
     	problem_numbers_2014[0][0] = 5756407898963968L;
     	problem_numbers_2014[0][1] = 5709773144064000L;
     	problem_numbers_2014[0][2] = 5690574640250880L;
@@ -162,6 +163,12 @@ public class Extractor {
     	problem_numbers_2014[5][1] = 5724427840913408L;
     	problem_numbers_2014[5][2] = 5690270771314688L;
     	problem_numbers_2014[5][3] = 5670781216358400L;
+    	problem_numbers_2014[6][0] = 5722683480211456L;
+    	problem_numbers_2014[6][1] = 5656351736856576L;
+    	problem_numbers_2014[6][2] = 5682018998288384L;
+    	problem_numbers_2014[6][3] = 5730212624990208L;
+    	problem_numbers_2014[6][4] = 5697089837203456L;
+    	problem_numbers_2014[6][5] = 5747233781710848L;
 
     			
 
@@ -176,10 +183,11 @@ public class Extractor {
         }
 
         String[] contestant_username_2014 = list.toArray(new String[0]);    	
-   //     getDownloadURL(2974486, 5756407898963968L, "140454");
+//        getDownloadURL(2994486,5658282861527040L,"Aquaaarius");
 
-        for (int i=0; i< round_numbers_2014.length; i++){
-        	for(int j=0; j<4; j++){
+        for (int i=5; i< round_numbers_2014.length; i++){//i is the round number
+        	for(int j=0; j<6; j++){//j is the problem number
+
                 for(int k=0; k< contestant_username_2014.length; k++){
                 	getDownloadURL(round_numbers_2014[i],  problem_numbers_2014[i][j],
                 			contestant_username_2014[k].toString());    
