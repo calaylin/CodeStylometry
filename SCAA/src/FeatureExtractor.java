@@ -40,10 +40,11 @@ public class FeatureExtractor {
     	//TODO when time changes, output_filename changes every time which needs to be corrected
 //       	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_14FilesPerAuthor_2014_"+ (month+1) + "." + 
 //    	dayOfMonth + "_"+ time +".arff" ;
-       	for(int numberFiles=2; numberFiles<15; numberFiles++){
-    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_"+numberFiles+"FilesPerAuthor_syntactic.arff" ;
+       	for(int numberFiles=13; numberFiles<14; numberFiles++){
+    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_"+numberFiles+"FilesPerAuthor_difficult.arff" ;
      
-    	String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/"+numberFiles+"FilesPerAuthor_2014/";
+    //	String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/"+numberFiles+"FilesPerAuthor_2014/";
+    	String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/"+numberFiles+"FilesPerAuthor_2014_difficult/";
 
 
        	List test_file_paths = Util.listTextFiles(test_dir);

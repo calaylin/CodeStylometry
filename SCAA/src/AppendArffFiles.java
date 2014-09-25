@@ -27,12 +27,12 @@ public class AppendArffFiles {
     public static void main(String[] args) throws Exception{
     	
     	
-    	for(int numberFiles = 2; numberFiles <15; numberFiles++){
+    	for(int numberFiles = 13; numberFiles <14; numberFiles++){
  
     	String word = "@data";
-    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/CodeJam_"+numberFiles+"FilesPerAuthor.arff";
-    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/andrews/"+numberFiles+"files2014Andrew.arff";
-    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"files2014FS9Andrew.arff";
+    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/CodeJam_"+numberFiles+"FilesPerAuthor_difficult.arff";
+    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/andrews/"+numberFiles+"filesDifficult2014Andrew.arff";
+    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"baablajbajbakjbfilesDifficult2014FS9Andrew.arff";
 
     	
 
@@ -110,6 +110,7 @@ public class AppendArffFiles {
     	
     	String line = AppendArffFiles.readSpecificLineNumber(file, lineNumber);
     	String arr[] = line.split(",", 2);
+    	
     //	String firstWord = arr[0];
     	String theRest = arr[1];
        	return theRest;

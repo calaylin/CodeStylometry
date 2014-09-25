@@ -27,8 +27,8 @@ public class FeatureCalculators {
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
     	//3 folders to do
-//    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/11FilesPerAuthor_2014/BigWaterMan/";
-    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/14FilesPerAuthor_2014/Tomato/";
+    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/";
+//    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/13FilesPerAuthor_2014_difficult/";
 
     	
 /*
