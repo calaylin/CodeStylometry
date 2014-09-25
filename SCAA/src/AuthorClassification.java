@@ -11,9 +11,10 @@ public class AuthorClassification {
 	public static void main(String[] args) throws Exception 
 	{
 
-		int numberFiles=2;
+		int numberFiles=8;
 		int seedNumber=7;
 		int foldNumber=numberFiles;
+		for(seedNumber=7; seedNumber<11; seedNumber++){
 		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"files2014FS9Andrew.arff";		 
 		RandomForest cls = new RandomForest();
 		Instances data = new Instances(new FileReader(arffFile));
@@ -23,17 +24,16 @@ public class AuthorClassification {
 
 		cls.setOptions(options);
 		cls.buildClassifier(data);
-		System.out.println(cls);
 		
 		
 	    Evaluation eval = new Evaluation(data);
 	    eval.crossValidateModel(cls, data,foldNumber , new Random(seedNumber));
-        System.out.println(eval.toSummaryString("\nResults\n", true));
-        System.out.println(eval.fMeasure(1) + " " + eval.precision(1) + " " + eval.recall(1));
-
+       // System.out.println(eval.toSummaryString("\nResults\n", true));
+//        System.out.println(eval.fMeasure(1) + " " + eval.precision(1) + " " + eval.recall(1));
+System.out.println("etsttet");
 	        
 	      
-		 
+		}	 
 
 
 	}
