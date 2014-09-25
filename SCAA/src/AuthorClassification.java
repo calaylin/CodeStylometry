@@ -17,6 +17,7 @@ public class AuthorClassification {
 		int numberFiles=2;
 		int seedNumber=7;
 		int foldNumber=2;
+		int relaxParam=2;
 		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"files2014FS9Andrew.arff";		 
 		RandomForest cls = new RandomForest();
 		Instances data = new Instances(new FileReader(arffFile));
@@ -34,7 +35,7 @@ public class AuthorClassification {
         System.out.println(eval.fMeasure(1) + " " + eval.precision(1) + " " + eval.recall(1));
 */
 	        
-        WekaDetailedAnalyzer wa = new WekaDetailedAnalyzer(cls);
+		WekaDetailedAnalyzer wa = new WekaDetailedAnalyzer(cls,relaxParam);
 		Evaluation eval = wa.runCrossValidation(data, foldNumber, seedNumber);
 		System.out.println("done! results:");
 		System.out.println(eval.toSummaryString());
