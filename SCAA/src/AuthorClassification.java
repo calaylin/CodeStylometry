@@ -1,3 +1,4 @@
+
 import weka.classifiers.*;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
@@ -12,7 +13,7 @@ public class AuthorClassification {
 
 		int numberFiles=2;
 		int seedNumber=7;
-		int foldNumber=2;
+		int foldNumber=numberFiles;
 		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"files2014FS9Andrew.arff";		 
 		RandomForest cls = new RandomForest();
 		Instances data = new Instances(new FileReader(arffFile));
@@ -22,20 +23,16 @@ public class AuthorClassification {
 
 		cls.setOptions(options);
 		cls.buildClassifier(data);
+		System.out.println(cls);
 		
-	
+		
 	    Evaluation eval = new Evaluation(data);
 	    eval.crossValidateModel(cls, data,foldNumber , new Random(seedNumber));
         System.out.println(eval.toSummaryString("\nResults\n", true));
         System.out.println(eval.fMeasure(1) + " " + eval.precision(1) + " " + eval.recall(1));
 
 	        
-		System.out.println("done! results:");
-		System.out.println(eval.toSummaryString());
-		System.out.println(eval.toClassDetailsString());
-		//out.println(eval.toMatrixString());
-		System.out.println();
-	
+	      
 		 
 
 
