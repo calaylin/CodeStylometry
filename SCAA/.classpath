@@ -6,6 +6,5 @@
 	<classpathentry kind="lib" path="commons-lang3-3.3.2.jar"/>
 	<classpathentry kind="lib" path="commons.io_2.0.1.jar"/>
 	<classpathentry kind="lib" path="weka-dev-3.7.6.jar"/>
-	<classpathentry kind="lib" path="jstylo.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
