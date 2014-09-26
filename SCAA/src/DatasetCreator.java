@@ -335,7 +335,93 @@ public class DatasetCreator
 		
 		
 		
+		public static void SplitDatasetInto2Easy(String testFolder){
+		    
+
+/*			
+			String cppFileName=null;
+		        List test_cpp_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+		 
+		     File cpp_file=null;
+		        for(int i=0; i< test_cpp_paths.size(); i++){
+		        	cpp_file = new File(test_cpp_paths.get(i).toString());
+			        
+*/		        
+        	File author = new File(testFolder);
+		    String[] directories = author.list(new FilenameFilter() 
+				   {
+				     @Override
+				     public boolean accept(File current, String name) 
+				     {
+				       return new File(current, name).isDirectory();
+				     }
+				   });  
+		    
+		        for (int i =0; i< directories.length; i++)
+				   {
+					   //authorname is directoryname - 1 because Andrew put an extra 0 at the end of the authorname
+					   String authorName = directories[i].toString().substring(0, directories[i].toString().length()-1); 
+					   String authorDir = testFolder + directories[i] + "/";
+					   List test_cpp_paths = Util.listCPPFiles(authorDir); //use this for preprocessing 
+					   File cpp_file=null;
+				        for(int j=(test_cpp_paths.size()/2); j< test_cpp_paths.size(); j++){
+				        	cpp_file = new File(test_cpp_paths.get(j).toString());
+				        	System.out.println(cpp_file.getName());
+				        	File txt = new File (cpp_file.getAbsolutePath().toString().substring(0, cpp_file.getAbsolutePath().toString().length()-3)+"txt");
+				        	File dep = new File (cpp_file.getAbsolutePath().toString().substring(0, cpp_file.getAbsolutePath().toString().length()-3)+"dep");
+				        	File ast = new File (cpp_file.getAbsolutePath().toString().substring(0, cpp_file.getAbsolutePath().toString().length()-3)+"ast");
+				        	txt.delete();
+				        	dep.delete();
+				        	ast.delete();
+				        	cpp_file.delete();
+				        	}
+				   }
+
+		}
 		
+		public static void SplitDatasetInto2Difficult(String testFolder){
+		    
+
+/*			
+			String cppFileName=null;
+		        List test_cpp_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+		 
+		     File cpp_file=null;
+		        for(int i=0; i< test_cpp_paths.size(); i++){
+		        	cpp_file = new File(test_cpp_paths.get(i).toString());
+			        
+*/		        
+        	File author = new File(testFolder);
+		    String[] directories = author.list(new FilenameFilter() 
+				   {
+				     @Override
+				     public boolean accept(File current, String name) 
+				     {
+				       return new File(current, name).isDirectory();
+				     }
+				   });  
+		    
+		        for (int i =0; i< directories.length; i++)
+				   {
+					   //authorname is directoryname - 1 because Andrew put an extra 0 at the end of the authorname
+					   String authorName = directories[i].toString().substring(0, directories[i].toString().length()-1); 
+					   String authorDir = testFolder + directories[i] + "/";
+					   List test_cpp_paths = Util.listCPPFiles(authorDir); //use this for preprocessing 
+					   File cpp_file=null;
+				        for(int j=0; j< (test_cpp_paths.size()/2); j++){
+				        	cpp_file = new File(test_cpp_paths.get(j).toString());
+				        	System.out.println(cpp_file.getName());
+				        	File txt = new File (cpp_file.getAbsolutePath().toString().substring(0, cpp_file.getAbsolutePath().toString().length()-3)+"txt");
+				        	File dep = new File (cpp_file.getAbsolutePath().toString().substring(0, cpp_file.getAbsolutePath().toString().length()-3)+"dep");
+				        	File ast = new File (cpp_file.getAbsolutePath().toString().substring(0, cpp_file.getAbsolutePath().toString().length()-3)+"ast");
+				        	txt.delete();
+				        	dep.delete();
+				        	ast.delete();
+				        	cpp_file.delete();
+				        	}
+				   }
+
+		}
 		
 		public static void main(String[] args) throws Exception, IOException, InterruptedException 
 		{
@@ -351,13 +437,13 @@ public class DatasetCreator
 //		organizeByCountry(folder, "byCountry2014", 2014);
 //		copyAuthorsWithAtLeastFileNumber(folder, 6);
 		for(int i=9; i<10; i++){
-		
-			copyAuthorsWithAtLeastFileNumber(folder, 9);
-
+		//	copyAuthorsWithAtLeastFileNumber(folder, 9);
 //		copyAuthorsWithExactFileNumber(folder, i);
-			}
+				}
+		String bigFolderEasy = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/7FilesPerAuthor_2014_easy/";
+		String bigFolderDifficult = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/7FilesPerAuthor_2014_difficult/";
+	//	SplitDatasetInto2Easy(bigFolderEasy);
+	//	SplitDatasetInto2Difficult(bigFolderDifficult);
 
-
-	
 		}
 }
