@@ -1,5 +1,7 @@
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,8 +29,8 @@ public class FeatureCalculators {
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
     	//3 folders to do
-    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/";
-//    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental/13FilesPerAuthor_2014_difficult/";
+//    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/";
+    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2014/";
 
     	
 /*
@@ -45,13 +47,12 @@ public class FeatureCalculators {
     	
     	
     	
-    	//preprocess to get ast dep and txt files for each cpp file
+/*    	//preprocess to get ast dep and txt files for each cpp file
     	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
     	for(int i=0; i< test_file_paths.size(); i++){
       	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
-
         }
-        
+        */
        //if dep file is not created because of the unknown bug, create the dep file again
         String depFileName=null;
         List test_dep_paths = Util.listDepFiles(testFolder); //use this for preprocessing       
@@ -61,16 +62,44 @@ public class FeatureCalculators {
         	dep_file = new File(test_dep_paths.get(i).toString());
         	System.out.println(test_dep_paths.get(i).toString());
         	//if dep file is not created properly, the file size is 0 bytes
-        	if(dep_file.length()==0)
+        	//ADD CHANGE, CHECK IF CPP FILE'S DEP FILE EXISTS INSTEAD OF LISTNG THE DEP FILES
+        	if(dep_file.length()==0 )
         	{
         		depFileName = test_dep_paths.get(i).toString();
-        		preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");      
+        	//	preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
+              	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
+
         		}  	
         }
         
+  
         
-        
-        
+       
+    	
+/*    	//if something wrong was created at a certain time, delete all related 
+    	// ast txt and dep files and recreate all three.
+    	List test_all_paths = Util.listTextFiles(testFolder); 
+        for(int i=0; i< test_all_paths.size(); i++){
+    	File file = new File(test_all_paths.get(i).toString());
+    	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+     
+    	System.out.println("Filename:"+file.getName()+ "Modified at: " + sdf.format(file.lastModified()));
+    	Util.writeFile("Parent: "+new File(file.getParent()).getName()+" Filename:"+file.getName()+ "Modified at: " + sdf.format(file.lastModified())+"\n", 
+    			"/Users/Aylin/Desktop/filemodifications.txt", true);
+    	
+        String modificationTime = sdf.format(file.lastModified()).toString();
+        System.out.println(modificationTime);
+        if(modificationTime.contains("09/26/2014 10:")==true){
+        	File txt = new File (file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"txt");
+        	File dep = new File (file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"dep");
+        	File ast = new File (file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"ast");
+        	txt.delete();
+        	dep.delete();
+        	ast.delete();
+          	preprocessDataToTXTdepAST(file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"cpp");
+
+        	}
+        }*/
         
         
         
