@@ -28,21 +28,21 @@ public class FeatureCalculators {
     
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
-    	//3 folders to do
 //    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/";
+//    	String testFolder = "/Users/Aylin/Desktop/test/";
     	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2014/";
 
     	
-/*
-    //Clean non cpp files from folder
+
+/*    //Clean non cpp files from folder
     	List test_file_paths = Util.listAllFiles(testFolder); //use this for preprocessing       
         for(int i=0; i< test_file_paths.size(); i++){
   			if(!test_file_paths.get(i).toString().substring(test_file_paths.get(i).toString().length()-3, test_file_paths.get(i).toString().length()).contains("cpp"))
   			{
   				File testFiles = new File(test_file_paths.get(i).toString());		
   				testFiles.delete();
-  			}}
-       */
+  			}}*/
+       
     	
     	
     	
@@ -51,23 +51,30 @@ public class FeatureCalculators {
     	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
     	for(int i=0; i< test_file_paths.size(); i++){
       	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
-        }
-        */
+        }*/
+        
        //if dep file is not created because of the unknown bug, create the dep file again
         String depFileName=null;
         List test_dep_paths = Util.listDepFiles(testFolder); //use this for preprocessing       
-      
         File dep_file=null;
         for(int i=0; i< test_dep_paths.size(); i++){
         	dep_file = new File(test_dep_paths.get(i).toString());
+        	
+        	
+/*        	//check if there are correct number of dep files for each author
+        	 List author_dep_paths = Util.listDepFiles(dep_file.getParent());
+        	 if(author_dep_paths.size()<9){
+        	System.out.println(author_dep_paths.size()+" "+dep_file.getParent());}*/
+        	 
+        	 
         	System.out.println(test_dep_paths.get(i).toString());
         	//if dep file is not created properly, the file size is 0 bytes
         	//ADD CHANGE, CHECK IF CPP FILE'S DEP FILE EXISTS INSTEAD OF LISTNG THE DEP FILES
         	if(dep_file.length()==0 )
         	{
         		depFileName = test_dep_paths.get(i).toString();
-        	//	preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
-              	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
+        		preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
+            //  	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
 
         		}  	
         }
