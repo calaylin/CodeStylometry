@@ -53,7 +53,7 @@ public class ARFFFactory {
 //		s = s.replaceAll(",", "");
 //		return s.substring(0, i - 1);
 		String s = f.getParentFile().getName();
-		return s.substring(0, s.length() - 1);
+		return s.substring(0, s.length());
 	}
 
 	public void makeARFF(String rootDirectory, String targetPath) {
