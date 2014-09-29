@@ -11,17 +11,20 @@ public class AuthorClassification {
 	@SuppressWarnings("null")
 	public static void main(String[] args) throws Exception 
 	{
-
+		double accuracy=0;
 		int endRelax = 10;
 		int numberFiles;
 		int seedNumber;
-		String fileName = "/Users/Aylin/Desktop/relaxedresults_syntactic_Sep28.txt";
+		double total =0;
+		double average =0;
+		String fileName = "/Users/Aylin/Desktop/relaxedresults_syntactic_Sep28avg.txt";
 		for(numberFiles=2; numberFiles<15; numberFiles++){
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
+			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
+				  total=0;
 
-		for(seedNumber=0; seedNumber<10; seedNumber++){
+				  for(seedNumber=0; seedNumber<10; seedNumber++){
 			int foldNumber=numberFiles;
-			for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
 
 		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/syntactic/"+numberFiles+"Files2014FS9Andrew_ready.arff";		 
 		RandomForest cls = new RandomForest();
@@ -47,19 +50,26 @@ public class AuthorClassification {
 		
 		eval.crossValidateModel(cls, data,foldNumber , new Random(seedNumber));
 			
-		System.out.println("Relaxed by: "+relaxPar+", seedNo:"+seedNumber+", "+numberFiles+" files, "+data.numClasses()+" authors");
-		Util.writeFile("Relaxed by: "+relaxPar+", seedNo:"+seedNumber+", "+numberFiles+" files, "+data.numClasses()+" authors",
+		System.out.println("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses());
+		Util.writeFile("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses(),
 				fileName, true);
 	     
 			
-		System.out.println("Relaxed by: "+relaxPar+", Correctly classified instances: "+eval.pctCorrect()+" OOB error: "+cls.measureOutOfBagError());
-	     Util.writeFile(", Correctly classified instances: "+eval.pctCorrect()+", OOB error: "+cls.measureOutOfBagError()+"\n",
+		System.out.println("Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
+	     Util.writeFile(", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n",
 	    		 fileName, true);	
-	     
-				
-	      
-			}	 
-	     Util.writeFile("\n",
+
+	     accuracy=eval.pctCorrect();
+	     total =total+accuracy;
+	     average = total/endRelax;
+			}	
+
+				  System.out.println("total is "+total);
+				  System.out.println("avg is "+average);
+				  System.out.println("accuracy is "+accuracy);
+
+		System.out.println("\nThe average accuracy with "+numberFiles+"file is "+average+"\n");	
+	     Util.writeFile("\nThe average accuracy with "+numberFiles+"file is "+average+"\n",
 	    		 fileName, true);		
 	     }}
 
