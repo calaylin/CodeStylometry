@@ -17,8 +17,8 @@ public class AuthorClassification {
 		int seedNumber;
 		double total =0;
 		double average =0;
-		String fileName = "/Users/Aylin/Desktop/relaxedresults_syntactic_Sep28avg.txt";
-		for(numberFiles=2; numberFiles<15; numberFiles++){
+		String fileName = "/Users/Aylin/Desktop/relaxedresults_7files_easy_Sep29avg.txt";
+		for(numberFiles=14; numberFiles<15; numberFiles++){
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
 			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
 				  total=0;
@@ -26,7 +26,7 @@ public class AuthorClassification {
 				  for(seedNumber=0; seedNumber<10; seedNumber++){
 			int foldNumber=numberFiles;
 
-		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/syntactic/"+numberFiles+"Files2014FS9Andrew_ready.arff";		 
+		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"Files2014FS9Andrew_easy_ready.arff";		 
 		RandomForest cls = new RandomForest();
 		Instances data = new Instances(new FileReader(arffFile));
 		data.setClassIndex(data.numAttributes() - 1);
@@ -68,8 +68,8 @@ public class AuthorClassification {
 				  System.out.println("avg is "+average);
 				  System.out.println("accuracy is "+accuracy);
 
-		System.out.println("\nThe average accuracy with "+numberFiles+"file is "+average+"\n");	
-	     Util.writeFile("\nThe average accuracy with "+numberFiles+"file is "+average+"\n",
+		System.out.println("\nThe average accuracy with "+numberFiles+"files is "+average+"\n");	
+	     Util.writeFile("\nThe average accuracy with "+numberFiles+"files is "+average+"\n",
 	    		 fileName, true);		
 	     }}
 
