@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
 
@@ -27,12 +28,12 @@ public class AppendArffFiles {
     public static void main(String[] args) throws Exception{
     	
     	
-    	for(int numberFiles = 13; numberFiles <14; numberFiles++){
+    	for(int numberFiles = 9; numberFiles <10; numberFiles++){
  
     	String word = "@data";
-    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/CodeJam_"+numberFiles+"FilesPerAuthor_difficult.arff";
-    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/andrews/"+numberFiles+"filesDifficult2014Andrew.arff";
-    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"baablajbajbakjbfilesDifficult2014FS9Andrew.arff";
+    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/" +"CodeJam_"+numberFiles+"FilesPerAuthor_bigExperiment345_syntactic.arff" ;
+    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/andrews/"+numberFiles+"FilesPerAuthor_2014_bigExperiments_syntactic.arff";
+    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/bigExperiments/"+numberFiles+"FilesBigExperiment345_2014FS9Andrew_syntactic.arff";
 
     	
 
@@ -45,42 +46,52 @@ public class AppendArffFiles {
     	for(int secondFileAttributes=4; secondFileAttributes <=atDataLineNumberFile2; secondFileAttributes++ )
     	{Util.writeFile(readSpecificLineNumber(file2, secondFileAttributes) + "\n", outputArffName, true);}
 
-//    	int atDataLineNumberFile1 = 0;
-//    	int numberOfInstances = 1038; //173 authors, each with 6 files
-   // 	int numberFiles = 2;
-    	int numberOfInstances = 62 * numberFiles; 
+    	int numberOfInstances = 345 * numberFiles; 
 
 		int file2LineNumberStart=atDataLineNumberFile2+1;
 
     	for(int i = atDataLineNumberFile1+1; i <= atDataLineNumberFile1 + numberOfInstances; i++)
     	{
     		//Use this if the second file is in descending order
-        	for(int j=atDataLineNumberFile2+numberOfInstances;j>=file2LineNumberStart; j--)
+        	//for(int j=atDataLineNumberFile2+numberOfInstances;j>=file2LineNumberStart; j--)
 
         		//for normal case in ascending order
-//        	for(int j=file2LineNumberStart; j <= atDataLineNumberFile2+numberOfInstances; j++)
+        	for(int j=file2LineNumberStart; j <= atDataLineNumberFile2+numberOfInstances; j++)
         	{
 				System.out.println(j);
 
         		if (AppendArffFiles.getInstanceID(file1, i).equals(AppendArffFiles.getInstanceID(file2, j)))
         				{
+        			
         					String firstPart = getInstance(file1, i);
         					String secondPart = getInstanceVector(file2, j);
         					System.out.println(firstPart);
-        					Util.writeFile( firstPart+ "," +secondPart + "\n", outputArffName, true);
-        		    		System.out.println(j);
+        					
+        					final Scanner scanner = new Scanner(outputArffName);
+        					while (scanner.hasNextLine()) {
+        					   final String lineFromFile = scanner.nextLine();
+        					   if(lineFromFile.equals(firstPart)==false) { 
+        						   Util.writeFile( firstPart+ "," +secondPart + "\n", outputArffName, true);
+               		    			System.out.println(j);  
+        					   }
+        					}
+        					
+        					
+        					
         		    		
-        		    		//Use this if the second file is in descending order
+        		    		
+/*        		    		//Use this if the second file is in descending order
         		   		if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
         		    			atDataLineNumberFile2=j - numberOfInstances +numberFiles;
         		    		}
         		    		j=file2LineNumberStart-1;
         		    		//end of descending order  
-/*        		    		
-        		    	//if file2 is in ascending order		
-        		    		file2LineNumberStart= j -1;
-        		    		j = atDataLineNumberFile2+numberOfInstances;*/
-        				}      				
+*/        		    		
+        		    	//if file2 is in ascending order	
+        		    		if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
+        		    		file2LineNumberStart= j-9;
+        		    		j = atDataLineNumberFile2+numberOfInstances;
+        				}      			}	
     		}
     	}
     	}    	
