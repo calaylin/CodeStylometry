@@ -46,11 +46,11 @@ public class MergeArffFiles {
     	for(int secondFileAttributes=4; secondFileAttributes <=atDataLineNumberFile2; secondFileAttributes++ )
     	{Util.writeFile(readSpecificLineNumber(file2, secondFileAttributes) + "\n", outputArffName, true);}
 
-    	int numberOfInstances = 345 * numberFiles; 
+    	int numberOfInstances = (345 * numberFiles); 
 
 		int file2LineNumberStart=atDataLineNumberFile2+1;
 
-    	for(int i = atDataLineNumberFile1+1; i <= atDataLineNumberFile1 + numberOfInstances+1; i++)
+    	for(int i = atDataLineNumberFile1+1; i <= atDataLineNumberFile1 + numberOfInstances; i++)
     	{
     		//Use this if the second file is in descending order
         	//for(int j=atDataLineNumberFile2+numberOfInstances;j>=file2LineNumberStart; j--)
