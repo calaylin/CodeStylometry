@@ -17,21 +17,21 @@ public class AuthorClassification {
 		int seedNumber;
 		double total =0;
 		double average =0;
-		String fileName = "/Users/Aylin/Desktop/relaxedresults_7files_easy_Sep29avg.txt";
-		for(numberFiles=14; numberFiles<15; numberFiles++){
+		String fileName = "/Users/Aylin/Desktop/relaxedresultsFaster_incremental_syntactic_Oct6avg.txt";
+		for(numberFiles=2; numberFiles<15; numberFiles++){
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
 			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
 				  total=0;
 
-				  for(seedNumber=0; seedNumber<10; seedNumber++){
+				  for(seedNumber=0; seedNumber<15; seedNumber++){
 			int foldNumber=numberFiles;
 
-		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"Files2014FS9Andrew_easy_ready.arff";		 
+		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/syntactic/CodeJam_"+numberFiles+"FilesPerAuthor_syntactic_ready.arff";		 
 		RandomForest cls = new RandomForest();
 		Instances data = new Instances(new FileReader(arffFile));
 		data.setClassIndex(data.numAttributes() - 1);
 		data.stratify(foldNumber);
-		System.out.println("Number of instances: " + data.numInstances()+" and number of authors: " + data.numClasses());
+//		System.out.println("Number of instances: " + data.numInstances()+" and number of authors: " + data.numClasses());
 //		System.out.println("Number of authors: " + data.numClasses());
 
 		String[] options = weka.core.Utils.splitOptions("-I 300 -K 0 -S "+seedNumber);
@@ -50,26 +50,26 @@ public class AuthorClassification {
 		
 		eval.crossValidateModel(cls, data,foldNumber , new Random(seedNumber));
 			
-		System.out.println("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses());
+/*		System.out.println("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses());
 		Util.writeFile("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses(),
-				fileName, true);
+				fileName, true);*/
 	     
 			
-		System.out.println("Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
+/*		System.out.println("Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
 	     Util.writeFile(", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n",
-	    		 fileName, true);	
+	    		 fileName, true);	*/
 
 	     accuracy=eval.pctCorrect();
 	     total =total+accuracy;
-	     average = total/endRelax;
+	     average = total/seedNumber;
 			}	
 
-				  System.out.println("total is "+total);
+/*				  System.out.println("total is "+total);
 				  System.out.println("avg is "+average);
-				  System.out.println("accuracy is "+accuracy);
+				  System.out.println("accuracy is "+accuracy);*/
 
 		System.out.println("\nThe average accuracy with "+numberFiles+"files is "+average+"\n");	
-	     Util.writeFile("\nThe average accuracy with "+numberFiles+"files is "+average+"\n",
+	     Util.writeFile("\nThe average accuracy with "+numberFiles+"files is "+average+", relaxed by, "+relaxPar+", \n",
 	    		 fileName, true);		
 	     }}
 
