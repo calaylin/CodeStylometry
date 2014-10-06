@@ -6,6 +6,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 
@@ -173,7 +174,7 @@ public class DatasetCreator
 
 		public static void copyAuthorsWithExactFileNumber(String test_cpp_dir, int fileCount){
 		File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/"
-					   +fileCount+"FilesExactlyPerAuthor_2014") ;
+					   +fileCount+"FilesExactlyPerAuthor_2012_validation_exact") ;
 	  	if(!destFolderParent.exists())
     	{
 			///System.out.println(file.getAbsolutePath());
@@ -299,8 +300,8 @@ public class DatasetCreator
 						   System.out.println(filePath);  
 						   
 						   File srcFolder = new File(author_cpp_dir);
-					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/"
-						   +fileCount+"FilesAtLeastPerAuthor") ;
+					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/randomAuthorProblems/"
+						   +fileCount+"FilesAtLeastPerAuthor_2012_validation") ;
 					      	File destFolder = new File(destFolderParent +"/"+ directories[j].toString()) ;
 					    	if(!destFolder.exists())
 					    	{
@@ -313,8 +314,78 @@ public class DatasetCreator
 					    	
 						    List cpp_file_paths = Util.listCPPFiles(author_cpp_dir);
 						    for(int k=0; k< fileCount; k++)
+						    	
 						    {
 						    	File srcFile=new File(cpp_file_paths.get(k).toString());							    	
+						    	File destFile= new File(destFolder + "/"+ srcFile.getName());
+						    	FileUtils.copyFile(srcFile, destFile);
+						     	if(!destFile.exists())
+						    	{
+									///System.out.println(file.getAbsolutePath());
+						    		destFile.mkdirs();
+								}
+						    }
+						    
+
+					    	
+					    	
+					   }   
+				   }	   
+			    }
+			}
+
+		public static void copyAuthorsRandomlyWithAtLeastFileNumber(String test_cpp_dir, int fileCount, int year) throws IOException{
+
+			   File file = new File(test_cpp_dir);
+			   String[] directories = file.list(new FilenameFilter() 
+			   {
+			     @Override
+			     public boolean accept(File current, String name) 
+			     {
+			       return new File(current, name).isDirectory();
+			     }
+			   });
+			   System.out.println(Arrays.toString(directories));
+			   for(int j=0; j< directories.length; j++)
+			    {
+//				   System.out.println(directories[j].toString());
+				   String author_cpp_dir = test_cpp_dir + directories[j] +"/";
+//				   System.out.println(author_cpp_dir);
+				   List test_file_paths = Util.listCPPFiles(author_cpp_dir);
+				   for(int i=0; i< test_file_paths.size(); i++)
+				   {
+//						int testIDlength = test_file_paths.get(i).toString().length();   
+					   //if the author has 6 cpp files
+					//   int fileCount =6;
+					   if(test_file_paths.size() >= fileCount+4)
+					   {
+						   System.out.println(author_cpp_dir);
+
+						   String filePath = test_file_paths.get(i).toString();
+						   //one empty file in each folder, skip that
+						   System.out.println(filePath);  
+						   
+						   File srcFolder = new File(author_cpp_dir);
+					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/randomAuthorProblems/"
+						   +fileCount+"FilesRandomAtLeastPerAuthor"+year) ;
+					      	File destFolder = new File(destFolderParent +"/"+ directories[j].toString()) ;
+					    	if(!destFolder.exists())
+					    	{
+								///System.out.println(file.getAbsolutePath());
+					    		destFolder.mkdirs();
+							}
+					    	
+					    	
+					  
+					    	
+						    List cpp_file_paths = Util.listCPPFiles(author_cpp_dir);
+						    Random no;
+						    int use;
+						    for(int k=0; k< fileCount; k++)
+						    {
+						    	no = new Random(cpp_file_paths.size());
+								use = no.nextInt() + 1;
+						    	File srcFile=new File(cpp_file_paths.get(use).toString());							    	
 						    	File destFile= new File(destFolder + "/"+ srcFile.getName());
 						    	FileUtils.copyFile(srcFile, destFile);
 						     	if(!destFile.exists())
@@ -432,13 +503,14 @@ public class DatasetCreator
 		String outputFolderName ="mergedAuthors";
 	//	mergeSameAuthors(parentDir, outputFolderName);
 		
-	
-		String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp/";
+        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2012MoreFileUsers/";
+
 //		organizeByCountry(folder, "byCountry2014", 2014);
 //		copyAuthorsWithAtLeastFileNumber(folder, 6);
 		for(int i=9; i<10; i++){
-		//	copyAuthorsWithAtLeastFileNumber(folder, 9);
-//		copyAuthorsWithExactFileNumber(folder, i);
+		//	copyAuthorsWithExactFileNumber(folder, 9);
+		//copyAuthorsWithAtLeastFileNumber(folder, i);
+			copyAuthorsRandomlyWithAtLeastFileNumber(folder, i, 2012);
 				}
 		String bigFolderEasy = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/7FilesPerAuthor_2014_easy/";
 		String bigFolderDifficult = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/7FilesPerAuthor_2014_difficult/";
