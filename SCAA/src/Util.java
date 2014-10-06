@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
@@ -271,6 +272,7 @@ public class Util {
 
         }
 
+        Collections.sort(textFiles);
         return textFiles;
 
 }
@@ -305,7 +307,7 @@ public class Util {
 
 
         }
-
+        Collections.sort(textFiles);
         return textFiles;
 
 }
@@ -342,7 +344,7 @@ public class Util {
 
 
         }
-
+        Collections.sort(textFiles);
         return textFiles;
 
 }
@@ -376,7 +378,7 @@ public class Util {
 
 
         }
-
+        Collections.sort(textFiles);
         return textFiles;
 
 }
@@ -411,7 +413,7 @@ public class Util {
 
 
         }
-
+        Collections.sort(textFiles);
         return textFiles;
 
 }
