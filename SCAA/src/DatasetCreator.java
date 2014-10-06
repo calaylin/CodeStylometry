@@ -357,7 +357,7 @@ public class DatasetCreator
 //						int testIDlength = test_file_paths.get(i).toString().length();   
 					   //if the author has 6 cpp files
 					//   int fileCount =6;
-					   if(test_file_paths.size() >= fileCount+4)
+					   if(test_file_paths.size() >= fileCount)
 					   {
 						   System.out.println(author_cpp_dir);
 
@@ -381,11 +381,20 @@ public class DatasetCreator
 						    List cpp_file_paths = Util.listCPPFiles(author_cpp_dir);
 						    Random no;
 						    int use;
-						    for(int k=0; k< fileCount; k++)
+						    
+						    for(int k=0; k < fileCount; k++)
 						    {
-						    	no = new Random(cpp_file_paths.size());
-								use = no.nextInt() + 1;
-						    	File srcFile=new File(cpp_file_paths.get(use).toString());							    	
+						    	no = new Random();
+
+								use = no.nextInt(cpp_file_paths.size());
+								System.out.println("Size: "+cpp_file_paths.size() +" Using: "+use);
+
+//						    	File srcFile=new File(cpp_file_paths.get(use).toString());
+						   	File srcFile=new File(cpp_file_paths.get(k).toString());
+
+								System.out.println(srcFile.getAbsolutePath());
+								System.out.println(cpp_file_paths.get(k).toString());
+
 						    	File destFile= new File(destFolder + "/"+ srcFile.getName());
 						    	FileUtils.copyFile(srcFile, destFile);
 						     	if(!destFile.exists())
@@ -393,6 +402,7 @@ public class DatasetCreator
 									///System.out.println(file.getAbsolutePath());
 						    		destFile.mkdirs();
 								}
+						     	
 						    }
 						    
 
