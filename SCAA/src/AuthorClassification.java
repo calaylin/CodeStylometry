@@ -1,6 +1,7 @@
 import weka.classifiers.*;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
+import weka.core.Utils;
 
 import java.io.FileReader;
 import java.util.*;
@@ -14,19 +15,21 @@ public class AuthorClassification {
 		double accuracy=0;
 		int endRelax = 10;
 		int numberFiles;
+		int numFeatures=10; //0 is the default logM+1
 		int seedNumber;
 		double total =0;
 		double average =0;
-		String fileName = "/Users/Aylin/Desktop/relaxedresultsFaster_incremental_syntactic_Oct6avg.txt";
-		for(numberFiles=2; numberFiles<15; numberFiles++){
+		String fileName = "/Users/Aylin/Desktop/TESTrelaxedresultsFaster_incremental_FS9Andrew_Oct6avg.txt";
+		for(numberFiles=3; numberFiles<15; numberFiles++){
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
 			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
 				  total=0;
+				  average=0;
 
-				  for(seedNumber=0; seedNumber<15; seedNumber++){
+				  for(seedNumber=1; seedNumber<6; seedNumber++){
 			int foldNumber=numberFiles;
 
-		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/syntactic/CodeJam_"+numberFiles+"FilesPerAuthor_syntactic_ready.arff";		 
+		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"files2014FS9Andrew_ready.arff";		 
 		RandomForest cls = new RandomForest();
 		Instances data = new Instances(new FileReader(arffFile));
 		data.setClassIndex(data.numAttributes() - 1);
@@ -34,7 +37,7 @@ public class AuthorClassification {
 //		System.out.println("Number of instances: " + data.numInstances()+" and number of authors: " + data.numClasses());
 //		System.out.println("Number of authors: " + data.numClasses());
 
-		String[] options = weka.core.Utils.splitOptions("-I 300 -K 0 -S "+seedNumber);
+		String[] options = weka.core.Utils.splitOptions("-I 300 -K "+numFeatures+" -S "+seedNumber);
 
 		cls.setOptions(options);
 		cls.buildClassifier(data);
@@ -55,10 +58,19 @@ public class AuthorClassification {
 				fileName, true);*/
 	     
 			
-/*		System.out.println("Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
-	     Util.writeFile(", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n",
-	    		 fileName, true);	*/
+		if(numFeatures==0){
+			int defaultNumFeatures=(int)Utils.log2(data.numAttributes()) + 1;
+			Util.writeFile("Number of features used, "+defaultNumFeatures+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n",
+		    		 fileName, true);	
+			System.out.println("Number of features used, "+defaultNumFeatures+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
 
+		}
+		else{	
+		System.out.println("Number of features used, "+cls.getNumFeatures()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
+
+			     Util.writeFile("Number of features used, "+cls.getNumFeatures()+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n",
+	    		 fileName, true);	
+		}
 	     accuracy=eval.pctCorrect();
 	     total =total+accuracy;
 	     average = total/seedNumber;
