@@ -7,12 +7,14 @@ extracts features from the text files to create an arff file that can be used in
 
 1) Do preprocessing for all files in the directory structure, year-> author name -> all_cpp_files_ofauthor
 run preprocessDataToTXTdepAST(filePath) in FeatureCalculators.java test_cpp_dir has all the cpp files of an author.  Check if all dep, txt, and ast files are created correctly. (eg, if the cpp file has only comments and no code, the dep, txt and ast files will be empty. Exclude such cases from authorship attribution.) If you only want syntactic features, make sure that in joern-tools, change astLabel.py's lines:
+
         if len(children) == 0:
             node.attr['label'] = attrDict['node']
         else:
             node.attr['label'] = attrDict['type']
             
             to
+
 
         if len(children) == 0:
             node.attr['label'] = attrDict['type']
