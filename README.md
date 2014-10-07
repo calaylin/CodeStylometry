@@ -16,6 +16,6 @@ output_filename is your arff file path
 
 3) Extract features: from all text files in the directory structure, year-> author name -> all_txt_files_ofauthor (output from joern) extract the desired features to be written to feature vectors.
 
-Once the arff file is written, open it in WEKA or call WEKA from java and use the necessary classifiers, and attribute selection methods to do authorship attribution.
+4)Once the arff file is written, open it in WEKA or call WEKA from java and use the necessary classifiers, and attribute selection methods to do authorship attribution.  AuthorClassification.java can also be used with a random forest and relaxed attribution.
 
 SCAA
