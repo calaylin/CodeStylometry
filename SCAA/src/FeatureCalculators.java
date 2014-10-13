@@ -28,12 +28,32 @@ public class FeatureCalculators {
     
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
-//    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/";
-//    	String testFolder = "/Users/Aylin/Desktop/test/";
-    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2014/";
+    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/randomAuthorProblems/9FilesRandomAtLeastPer250Author_allfeatures/";
+/*    	//check if the same authors exist
+    	String mainFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2012_validation_exact";
+    	   String depFileName=null;
+           List test_dep_paths = Util.listDepFiles(testFolder); //use this for preprocessing 
+           List main_dep_paths = Util.listDepFiles(mainFolder); //use this for preprocessing       
 
-    	
+           File dep_file=null;
+       //    System.out.println(test_dep_paths.size());
+           for(int i=0; i< test_dep_paths.size(); i++){
+           	dep_file = new File(test_dep_paths.get(i).toString());
+  	
+           	//check if there are correct number of dep files for each author
+           	 List author_dep_paths = Util.listDepFiles(dep_file.getParent());
 
+            if(main_dep_paths.contains(dep_file)==false){
+  				File delFiles = new File(dep_file.getParent());		
+  				System.out.println(delFiles);
+            }
+            }*/
+           	
+           	 
+           	
+           	
+           	
+           
 /*    //Clean non cpp files from folder
     	List test_file_paths = Util.listAllFiles(testFolder); //use this for preprocessing       
         for(int i=0; i< test_file_paths.size(); i++){
@@ -47,45 +67,60 @@ public class FeatureCalculators {
     	
     	
     	
-/*    	//preprocess to get ast dep and txt files for each cpp file
+    	//preprocess to get ast dep and txt files for each cpp file
     	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
     	for(int i=0; i< test_file_paths.size(); i++){
-      	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
-        }*/
-        
-       //if dep file is not created because of the unknown bug, create the dep file again
+    //		System.out.println(test_file_paths.get(i).toString());
+     	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
+        }
+     
+    	
+    	/*    	
+      //if dep file is not created because of the unknown bug, create the dep file again
         String depFileName=null;
         List test_dep_paths = Util.listDepFiles(testFolder); //use this for preprocessing       
         File dep_file=null;
+    //    System.out.println(test_dep_paths.size());
         for(int i=0; i< test_dep_paths.size(); i++){
         	dep_file = new File(test_dep_paths.get(i).toString());
         	
         	
-/*        	//check if there are correct number of dep files for each author
+        	//check if there are correct number of dep files for each author
         	 List author_dep_paths = Util.listDepFiles(dep_file.getParent());
         	 if(author_dep_paths.size()<9){
-        	System.out.println(author_dep_paths.size()+" "+dep_file.getParent());}*/
+        	System.out.println(author_dep_paths.size()+" dep files "+dep_file.getParent());}
+        	 
+        	 List author_ast_paths = Util.listASTFiles(dep_file.getParent());
+        	 if(author_ast_paths.size()<9){
+        	System.out.println(author_ast_paths.size()+" ast files "+dep_file.getParent());}
+        	 
+        	 List author_txt_paths = Util.listTextFiles(dep_file.getParent());
+        	 if(author_txt_paths.size()<9){
+        	System.out.println(author_txt_paths.size()+" txt files "+dep_file.getParent());}
         	 
         	 
-        	System.out.println(test_dep_paths.get(i).toString());
+        	 
+        //	System.out.println(test_dep_paths.get(i).toString());
         	//if dep file is not created properly, the file size is 0 bytes
         	//ADD CHANGE, CHECK IF CPP FILE'S DEP FILE EXISTS INSTEAD OF LISTNG THE DEP FILES
-        	if(dep_file.length()==0 )
+        	        	if(dep_file.length()==0 )
         	{
         		depFileName = test_dep_paths.get(i).toString();
         		preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
             //  	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
 
-        		}  	
-        }
+        		}  
+        		}
         
+        
+        */
   
         
        
     	
-/*    	//if something wrong was created at a certain time, delete all related 
+    	//if something wrong was created at a certain time, delete all related 
     	// ast txt and dep files and recreate all three.
-    	List test_all_paths = Util.listTextFiles(testFolder); 
+/*    	List test_all_paths = Util.listTextFiles(testFolder); 
         for(int i=0; i< test_all_paths.size(); i++){
     	File file = new File(test_all_paths.get(i).toString());
     	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -96,7 +131,7 @@ public class FeatureCalculators {
     	
         String modificationTime = sdf.format(file.lastModified()).toString();
         System.out.println(modificationTime);
-        if(modificationTime.contains("09/26/2014 10:")==true){
+        if(modificationTime.contains("10/01/2014 09:")==true){
         	File txt = new File (file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"txt");
         	File dep = new File (file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"dep");
         	File ast = new File (file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"ast");
@@ -642,6 +677,32 @@ public class FeatureCalculators {
 		     }
 		     return counter;
 	  }
+	  
+	  public static float [] getInfoGainCPPKeywordsTF(String sourceCode, String [] cppKeywords)
+	  {
+/*		  //84 reserved cpp keywords + override and final
+		  String [] cppKeywords = {"alignas",	"alignof",	"and",	"and_eq",	"asm",	"auto",	
+				  "bitand",	"bitor",	"bool",	"break",	"case",	"catch",	"char",	"char16_t",	"char32_t",
+				  "class",	"compl",	"const",	"constexpr",	"const_cast",	"continue",	"decltype",	"default",	
+				  "delete",	"do",	"double",	"dynamic_cast",	"else",	"enum",	"explicit",	"export",	
+				  "extern",	"FALSE",	"float",	"for",	"friend",	"goto",	"if",	"inline",	"int",	"long",	
+				  "mutable",	"namespace",	"new",	"noexcept",	"not",	"not_eq",	"nullptr",	"operator",	"or",
+				  "or_eq"	,"private"	,"protected"	,"public"	,"register",	"reinterpret_cast",	"return",	
+				  "short",	"signed",	"sizeof",	"static",	"static_assert",	"static_cast",	"struct",	
+				  "switch",	"template",	"this"	,"thread_local",	"throw",	"TRUE",	"try",	"typedef",	"typeid",
+				  "typename",	"union",	"unsigned",	"using",	"virtual",	"void",	"volatile",	"wchar_t",	"while",
+				  "xor",	"xor_eq", "override", "final"};*/
+		  
+		     float symbolCount = cppKeywords.length;
+		     float [] counter = new float[(int) symbolCount];
+		     for (int i =0; i<symbolCount; i++){
+		  	 String str = cppKeywords[i].toString();
+		  	 counter[i] = StringUtils.countMatches(sourceCode, str);  	   
+
+		     }
+		     return counter;
+	  }
+	  
 	  
 	  
 
