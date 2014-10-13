@@ -18,21 +18,13 @@ public class FeatureExtractorInfoGain {
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 		
 		//list the cppKeywords that appear in infogain
-		  String [] cppKeywords = {"alignas",	"alignof",	"and",	"and_eq",	"asm",	"auto",	
-				  "bitand",	"bitor",	"bool",	"break",	"case",	"catch",	"char",	"char16_t",	"char32_t",
-				  "class",	"compl",	"const",	"constexpr",	"const_cast",	"continue",	"decltype",	"default",	
-				  "delete",	"do",	"double",	"dynamic_cast",	"else",	"enum",	"explicit",	"export",	
-				  "extern",	"FALSE",	"float",	"for",	"friend",	"goto",	"if",	"inline",	"int",	"long",	
-				  "mutable",	"namespace",	"new",	"noexcept",	"not",	"not_eq",	"nullptr",	"operator",	"or",
-				  "or_eq"	,"private"	,"protected"	,"public"	,"register",	"reinterpret_cast",	"return",	
-				  "short",	"signed",	"sizeof",	"static",	"static_assert",	"static_cast",	"struct",	
-				  "switch",	"template",	"this"	,"thread_local",	"throw",	"TRUE",	"try",	"typedef",	"typeid",
-				  "typename",	"union",	"unsigned",	"using",	"virtual",	"void",	"volatile",	"wchar_t",	"while",
-				  "xor",	"xor_eq", "override", "final"};
+		  String [] cppKeywords = {"auto","case", "class",	"compl",	"const","inline","namespace","operator",
+				  "signed", "static",	"template",	"typedef","typename","unsigned",	"using"};
 		  
 
-    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/InfoGain/" +"InfoGain_FilesPerAuthor_bigExperiments.arff" ;
-		String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2014/";
+    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/InfoGain/" +"InfoGain_9FilesPer250Author2012_bigExperiments.arff" ;
+
+    	String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/250authors/9FilesExactlyPerAuthor_2012_validation_exact_allfeatures/";
        	List test_file_paths = Util.listTextFiles(test_dir);
 
 	String text = "";
@@ -58,9 +50,20 @@ public class FeatureExtractorInfoGain {
 
     
 //List the info gain nodes
-    	String[] ASTtypesTF = {""};
-        String[] ASTtypesTFIDF = {""};
-        String[] ASTtypesAvgDep = {""};
+    	String[] ASTtypesTF = {"T",	"t",	"FOR",	"cout",	"stdout",	"freopen",	"in",	"tt",	"tc",	
+    			"test",	"open",	"ForStatement",	"UnaryExpression",	"IncDecOp",	"scanf",	"close",	
+    			"argc",	"argv",	"fin",	"stdin",	"ofstream",	"ForInit",	"cin",	"solve",	"fopen",	
+    			"ifstream",	"fprintf",	"cas",	"printf",	"ShiftExpression",	"REP",	"fout",	
+    			"forn",	"endl",	"size_t",	"out",	"cases",	"cerr"};
+        String[] ASTtypesTFIDF = {"FOR",	"cout",	"stdout",	"freopen",	"tc",	"test",	"open",	
+        		"close",	"argc",	"argv",	"fin",	"stdin",	"ofstream",	"cin",	"solve",	"fopen",	
+        		"ifstream",	"fprintf",	"cas",	"REP",	"fout",	"forn",	"endl",	"size_t",	"out",	"cases",	"cerr"};
+        String[] ASTtypesAvgDep = {"T",	"d",	"w",	"t",	"r",	"FOR",	"cout",	"stdout",	"freopen",	"small",	
+        		"in",	"tt",	"tc",	"input",	"test",	"open",	"ForStatement",	"UnaryExpression",	"inline",	
+        		"IncDecOp",	"scanf",	"close",	"argc",	"argv",	"const",	"fin",	"stdin",	"ofstream",	
+        		"ForInit",	"cin",	"solve",	"txt",	"sync_with_stdio",	"fopen",	"ifstream",	"std",	"cas",	
+        		"printf",	"ShiftExpression",	"REP",	"fout",	"forn",	"Case",	"size_t",	"out",	"cases",	
+        		"output",	"cerr"};
 
     for (int i=0; i<ASTtypesTF.length; i++)	
     	
