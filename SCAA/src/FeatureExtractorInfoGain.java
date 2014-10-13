@@ -152,7 +152,7 @@ public class FeatureExtractorInfoGain {
 		//get tfidf of each AST Type present	 
 	    float[] DepastTypeTFIDF = FeatureCalculators.DepASTTypeTFIDF(DepASTText, test_dir, ASTtypesTFIDF);
 	    for (int j=0; j<ASTtypesTFIDF.length; j++)
-		{Util.writeFile(ASTtypesTFIDF[j]+",", output_filename, true);}	
+		{Util.writeFile(DepastTypeTFIDF[j]+",", output_filename, true);}	
 		
     	float [] depFeature =DepthASTNode.getAvgDepthASTNode(DepASTText,ASTtypesAvgDep);
     	for(int k=0;k<depFeature.length;k++)
