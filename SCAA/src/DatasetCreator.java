@@ -357,7 +357,7 @@ public class DatasetCreator
 //						int testIDlength = test_file_paths.get(i).toString().length();   
 					   //if the author has 6 cpp files
 					//   int fileCount =6;
-					   if(test_file_paths.size() >= fileCount)
+					   if(test_file_paths.size() >= (fileCount+3))
 					   {
 						   System.out.println(author_cpp_dir);
 

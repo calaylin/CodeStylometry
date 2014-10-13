@@ -31,9 +31,10 @@ public class MergeArffFiles {
     	for(int numberFiles = 9; numberFiles <10; numberFiles++){
  
     	String word = "@data";																		
-    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/" +"CodeJam_"+numberFiles+"FilesPerAuthor_bigExperiment345.arff" ;
-    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/andrews/"+numberFiles+"FilesPerAuthor_2014_bigExperiments.arff";
-    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/bigExperiments/"+numberFiles+"FilesBigExperiment345_2014FS9Andrew.arff";
+    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/InfoGain/" +"InfoGain_"+numberFiles+"FilesPer250Author2012_bigExperiments.arff" ;
+
+    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/andrews/"+numberFiles+"FilesExactlyPer250Author_2012.arff";
+    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/InfoGain/"+numberFiles+"BigExperiment250_2012InfoGainfrom2014.arff";
 
     	
 
@@ -46,12 +47,14 @@ public class MergeArffFiles {
     	for(int secondFileAttributes=4; secondFileAttributes <=atDataLineNumberFile2; secondFileAttributes++ )
     	{Util.writeFile(readSpecificLineNumber(file2, secondFileAttributes) + "\n", outputArffName, true);}
 
-    	int numberOfInstances = (345 * numberFiles); 
+    	int numberOfInstances = (250 * numberFiles); 
 
 		int file2LineNumberStart=atDataLineNumberFile2+1;
 
     	for(int i = atDataLineNumberFile1+1; i <= atDataLineNumberFile1 + numberOfInstances; i++)
     	{
+			String instID = getInstanceID(file1, i);
+
     		//Use this if the second file is in descending order
         	//for(int j=atDataLineNumberFile2+numberOfInstances;j>=file2LineNumberStart; j--)
 
@@ -59,8 +62,7 @@ public class MergeArffFiles {
         	for(int j=file2LineNumberStart; j <= atDataLineNumberFile2+numberOfInstances; j++)
         	{
 				System.out.println(j);
-
-        		if (MergeArffFiles.getInstanceID(file1, i).equals(MergeArffFiles.getInstanceID(file2, j)))
+        		if (instID.equals(MergeArffFiles.getInstanceID(file2, j)))
         				{
         			
         					String firstPart = getInstance(file1, i);
@@ -88,10 +90,10 @@ public class MergeArffFiles {
         		    		//end of descending order  
 */        		    		
         		    	//if file2 is in ascending order	
-        		    		if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
-        		    		file2LineNumberStart= j-9;
+        		    	//	if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
+        		    	//	file2LineNumberStart= j-9;
         		    		j = atDataLineNumberFile2+numberOfInstances;        				      			
-        		    }
+        		    //}
         		}
     		}
         	}

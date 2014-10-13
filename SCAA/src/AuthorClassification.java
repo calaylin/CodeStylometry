@@ -13,14 +13,15 @@ public class AuthorClassification {
 	public static void main(String[] args) throws Exception 
 	{
 		double accuracy=0;
-		int endRelax = 10;
+		int endRelax = 1;
 		int numberFiles;
-		int numFeatures=10; //0 is the default logM+1
+		int numFeatures=0; //0 is the default logM+1
 		int seedNumber;
 		double total =0;
 		double average =0;
-		String fileName = "/Users/Aylin/Desktop/TESTrelaxedresultsFaster_incremental_FS9Andrew_Oct6avg.txt";
-		for(numberFiles=3; numberFiles<15; numberFiles++){
+		String fileName = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/Results/AutomatedResults/main250/"
+				+ "InfoGain250Authors2014NoDummies.txt";
+		for(numberFiles=9; numberFiles<10; numberFiles++){
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
 			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
 				  total=0;
@@ -29,7 +30,7 @@ public class AuthorClassification {
 				  for(seedNumber=1; seedNumber<6; seedNumber++){
 			int foldNumber=numberFiles;
 
-		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mergedArffs/incremental/"+numberFiles+"files2014FS9Andrew_ready.arff";		 
+		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/InfoGain/"+numberFiles+"BigExperiment250_2014FS9Andrew_infoGain0total200features.arff";		 
 		RandomForest cls = new RandomForest();
 		Instances data = new Instances(new FileReader(arffFile));
 		data.setClassIndex(data.numAttributes() - 1);
@@ -60,15 +61,18 @@ public class AuthorClassification {
 			
 		if(numFeatures==0){
 			int defaultNumFeatures=(int)Utils.log2(data.numAttributes()) + 1;
-			Util.writeFile("Number of features used, "+defaultNumFeatures+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n",
-		    		 fileName, true);	
+			Util.writeFile("Number of features used, "+defaultNumFeatures+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n"
+		    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"\n"  ,
+					fileName, true);	
 			System.out.println("Number of features used, "+defaultNumFeatures+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
 
 		}
+		
 		else{	
 		System.out.println("Number of features used, "+cls.getNumFeatures()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
 
-			     Util.writeFile("Number of features used, "+cls.getNumFeatures()+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n",
+			     Util.writeFile("Number of features used, default is 0 (logM+1) "+cls.getNumFeatures()+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n"
+			    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"\n"  ,
 	    		 fileName, true);	
 		}
 	     accuracy=eval.pctCorrect();
