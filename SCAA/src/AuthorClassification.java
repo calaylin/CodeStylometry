@@ -30,7 +30,7 @@ public class AuthorClassification {
 				  for(seedNumber=1; seedNumber<6; seedNumber++){
 			int foldNumber=numberFiles;
 
-		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/InfoGain/"+numberFiles+"BigExperiment250_2014FS9Andrew_infoGain0total200features.arff";		 
+		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/InfoGain/"+numberFiles+"BigExperiment250_2012InfoGainfrom2014_ready.arff";		 
 		RandomForest cls = new RandomForest();
 		Instances data = new Instances(new FileReader(arffFile));
 		data.setClassIndex(data.numAttributes() - 1);

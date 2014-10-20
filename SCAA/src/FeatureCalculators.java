@@ -28,7 +28,8 @@ public class FeatureCalculators {
     
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
-    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/randomAuthorProblems/9FilesRandomAtLeastPer250Author_allfeatures/";
+    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
+    			+ "bigExperiments/randomAuthorProblems/9FilesRandomAtLeastPer250Author_syntactic/";
 /*    	//check if the same authors exist
     	String mainFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2012_validation_exact";
     	   String depFileName=null;
@@ -71,11 +72,11 @@ public class FeatureCalculators {
     	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
     	for(int i=0; i< test_file_paths.size(); i++){
     //		System.out.println(test_file_paths.get(i).toString());
-     	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
+     //	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
         }
      
     	
-    	/*    	
+    	   	
       //if dep file is not created because of the unknown bug, create the dep file again
         String depFileName=null;
         List test_dep_paths = Util.listDepFiles(testFolder); //use this for preprocessing       
@@ -106,14 +107,14 @@ public class FeatureCalculators {
         	        	if(dep_file.length()==0 )
         	{
         		depFileName = test_dep_paths.get(i).toString();
-        		preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
+        	//	preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
             //  	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
 
         		}  
         		}
         
         
-        */
+        
   
         
        

@@ -173,8 +173,8 @@ public class DatasetCreator
 	 
 
 		public static void copyAuthorsWithExactFileNumber(String test_cpp_dir, int fileCount){
-		File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/"
-					   +fileCount+"FilesExactlyPerAuthor_2012_validation_exact") ;
+		File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
+					   +fileCount+"FilesExactlyPerAuthor_2014") ;
 	  	if(!destFolderParent.exists())
     	{
 			///System.out.println(file.getAbsolutePath());
@@ -460,6 +460,55 @@ public class DatasetCreator
 
 		}
 		
+		public static int AvgLineOfCodePerFile(String folder) throws IOException{
+/*			
+		  	File author = new File(folder);
+		    String[] directories = author.list(new FilenameFilter() 
+				   {
+				     @Override
+				     public boolean accept(File current, String name) 
+				     {
+				       return new File(current, name).isDirectory();
+				     }
+				   });
+		    int authorCount=directories.length;*/
+			
+			   List test_cpp_paths = Util.listCPPFiles(folder); //use this for preprocessing 
+			   int numberFiles=test_cpp_paths.size();
+			   int totalLines=0;
+			   int avgLines=0;
+			   for(int j=0; j< (test_cpp_paths.size()); j++){
+		        	
+				   FileReader fr=new FileReader(test_cpp_paths.get(j).toString());
+				   BufferedReader br=new BufferedReader(fr); 
+				   int i=0;
+				   boolean isEOF=false;
+				   do{
+				   String t=br.readLine();
+				   if(t!=null){
+				   isEOF=true;
+				   t=t.replaceAll("\\n|\\t|\\s", "");
+				   if((!t.equals("")) && (!t.startsWith("//"))) {
+				   i = i + 1;
+				   }
+				   }
+				   else {
+				   isEOF=false;
+				   }
+				   }while(isEOF);
+				   br.close();
+				   fr.close();
+				   totalLines=totalLines+i;
+			   }  
+			   
+			   avgLines=totalLines/numberFiles;
+			   
+			   
+			   
+			return avgLines; 
+			
+		}
+		
 		public static void SplitDatasetInto2Difficult(String testFolder){
 		    
 
@@ -513,14 +562,14 @@ public class DatasetCreator
 		String outputFolderName ="mergedAuthors";
 	//	mergeSameAuthors(parentDir, outputFolderName);
 		
-        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2012MoreFileUsers/";
-
+        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp/";
+        System.out.println(AvgLineOfCodePerFile(folder));
 //		organizeByCountry(folder, "byCountry2014", 2014);
 //		copyAuthorsWithAtLeastFileNumber(folder, 6);
 		for(int i=9; i<10; i++){
-		//	copyAuthorsWithExactFileNumber(folder, 9);
+		//	copyAuthorsWithExactFileNumber(folder, 19);
 		//copyAuthorsWithAtLeastFileNumber(folder, i);
-			copyAuthorsRandomlyWithAtLeastFileNumber(folder, i, 2012);
+		//	copyAuthorsRandomlyWithAtLeastFileNumber(folder, i, 2012);
 				}
 		String bigFolderEasy = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/7FilesPerAuthor_2014_easy/";
 		String bigFolderDifficult = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/7FilesPerAuthor_2014_difficult/";
