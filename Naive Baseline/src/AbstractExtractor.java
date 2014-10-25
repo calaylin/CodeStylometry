@@ -55,7 +55,7 @@ public abstract class AbstractExtractor implements FeatureSet {
 		this.literals = new MultiSet<String>();
 		this.commentList = new LinkedList<>();
 		StringBuffer sink = new StringBuffer();
-
+		System.out.println(source);
 		while (source.length() > 0) {
 			if (matchesLiteral(source)) {
 				// read in the literal
@@ -78,6 +78,7 @@ public abstract class AbstractExtractor implements FeatureSet {
 		/* separating the code by blocks */
 		this.blocks = new CodeBlock<String>(this.file.getName());
 		CodeBlock<String> currentBlock = blocks;
+		System.out.println(source);
 		while (source.length() > 0) {
 			if (isPrototype(source)) {
 				// adding all statements into the previous block
@@ -90,6 +91,9 @@ public abstract class AbstractExtractor implements FeatureSet {
 				currentBlock = temp;
 			} else if (isBlockEnd(source, sink)) {
 				// adding all statements into the previous block
+				if (currentBlock == null) {
+					System.out.println("currentBlock == null");
+				}
 				currentBlock.addStatements(breakIntoStmts(sink));
 				sink = new StringBuffer();
 				// using the parent block
