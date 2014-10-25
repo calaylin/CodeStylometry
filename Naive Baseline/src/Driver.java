@@ -5,11 +5,8 @@ public class Driver {
 	 * else in the Naive-Baseline package
 	 */
 	public static void main(String args[]) {
-		if (args.length != 2) {
-			System.err
-					.println("Usage: <root directory of all test files> <target ARFF file>");
-			System.exit(1);
-		}
-		(new ARFFFactory4()).makeARFF(args[0], args[1]);
+		String s1 = "C:\\Users\\Andrew\\Downloads\\debug";
+		String s2 = "C:\\Users\\Andrew\\Downloads\\out.arff";
+		(new ARFFFactory4()).makeARFF(s1, s2);
 	}
 }

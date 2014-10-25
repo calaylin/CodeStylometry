@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/Util.java</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/SCAA/src/Util.java</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
