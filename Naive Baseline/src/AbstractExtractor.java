@@ -169,6 +169,10 @@ public abstract class AbstractExtractor implements FeatureSet {
 		sink.append(source.charAt(0));
 		source.deleteCharAt(0);
 	}
+	
+	final char peek(StringBuffer source) {
+		return source.charAt(0);
+	}
 
 	/**
 	 * Remember this eats up the regex char!
@@ -179,7 +183,9 @@ public abstract class AbstractExtractor implements FeatureSet {
 	 */
 	final void readUntil(StringBuffer source, StringBuffer sink, String regex) {
 		this.readBefore(source, sink, regex);
-		this.extractChar(source, sink);
+		if (this.peek(source) != '"') {
+			this.extractChar(source, sink);
+		}
 	}
 
 	/**
