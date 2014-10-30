@@ -28,13 +28,12 @@ public class MergeArffFiles {
     public static void main(String[] args) throws Exception{
     	
     	
-    	for(int numberFiles = 9; numberFiles <10; numberFiles++){
+    	for(int numberFiles = 8; numberFiles <9; numberFiles++){
  
     	String word = "@data";																		
-    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/InfoGain/" +"InfoGain_"+numberFiles+"FilesPer250Author2012_bigExperiments.arff" ;
-
-    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/andrews/"+numberFiles+"FilesExactlyPer250Author_2012.arff";
-    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/InfoGain/"+numberFiles+"BigExperiment250_2012InfoGainfrom2014.arff";
+    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mallory_CSFS_new.arff" ;
+    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mallory_CSFS_andrew.arff";
+    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mallory_CSFSANdrew_all.arff";
 
     	
 
@@ -47,11 +46,14 @@ public class MergeArffFiles {
     	for(int secondFileAttributes=4; secondFileAttributes <=atDataLineNumberFile2; secondFileAttributes++ )
     	{Util.writeFile(readSpecificLineNumber(file2, secondFileAttributes) + "\n", outputArffName, true);}
 
-    	int numberOfInstances = (250 * numberFiles); 
+    	int numberOfInstances = (65 * numberFiles)-1; 
+    	int numberOfInstances1 = 519; 
+
 
 		int file2LineNumberStart=atDataLineNumberFile2+1;
 
-    	for(int i = atDataLineNumberFile1+1; i <= atDataLineNumberFile1 + numberOfInstances; i++)
+//    	for(int i = atDataLineNumberFile1+1; i <= atDataLineNumberFile1 + numberOfInstances; i++)
+        for(int i = atDataLineNumberFile1+1; i <= atDataLineNumberFile1 + numberOfInstances1; i++)
     	{
 			String instID = getInstanceID(file1, i);
 
@@ -92,7 +94,7 @@ public class MergeArffFiles {
         		    	//if file2 is in ascending order	
         		    	//	if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
         		    	//	file2LineNumberStart= j-9;
-        		    		j = atDataLineNumberFile2+numberOfInstances;        				      			
+        		    	//	j = atDataLineNumberFile2+numberOfInstances;        				      			
         		    //}
         		}
     		}

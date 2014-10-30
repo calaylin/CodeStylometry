@@ -174,7 +174,7 @@ public class DatasetCreator
 
 		public static void copyAuthorsWithExactFileNumber(String test_cpp_dir, int fileCount){
 		File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
-					   +fileCount+"FilesExactlyPerAuthor_2014") ;
+					   +fileCount+"FilesExactlyPerAuthor_2012") ;
 	  	if(!destFolderParent.exists())
     	{
 			///System.out.println(file.getAbsolutePath());
@@ -300,7 +300,7 @@ public class DatasetCreator
 						   System.out.println(filePath);  
 						   
 						   File srcFolder = new File(author_cpp_dir);
-					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/randomAuthorProblems/"
+					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
 						   +fileCount+"FilesAtLeastPerAuthor_2012_validation") ;
 					      	File destFolder = new File(destFolderParent +"/"+ directories[j].toString()) ;
 					    	if(!destFolder.exists())
@@ -553,6 +553,48 @@ public class DatasetCreator
 
 		}
 		
+		
+		public static void showSameAuthors(String parentDir1, String parentDir2)
+		{
+			
+					  File authors1 = new File(parentDir1);
+
+				   String[] authorDirectories1 = authors1.list(new FilenameFilter() 
+				   {
+				     @Override
+				     public boolean accept(File current, String name) 
+				     {
+				       return new File(current, name).isDirectory();
+				     }
+				   });	
+				   
+				   File authors2 = new File(parentDir2);
+
+				   String[] authorDirectories2 = authors2.list(new FilenameFilter() 
+				   {
+				     @Override
+				     public boolean accept(File current, String name) 
+				     {
+				       return new File(current, name).isDirectory();
+				     }
+				   });		
+				   
+				   for(int k=0; k< authorDirectories1.length; k++)
+				    { 		
+					   for(int l=0; l< authorDirectories2.length; l++)
+					    { 	
+						   if(authorDirectories1[k].toString().equals(authorDirectories2[l].toString()))
+						   {				
+						   List test_cpp_paths = Util.listCPPFiles(parentDir1+authorDirectories1[k]+"/"); //use this for preprocessing 
+						   File cpp_file=null;
+					        if(test_cpp_paths.size()==8){
+					        	   System.out.println(authorDirectories1[k]);
+						   	}
+					    }
+				    }
+			    }}
+				   
+		
 		public static void main(String[] args) throws Exception, IOException, InterruptedException 
 		{
 		String test_cpp_dir = "test_cpp_dir";	
@@ -562,19 +604,23 @@ public class DatasetCreator
 		String outputFolderName ="mergedAuthors";
 	//	mergeSameAuthors(parentDir, outputFolderName);
 		
-        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp/";
+        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/6FilesPerAuthor_2014";
         System.out.println(AvgLineOfCodePerFile(folder));
 //		organizeByCountry(folder, "byCountry2014", 2014);
-//		copyAuthorsWithAtLeastFileNumber(folder, 6);
+    //    copyAuthorsWithAtLeastFileNumber(folder, 14);
 		for(int i=9; i<10; i++){
 		//	copyAuthorsWithExactFileNumber(folder, 19);
 		//copyAuthorsWithAtLeastFileNumber(folder, i);
 		//	copyAuthorsRandomlyWithAtLeastFileNumber(folder, i, 2012);
 				}
-		String bigFolderEasy = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/7FilesPerAuthor_2014_easy/";
-		String bigFolderDifficult = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp_incremental_syntactic/7FilesPerAuthor_2014_difficult/";
+		String bigFolderEasy = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/12FilesPerAuthor_2014_easy/";
+		String bigFolderDifficult = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/12FilesPerAuthor_2014_difficult/";
 	//	SplitDatasetInto2Easy(bigFolderEasy);
 	//	SplitDatasetInto2Difficult(bigFolderDifficult);
+		String folder1 ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2012MoreFileUsers/";
+		String folder2 ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp/";
+
+		//showSameAuthors(folder1, folder2);
 
 		}
 }

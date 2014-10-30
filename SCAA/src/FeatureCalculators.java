@@ -28,8 +28,9 @@ public class FeatureCalculators {
     
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
-    	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
-    			+ "bigExperiments/randomAuthorProblems/9FilesRandomAtLeastPer250Author_syntactic/";
+ //   	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/6FilesPerAuthor_2014_difficult_syntactic/";
+    	String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/6FilesPerAuthor_2014_easy/";
+;
 /*    	//check if the same authors exist
     	String mainFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2012_validation_exact";
     	   String depFileName=null;
@@ -55,24 +56,25 @@ public class FeatureCalculators {
            	
            	
            
-/*    //Clean non cpp files from folder
+    //Clean non cpp files from folder
     	List test_file_paths = Util.listAllFiles(testFolder); //use this for preprocessing       
         for(int i=0; i< test_file_paths.size(); i++){
   			if(!test_file_paths.get(i).toString().substring(test_file_paths.get(i).toString().length()-3, test_file_paths.get(i).toString().length()).contains("cpp"))
   			{
   				File testFiles = new File(test_file_paths.get(i).toString());		
   				testFiles.delete();
-  			}}*/
+  			}}
        
     	
     	
     	
     	
     	//preprocess to get ast dep and txt files for each cpp file
-    	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+    //	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
     	for(int i=0; i< test_file_paths.size(); i++){
     //		System.out.println(test_file_paths.get(i).toString());
-     //	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
+    //		preprocessDataToASTFeatures(test_file_paths.get(i).toString());
+    // 	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
         }
      
     	
@@ -85,18 +87,18 @@ public class FeatureCalculators {
         for(int i=0; i< test_dep_paths.size(); i++){
         	dep_file = new File(test_dep_paths.get(i).toString());
         	
-        	
+        	int fileNo=8;
         	//check if there are correct number of dep files for each author
         	 List author_dep_paths = Util.listDepFiles(dep_file.getParent());
-        	 if(author_dep_paths.size()<9){
+        	 if(author_dep_paths.size()<fileNo){
         	System.out.println(author_dep_paths.size()+" dep files "+dep_file.getParent());}
         	 
         	 List author_ast_paths = Util.listASTFiles(dep_file.getParent());
-        	 if(author_ast_paths.size()<9){
+        	 if(author_ast_paths.size()<fileNo){
         	System.out.println(author_ast_paths.size()+" ast files "+dep_file.getParent());}
         	 
         	 List author_txt_paths = Util.listTextFiles(dep_file.getParent());
-        	 if(author_txt_paths.size()<9){
+        	 if(author_txt_paths.size()<fileNo){
         	System.out.println(author_txt_paths.size()+" txt files "+dep_file.getParent());}
         	 
         	 
@@ -107,8 +109,8 @@ public class FeatureCalculators {
         	        	if(dep_file.length()==0 )
         	{
         		depFileName = test_dep_paths.get(i).toString();
-        	//	preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
-            //  	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
+        		preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
+             // 	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
 
         		}  
         		}
@@ -119,9 +121,9 @@ public class FeatureCalculators {
         
        
     	
-    	//if something wrong was created at a certain time, delete all related 
+/*    	//if something wrong was created at a certain time, delete all related 
     	// ast txt and dep files and recreate all three.
-/*    	List test_all_paths = Util.listTextFiles(testFolder); 
+    	List test_all_paths = Util.listTextFiles(testFolder); 
         for(int i=0; i< test_all_paths.size(); i++){
     	File file = new File(test_all_paths.get(i).toString());
     	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -132,18 +134,23 @@ public class FeatureCalculators {
     	
         String modificationTime = sdf.format(file.lastModified()).toString();
         System.out.println(modificationTime);
-        if(modificationTime.contains("10/01/2014 09:")==true){
+   //     if(modificationTime.contains("10/01/2014 09:")==true){
         	File txt = new File (file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"txt");
         	File dep = new File (file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"dep");
         	File ast = new File (file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"ast");
+        	if (dep.exists()==false)
+        	{   System.out.println(file.getAbsolutePath().toString());       	
+        		//preprocessDataToTXTdepAST(file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"cpp");
+}
+        	else{
         	txt.delete();
         	dep.delete();
         	ast.delete();
           	preprocessDataToTXTdepAST(file.getAbsolutePath().toString().substring(0, file.getAbsolutePath().toString().length()-3)+"cpp");
+        }
 
-        	}
-        }*/
-        
+        }
+*/        
         
         
         

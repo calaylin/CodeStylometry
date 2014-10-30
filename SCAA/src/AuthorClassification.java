@@ -1,4 +1,5 @@
 import weka.classifiers.*;
+import weka.classifiers.evaluation.ThresholdCurve;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 import weka.core.Utils;
@@ -9,7 +10,6 @@ import java.util.*;
 public class AuthorClassification {
 
 
-	@SuppressWarnings("null")
 	public static void main(String[] args) throws Exception 
 	{
 		double accuracy=0;
@@ -19,18 +19,25 @@ public class AuthorClassification {
 		int seedNumber;
 		double total =0;
 		double average =0;
-		String fileName = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/Results/AutomatedResults/main250/"
-				+ "InfoGain250Authors2014NoDummies.txt";
+
+		String fileName  ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/" 
+				+	"2classes20pairs/"+"CSFS.txt";
+		for(int authorNo=1; authorNo<21; authorNo+=1){
+			String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/2classes20pairs/CSFS/"
+					+ "9files2014FS9Andrew_ready_pair"+authorNo+".arff";
 		for(numberFiles=9; numberFiles<10; numberFiles++){
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
 			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
 				  total=0;
+				  
 				  average=0;
 
-				  for(seedNumber=1; seedNumber<6; seedNumber++){
+				  for(seedNumber=1; seedNumber<5; seedNumber++){
 			int foldNumber=numberFiles;
 
-		String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/InfoGain/"+numberFiles+"BigExperiment250_2012InfoGainfrom2014_ready.arff";		 
+
+	//	+"CodeJam_"+numberFiles+"FilesPerAuthor_difficult2014_syntactic.arff" ;
+ 
 		RandomForest cls = new RandomForest();
 		Instances data = new Instances(new FileReader(arffFile));
 		data.setClassIndex(data.numAttributes() - 1);
@@ -45,6 +52,8 @@ public class AuthorClassification {
 		Evaluation eval=null;
 		
 		
+
+		
 		if(endRelax==1)
 		 eval = new Evaluation(data);
 		else
@@ -57,12 +66,24 @@ public class AuthorClassification {
 /*		System.out.println("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses());
 		Util.writeFile("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses(),
 				fileName, true);*/
-	     
+		 ThresholdCurve tc = new ThresholdCurve();
+	     int classIndex = 0;
+	     Instances result1 = tc.getCurve(eval.predictions(), classIndex);	
+	     tc.getROCArea(result1);
+	    
+	     Instances result2 = tc.getCurve(eval.predictions(), 1);	
+	     tc.getROCArea(result2);
+		System.out.println("AUC class1: "+   tc.getROCArea(result1) + " AUC class2: "+ tc.getROCArea(result2) +"\n"+"Number of features used, "+cls.getNumFeatures()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
+
+	     Util.writeFile("AUC class1: "+   tc.getROCArea(result1) + " AUC class2: "+ tc.getROCArea(result2)   +"\n"+"Number of features used, default is 0 (logM+1) "+cls.getNumFeatures()+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n"
+	    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"\n"  ,
+		 fileName, true);	
+
 			
 		if(numFeatures==0){
 			int defaultNumFeatures=(int)Utils.log2(data.numAttributes()) + 1;
 			Util.writeFile("Number of features used, "+defaultNumFeatures+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n"
-		    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"\n"  ,
+		    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"max depth of trees"+cls.getMaxDepth()+"\n"  ,
 					fileName, true);	
 			System.out.println("Number of features used, "+defaultNumFeatures+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
 
@@ -86,9 +107,10 @@ public class AuthorClassification {
 
 		System.out.println("\nThe average accuracy with "+numberFiles+"files is "+average+"\n");	
 	     Util.writeFile("\nThe average accuracy with "+numberFiles+"files is "+average+", relaxed by, "+relaxPar+", \n",
-	    		 fileName, true);		
-	     }}
+	    		 fileName, true);	
 
+	     }}
+		}
 	}
 	
 }

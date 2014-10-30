@@ -40,17 +40,16 @@ public class FeatureExtractor {
     	//TODO when time changes, output_filename changes every time which needs to be corrected
 //       	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_14FilesPerAuthor_2014_"+ (month+1) + "." + 
 //    	dayOfMonth + "_"+ time +".arff" ;
-       	for(int numberFiles=9; numberFiles<10; numberFiles++){
-    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigExperiments/" +"CodeJam_"+numberFiles+"FilesPerAuthor_bigExperiments250_syntactic.arff" ;
-		String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/250authors/9FilesExactlyPerAuthor_2012_validation_exact_syntactic/";
-
+       	for(int numberFiles=8; numberFiles<9; numberFiles++){
+    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/" +"mallory_CSFS_new.arff" ;
+		String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/mallory/mallory_CSFS/";
 
        	List test_file_paths = Util.listTextFiles(test_dir);
 
 	String text = "";
   	//Writing the test arff
   	//first specify relation
-	Util.writeFile("@relation "+numberFiles+"9FilesExactlyPer250Author_2012_syntactic "+"\n"+"\n", output_filename, true);
+	Util.writeFile("@relation "+numberFiles+"TRAININGmallory_CSFS "+"\n"+"\n", output_filename, true);
 	Util.writeFile("@attribute instanceID {", output_filename, true);
    	List test_cpp_paths = Util.listCPPFiles(test_dir);
    	for(int j=0; j < test_cpp_paths.size();j++ )
@@ -78,7 +77,7 @@ public class FeatureExtractor {
         String[] ASTtypes =FeatureCalculators.uniqueDepASTTypes(test_dir);
     
     //if only interested in syntactic features use this if the dep file contains user input    
-    //String[] ASTtypes =FeatureCalculators.uniqueASTTypes(test_dir);
+ //   String[] ASTtypes =FeatureCalculators.uniqueASTTypes(test_dir);
 
     
 //    for (int i=0; i<APIsymbols.length; i++)	
