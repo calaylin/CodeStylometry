@@ -1,6 +1,7 @@
 import weka.classifiers.*;
 import weka.classifiers.evaluation.ThresholdCurve;
 import weka.classifiers.trees.RandomForest;
+import weka.core.Attribute;
 import weka.core.Instances;
 import weka.core.Utils;
 
@@ -21,10 +22,11 @@ public class AuthorClassification {
 		double average =0;
 
 		String fileName  ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/" 
-				+	"2classes20pairs/"+"CSFS.txt";
+				+	"2classes20pairs/"+"balblaSFS.txt";
 		for(int authorNo=1; authorNo<21; authorNo+=1){
-			String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/2classes20pairs/CSFS/"
-					+ "9files2014FS9Andrew_ready_pair"+authorNo+".arff";
+			String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/2classes20pairs/SFS/"
+					+ "CodeJam_9FilesPerAuthor_syntactic_ready_pairtest"+authorNo+".arff";
+			//		+ "9files2014FS9Andrew_ready_pair"+authorNo+".arff";
 		for(numberFiles=9; numberFiles<10; numberFiles++){
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
 			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
@@ -51,9 +53,7 @@ public class AuthorClassification {
 		cls.buildClassifier(data);
 		Evaluation eval=null;
 		
-		
 
-		
 		if(endRelax==1)
 		 eval = new Evaluation(data);
 		else
