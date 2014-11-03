@@ -1,9 +1,13 @@
+import weka.attributeSelection.InfoGainAttributeEval;
+import weka.attributeSelection.Ranker;
 import weka.classifiers.*;
 import weka.classifiers.evaluation.ThresholdCurve;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Attribute;
 import weka.core.Instances;
 import weka.core.Utils;
+import weka.filters.Filter;
+import weka.filters.supervised.attribute.AttributeSelection;
 
 import java.io.FileReader;
 import java.util.*;
@@ -22,11 +26,11 @@ public class AuthorClassification {
 		double average =0;
 
 		String fileName  ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/" 
-				+	"2classes20pairs/"+"balblaSFS.txt";
+				+	"2classes20pairs/"+"CSFS_auc.txt";
 		for(int authorNo=1; authorNo<21; authorNo+=1){
-			String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/2classes20pairs/SFS/"
-					+ "CodeJam_9FilesPerAuthor_syntactic_ready_pairtest"+authorNo+".arff";
-			//		+ "9files2014FS9Andrew_ready_pair"+authorNo+".arff";
+			String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/2classes20pairs/CSFS/"
+			//		+ "CodeJam_9FilesPerAuthor_syntactic_ready_pair"+authorNo+".arff";
+					+ "9files2014FS9Andrew_ready_pair"+authorNo+".arff";
 		for(numberFiles=9; numberFiles<10; numberFiles++){
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
 			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
@@ -38,12 +42,34 @@ public class AuthorClassification {
 			int foldNumber=numberFiles;
 
 
-	//	+"CodeJam_"+numberFiles+"FilesPerAuthor_difficult2014_syntactic.arff" ;
  
 		RandomForest cls = new RandomForest();
 		Instances data = new Instances(new FileReader(arffFile));
+		
+		//Start information gain that selects up to 200 features that have nonzero infogain
+		int n = 200; // number of features to select 
+	    AttributeSelection attributeSelection = new  AttributeSelection(); 
+	     Ranker ranker = new Ranker(); 
+	     ranker.setNumToSelect(n); 
+	     ranker.setThreshold(0);
+	     InfoGainAttributeEval infoGainAttributeEval = new InfoGainAttributeEval(); 
+	     attributeSelection.setEvaluator(infoGainAttributeEval); 
+	     attributeSelection.setSearch(ranker); 
+	     attributeSelection.setInputFormat(data); 
+	     data = Filter.useFilter(data, attributeSelection); 
+	     //end of infogain
+	     
+	     
 		data.setClassIndex(data.numAttributes() - 1);
 		data.stratify(foldNumber);
+
+
+
+		
+		
+		
+		
+		
 //		System.out.println("Number of instances: " + data.numInstances()+" and number of authors: " + data.numClasses());
 //		System.out.println("Number of authors: " + data.numClasses());
 
@@ -73,7 +99,8 @@ public class AuthorClassification {
 	    
 	     Instances result2 = tc.getCurve(eval.predictions(), 1);	
 	     tc.getROCArea(result2);
-		System.out.println("AUC class1: "+   tc.getROCArea(result1) + " AUC class2: "+ tc.getROCArea(result2) +"\n"+"Number of features used, "+cls.getNumFeatures()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
+		System.out.println("AUC class1: "+   tc.getROCArea(result1) + " AUC class2: "+ tc.getROCArea(result2));
+				//"\n"+"Number of features used, "+cls.getNumFeatures()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
 
 	     Util.writeFile("AUC class1: "+   tc.getROCArea(result1) + " AUC class2: "+ tc.getROCArea(result2)   +"\n"+"Number of features used, default is 0 (logM+1) "+cls.getNumFeatures()+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n"
 	    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"\n"  ,
@@ -85,12 +112,12 @@ public class AuthorClassification {
 			Util.writeFile("Number of features used, "+defaultNumFeatures+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n"
 		    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"max depth of trees"+cls.getMaxDepth()+"\n"  ,
 					fileName, true);	
-			System.out.println("Number of features used, "+defaultNumFeatures+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
+		//	System.out.println("Number of features used, "+defaultNumFeatures+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
 
 		}
 		
 		else{	
-		System.out.println("Number of features used, "+cls.getNumFeatures()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
+	//	System.out.println("Number of features used, "+cls.getNumFeatures()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
 
 			     Util.writeFile("Number of features used, default is 0 (logM+1) "+cls.getNumFeatures()+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n"
 			    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"\n"  ,
@@ -105,7 +132,7 @@ public class AuthorClassification {
 				  System.out.println("avg is "+average);
 				  System.out.println("accuracy is "+accuracy);*/
 
-		System.out.println("\nThe average accuracy with "+numberFiles+"files is "+average+"\n");	
+	//	System.out.println("\nThe average accuracy with "+numberFiles+"files is "+average+"\n");	
 	     Util.writeFile("\nThe average accuracy with "+numberFiles+"files is "+average+", relaxed by, "+relaxPar+", \n",
 	    		 fileName, true);	
 
