@@ -25,21 +25,20 @@ public class AuthorClassification {
 		double total =0;
 		double average =0;
 
-		String fileName  ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/" 
-				+	"2classes20pairs/"+"CSFS_auc.txt";
-		for(int authorNo=1; authorNo<21; authorNo+=1){
-			String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/2classes20pairs/CSFS/"
-			//		+ "CodeJam_9FilesPerAuthor_syntactic_ready_pair"+authorNo+".arff";
-					+ "9files2014FS9Andrew_ready_pair"+authorNo+".arff";
-		for(numberFiles=9; numberFiles<10; numberFiles++){
+		String fileName  ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/Results/AutomatedResults/"
+				+	"incremental_infogain/"+"InfoGain_25incrementalauthors_CSFS.txt";
+		for(int authorNo=50; authorNo<=50; authorNo+=50){
+			for(numberFiles=9; numberFiles<10; numberFiles++){
+				String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incrementalAuthors/CSFS/"
+						+ "9BigExperiment"+authorNo+"_2014FS9Andrew_ready.arff";
+			
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
 			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
-				  total=0;
-				  
+				  total=0;				  
 				  average=0;
 
-				  for(seedNumber=1; seedNumber<5; seedNumber++){
-			int foldNumber=numberFiles;
+				  for(seedNumber=1; seedNumber<3; seedNumber++){
+					  int foldNumber=numberFiles;
 
 
  
@@ -70,8 +69,7 @@ public class AuthorClassification {
 		
 		
 		
-//		System.out.println("Number of instances: " + data.numInstances()+" and number of authors: " + data.numClasses());
-//		System.out.println("Number of authors: " + data.numClasses());
+		System.out.println("Number of instances: " + data.numInstances()+" and number of authors: " + data.numClasses());
 
 		String[] options = weka.core.Utils.splitOptions("-I 300 -K "+numFeatures+" -S "+seedNumber);
 
@@ -89,9 +87,9 @@ public class AuthorClassification {
 		
 		eval.crossValidateModel(cls, data,foldNumber , new Random(seedNumber));
 			
-/*		System.out.println("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses());
+		System.out.println("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses());
 		Util.writeFile("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses(),
-				fileName, true);*/
+				fileName, true);
 		 ThresholdCurve tc = new ThresholdCurve();
 	     int classIndex = 0;
 	     Instances result1 = tc.getCurve(eval.predictions(), classIndex);	
@@ -112,12 +110,12 @@ public class AuthorClassification {
 			Util.writeFile("Number of features used, "+defaultNumFeatures+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n"
 		    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"max depth of trees"+cls.getMaxDepth()+"\n"  ,
 					fileName, true);	
-		//	System.out.println("Number of features used, "+defaultNumFeatures+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
+			System.out.println("Number of features used, "+defaultNumFeatures+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
 
 		}
 		
 		else{	
-	//	System.out.println("Number of features used, "+cls.getNumFeatures()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
+		System.out.println("Number of features used, "+cls.getNumFeatures()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
 
 			     Util.writeFile("Number of features used, default is 0 (logM+1) "+cls.getNumFeatures()+ ", Correctly classified instances, "+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n"
 			    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"\n"  ,
@@ -128,11 +126,11 @@ public class AuthorClassification {
 	     average = total/seedNumber;
 			}	
 
-/*				  System.out.println("total is "+total);
+				  System.out.println("total is "+total);
 				  System.out.println("avg is "+average);
-				  System.out.println("accuracy is "+accuracy);*/
+				  System.out.println("accuracy is "+accuracy);
 
-	//	System.out.println("\nThe average accuracy with "+numberFiles+"files is "+average+"\n");	
+		System.out.println("\nThe average accuracy with "+numberFiles+"files is "+average+"\n");	
 	     Util.writeFile("\nThe average accuracy with "+numberFiles+"files is "+average+", relaxed by, "+relaxPar+", \n",
 	    		 fileName, true);	
 
