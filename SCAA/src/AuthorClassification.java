@@ -16,6 +16,7 @@ import weka.filters.unsupervised.instance.RemoveWithValues;
 
 import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.*;
 
 public class AuthorClassification {
@@ -32,11 +33,11 @@ public class AuthorClassification {
 		double average =0;
 
 		String fileName  ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/Results/AutomatedResults/"
-				+	"mallory/"+"mallory_CSFS.txt";
+				+	"mallory/"+"mallory_SFS.txt";
 		for(int authorNo=4; authorNo<=27; authorNo+=1){
 			for(numberFiles=9; numberFiles<10; numberFiles++){
-				String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mallory_150/merged/"
-			+"mallory_CSFS_andrew"+authorNo+".arff";
+				String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/"
+		    			+ "mallory_150/SFS/" +"mallory_SFS_"+authorNo+".arff" ;
 			
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
 			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
@@ -79,6 +80,11 @@ public class AuthorClassification {
 
 		Instances trainData = Filter.useFilter(data, filter1);
 		System.out.println("trainData size " + trainData.numInstances());
+		 BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/Aylin/Desktop/Drexel/"
+		 		+ "2014/ARLInternship/SCAAarffs/mallory_150/traintest/trainData_"+authorNo+".arff"));
+		 writer.write(trainData.toString());
+		 writer.flush();
+		 writer.close();
 /*		for(int inst=0; inst<16; inst++)
 		System.out.println("trainData " + trainData.classAttribute().value((int) trainData.instance(inst).classValue()));
 */
@@ -88,6 +94,11 @@ public class AuthorClassification {
 		filter2.setInstancesIndices("13-last");
 		Instances testData = Filter.useFilter(data, filter2);
 		System.out.println("testData size " + testData.numInstances());
+		writer = new BufferedWriter(new FileWriter("/Users/Aylin/Desktop/Drexel/"
+		 		+ "2014/ARLInternship/SCAAarffs/mallory_150/traintest/testData_"+authorNo+".arff"));
+		 writer.write(testData.toString());
+		 writer.flush();
+		 writer.close();
 /*		for(int inst=0; inst<29; inst++)
 		System.out.println("testData " + testData.classAttribute().value((int) testData.instance(inst).classValue()));
 */
@@ -96,7 +107,9 @@ public class AuthorClassification {
 		
 		 Remove rm = new Remove();
 		 int authorName = (data.numAttributes() - 28);
-		 rm.setAttributeIndices("1," +authorName);  // remove 1st attribute*/
+	//	 rm.setAttributeIndices("1," +authorName);  // remove 1st and the authorname attribute*/
+		 rm.setAttributeIndices("1");  // remove 1st attribute*/
+
 		 FilteredClassifier fc = new FilteredClassifier();
 		fc.setClassifier(new RandomForest());
 		 fc.setFilter(rm);
@@ -107,6 +120,10 @@ public class AuthorClassification {
 //		Evaluation evalMallory=null;
 //		evalMallory = new Evaluation(testData);
 
+		
+	    Evaluation eval_mal = new Evaluation(testData);
+	    eval_mal.evaluateModel(fc, testData);
+		
 		
 /*		for (int i = 0; i < testData.numInstances(); i++) {
 			double classVal = fc.classifyInstance(testData
@@ -122,20 +139,38 @@ public class AuthorClassification {
 				 fc.buildClassifier(trainData);
 				 for (int i = 0; i < testData.numInstances(); i++) {
 				   double pred = fc.classifyInstance(testData.instance(i));
+				   System.out.print(fc.getOptions());
 				   System.out.print("ID: " + testData.instance(i).value(0));
 				   System.out.print(", actual: " + testData.classAttribute().value((int) testData.instance(i).classValue()));
 				   System.out.println(", predicted: " + testData.classAttribute().value((int) pred)+"\n");
 				
+				   
 				   Util.writeFile("ID: " + testData.instance(i).value(0),
 				    		 fileName, true);
 				   Util.writeFile(", actual: " + testData.classAttribute().value((int) testData.instance(i).classValue()),
 				    		 fileName, true);	
 				   Util.writeFile(", predicted: " + testData.classAttribute().value((int) pred)+"\n",
 				    		 fileName, true);	
-				 
+				  
 		}
 		
-		
+				   ThresholdCurve tc_mal = new ThresholdCurve();
+				     int classIndex = 0;
+				     Instances result1 = tc_mal.getCurve(eval_mal.predictions(), classIndex);	
+				     tc_mal.getROCArea(result1);
+				    
+				     Instances result2 = tc_mal.getCurve(eval_mal.predictions(), 1);	
+				     tc_mal.getROCArea(result2);
+					System.out.println("AUC class1: "+   tc_mal.getROCArea(result1) + " AUC class2: "+ tc_mal.getROCArea(result2));
+						//	+"\n"+"Number of trees used, "+fc.getNumTrees()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+fc.measureOutOfBagError());
+
+				     Util.writeFile("AUC class1: "+   tc_mal.getROCArea(result1) + " AUC class2: "+ tc_mal.getROCArea(result2)   +"\n"+"Number of features used, default is 0 (logM+1) "+cls.getNumFeatures()+ ", Correctly classified instances, "+eval_mal.pctCorrect()+", OOB error,"+cls.measureOutOfBagError()+"\n"
+				    		 +"Filename is, "+arffFile.toString()+" Number of features used, "+cls.getNumFeatures()+"\n"  ,
+					 fileName, true);	
+	   
+				     
+				     
+				     
 		
 		
 		System.out.println("Number of instances: " + data.numInstances()+" and number of authors: " + data.numClasses());
@@ -165,11 +200,11 @@ public class AuthorClassification {
 		Util.writeFile("Relaxed by, "+relaxPar+", seedNo,"+seedNumber+", files,"+numberFiles+", authors,"+data.numClasses(),
 				fileName, true);*/
 		 ThresholdCurve tc = new ThresholdCurve();
-	     int classIndex = 0;
-	     Instances result1 = tc.getCurve(eval.predictions(), classIndex);	
+	      classIndex = 0;
+	      result1 = tc.getCurve(eval.predictions(), classIndex);	
 	     tc.getROCArea(result1);
 	    
-	     Instances result2 = tc.getCurve(eval.predictions(), 1);	
+	      result2 = tc.getCurve(eval.predictions(), 1);	
 	     tc.getROCArea(result2);
 /*		System.out.println("AUC class1: "+   tc.getROCArea(result1) + " AUC class2: "+ tc.getROCArea(result2));
 				//"\n"+"Number of features used, "+cls.getNumFeatures()+ ", Relaxed by, "+relaxPar+", Correctly classified instances,"+eval.pctCorrect()+", OOB error,"+cls.measureOutOfBagError());
