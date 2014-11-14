@@ -302,7 +302,7 @@ public class DatasetCreator
 						   
 						   File srcFolder = new File(author_cpp_dir);
 					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
-						   +fileCount+"FilesAtLeastPerAuthor_2014_consistency/") ;
+						   +fileCount+"FilesAtLeastPerAuthor_2014_mallory/") ;
 					      	File destFolder = new File(destFolderParent +"/"+ directories[j].toString()) ;
 					    	if(!destFolder.exists())
 					    	{
@@ -629,8 +629,9 @@ public class DatasetCreator
 					 
 			   for(int k=0; k< iteration; k++)
 			    { 				
-					   List train_cpp_paths = Util.listCPPFiles(trainFolder+authorDirectories[k]+"/"); //use this for preprocessing 
+					   List train_cpp_paths = Util.listCPPFiles(trainFolder+authorDirectories[(k+i) % authorDirectories.length]); //use this for preprocessing 
 					  	
+					   
 						
 						System.out.println(temp);
 						 File srcFile=new File(train_cpp_paths.get(temp).toString());
@@ -662,8 +663,8 @@ public class DatasetCreator
 					mallory_train.clear();
 
 			     //	  List train_cpp_paths_mallory = Util.listCPPFiles(trainFolder+malloryDirectories[trainingFiles+1]+"/");
-			     	  List train_cpp_paths_mallory = Util.listCPPFiles(malloryFolder+malloryDirectories[mal]+"/");
-			     	  List train_cpp_paths_other = Util.listCPPFiles(malloryFolder+malloryDirectories[(mal+1) % malloryDirectories.length] +"/");
+			     	  List train_cpp_paths_mallory = Util.listCPPFiles(malloryFolder+malloryDirectories[(mal+i) % malloryDirectories.length]+"/");
+			     	  List train_cpp_paths_other = Util.listCPPFiles(malloryFolder+malloryDirectories[(mal+i+1) % malloryDirectories.length] +"/");
 
 		     	  for(int mal_train=0; mal_train < trainingFiles+testFiles ;mal_train++ ){
 					     File malFile=new File(train_cpp_paths_mallory.get(mal_train).toString());							    	
@@ -751,11 +752,11 @@ public class DatasetCreator
 
 		
 //createMalloryDatasets(String test_cpp_dir, String copy2Folder, int trainingFiles, int testFiles, int datasets) throws IOException{
-		String trainFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/incremental2014/8FilesPerAuthor_2014/";
-		String malloryFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/incremental2014/14FilesPerAuthor_2014/";
-		String copy2Folder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/incremental2014/";
+		String trainFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/8FilesExactlyPerAuthor_2014/";
+		String malloryFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/14FilesAtLeastPerAuthor_2014_mallory/";
+		String copy2Folder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/mallory_new/";
 
-		createMalloryDatasets(trainFolder, malloryFolder, copy2Folder,8, 6,30);
+		createMalloryDatasets(trainFolder, malloryFolder, copy2Folder, 8, 6, 150);
 		
 //		organizeByCountry(folder, "byCountry2014", 2014);
     //    copyAuthorsWithAtLeastFileNumber(folder, 14);
@@ -764,8 +765,8 @@ public class DatasetCreator
 
 	    //    System.out.println(i+" files: "+AvgLineOfCodePerFile(folder));
 
-			//copyAuthorsWithExactFileNumber(folder, 3);
-	//	copyAuthorsWithAtLeastFileNumber(folder, 9);
+		//	copyAuthorsWithExactFileNumber(folder, 8);
+		//copyAuthorsWithAtLeastFileNumber(folder, 8);
 		//	copyAuthorsRandomlyWithAtLeastFileNumber(folder, i, 2012);
 				}
 		String bigFolderEasy = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/12FilesPerAuthor_2014_easy/";
