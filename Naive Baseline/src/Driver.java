@@ -11,5 +11,12 @@ public class Driver {
 			System.exit(1);
 		}
 		(new ARFFFactory4()).makeARFF(args[0], args[1]);
-	}
+		
+		for(int datasetNo=101; datasetNo<102; datasetNo++){
+		args[0] ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
+				+ "forMallory/mallory_new_SFS/malloryDataset_"+datasetNo+"/";
+		args[1] ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mallory_150/malloryDataset_andrew_"+datasetNo+".arff";
+		(new ARFFFactory4()).makeARFF(args[0], args[1]);
+		}
+		}
 }
