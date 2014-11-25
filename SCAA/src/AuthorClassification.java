@@ -33,11 +33,11 @@ public class AuthorClassification {
 		double average =0;
 
 		String fileName  ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/Results/AutomatedResults/"
-				+	"mallory/"+"mallory_SFS.txt";
-		for(int authorNo=4; authorNo<=27; authorNo+=1){
+				+	"mallory/"+"mallory_CSFS_new.txt";
+		for(int authorNo=6; authorNo<=54; authorNo+=1){
 			for(numberFiles=9; numberFiles<10; numberFiles++){
 				String arffFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/"
-		    			+ "mallory_150/SFS/" +"mallory_SFS_"+authorNo+".arff" ;
+		    			+ "mallory_150/CSFS/" +"mallory_CSFS_"+authorNo+".arff" ;
 			
 			  Util.writeFile(numberFiles+"FilesPerAuthor: \n",fileName, true);	
 			  for(int relaxPar = 1; relaxPar<=endRelax; relaxPar++){
@@ -96,7 +96,7 @@ public class AuthorClassification {
 		System.out.println("testData size " + testData.numInstances());
 		writer = new BufferedWriter(new FileWriter("/Users/Aylin/Desktop/Drexel/"
 		 		+ "2014/ARLInternship/SCAAarffs/mallory_150/traintest/testData_"+authorNo+".arff"));
-		 writer.write(testData.toString());
+	//	 writer.write(testData.toString());
 		 writer.flush();
 		 writer.close();
 /*		for(int inst=0; inst<29; inst++)
@@ -107,7 +107,7 @@ public class AuthorClassification {
 		
 		 Remove rm = new Remove();
 		 int authorName = (data.numAttributes() - 28);
-	//	 rm.setAttributeIndices("1," +authorName);  // remove 1st and the authorname attribute*/
+//		 rm.setAttributeIndices("1," +authorName);  // remove 1st and the autor attribute
 		 rm.setAttributeIndices("1");  // remove 1st attribute*/
 
 		 FilteredClassifier fc = new FilteredClassifier();
