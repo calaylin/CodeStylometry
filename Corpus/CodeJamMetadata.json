@@ -1,0 +1,597 @@
+{
+  "competitions": [
+    {
+      "year": "2008",
+      "round": [
+        {
+          "desc": "2008 Qualification Round",
+          "contest": "32013",
+          "numPlayers": "7154",
+          "problems": [
+            { "name": "Saving the Universe", "id": "24480" },
+            { "name": "Train Timetable", "id": "24481" },
+            { "name": "Fly Swatter", "id": "24479" }
+          ]
+        },
+        {
+          "desc": "2008 round 1A",
+          "contest": "32016",
+          "numPlayers": "2394",
+          "problems": [
+            { "name": "Minimum Scalar Product", "id": "24484" },
+            { "name": "Milkshakes", "id": "24482" },
+            { "name": "Numbers", "id": "24483" }
+          ]
+        },
+        {
+          "desc": "2008 round 1B",
+          "contest": "32017",
+          "numPlayers": "1715",
+          "problems": [
+            { "name": "Crop Triangles", "id": "24437" },
+            { "name": "Number Sets", "id": "24485" },
+            { "name": "Mousetrap", "id": "24489" }
+          ]
+        },
+        {
+          "desc": "2008 round 1C",
+          "contest": "32015",
+          "numPlayers": "2240",
+          "problems": [
+            { "name": "Text Messaging Outrage", "id": "24486" },
+            { "name": "Ugly Numbers", "id": "24487" },
+            { "name": "Increasing Speed Limits", "id": "24488" }
+          ]
+        },
+        {
+          "desc": "2008 round 2",
+          "contest": "32001",
+          "numPlayers": "1817",
+          "problems": [
+            { "name": "Cheating a Boolean Tree", "id": "24439" },
+            { "name": "Triangle Areas", "id": "24440" },
+            { "name": "Star Wars", "id": "24441" },
+            { "name": "PermRLE", "id": "24442" }
+          ]
+        },
+        {
+          "desc": "2008 round 3",
+          "contest": "32002",
+          "numPlayers": "882",
+          "problems": [
+            { "name": "How Big Are the Pockets?", "id": "24444" },
+            { "name": "Portal", "id": "24443" },
+            { "name": "No Cheating", "id": "24446" },
+            { "name": "Endless Knight", "id": "24445" }
+          ]
+        },
+        {
+          "desc": "2008 APAC semifinals",
+          "contest": "32005",
+          "numPlayers": "152",
+          "problems": [
+            { "name": "What are Birds?", "id": "24456" },
+            { "name": "Apocalypse Soon", "id": "24455" },
+            { "name": "Millionaire", "id": "24457" },
+            { "name": "Modern Art Plagiarism", "id": "24458" }
+          ]
+        },
+        {
+          "desc": "2008 AMER semifinals",
+          "contest": "32008",
+          "numPlayers": "98",
+          "problems": [
+            { "name": "Mixing Bowls", "id": "24463" },
+            { "name": "Code Sequence", "id": "24461" },
+            { "name": "Test Passing Probability", "id": "24459" },
+            { "name": "King", "id": "24460" }
+          ]
+        },
+        {
+          "desc": "2008 EMEA semifinals",
+          "contest": "32010",
+          "numPlayers": "203",
+          "problems": [
+            { "name": "Scaled Triangle", "id": "24464" },
+            { "name": "Painting a Fence", "id": "24467" },
+            { "name": "Rainbow Trees", "id": "24465" },
+            { "name": "Bus Stops", "id": "24466" }
+          ]
+        },
+        {
+          "desc": "2008 world finals",
+          "contest": "32011",
+          "numPlayers": "97",
+          "problems": [
+            { "name": "Juice", "id": "24472" },
+            { "name": "Ping Pong Balls", "id": "24470" },
+            { "name": "Mine Layer", "id": "24473" },
+            { "name": "Bridge Builders", "id": "24469" },
+            { "name": "The Year of Code Jam", "id": "24471" }
+          ]
+        }
+      ]
+    },
+    {
+      "year": "2009",
+      "round": [
+        {
+          "desc": "2009 Qualification Round",
+          "contest": "90101",
+          "numPlayers": "8289",
+          "problems": [
+            { "name": "Alien Language", "id": "116101" },
+            { "name": "Watersheds", "id": "111101" },
+            { "name": "Welcome to Code Jam", "id": "122101" }
+          ]
+        },
+        {
+          "desc": "2009 round 1A",
+          "contest": "188266",
+          "numPlayers": "2007",
+          "problems": [
+            { "name": "Multi-base happiness", "id": "168107" },
+            { "name": "Crossing the Road", "id": "144111" },
+            { "name": "Collecting Cards", "id": "190103" }
+          ]
+        },
+        {
+          "desc": "2009 round 1B",
+          "contest": "186264",
+          "numPlayers": "2792",
+          "problems": [
+            { "name": "Decision Tree", "id": "171116" },
+            { "name": "The Next Number", "id": "203106" },
+            { "name": "Square Math", "id": "208101" }
+          ]
+        },
+        {
+          "desc": "2009 round 1C",
+          "contest": "189252",
+          "numPlayers": "2294",
+          "problems": [
+            { "name": "All Your Base", "id": "171121" },
+            { "name": "Center of Mass", "id": "156117" },
+            { "name": "Bribe the Prisoners", "id": "192120" }
+          ]
+        },
+        {
+          "desc": "2009 round 2",
+          "contest": "204113",
+          "numPlayers": "2002",
+          "problems": [
+            { "name": "Crazy Rows", "id": "241102" },
+            { "name": "A Digging Problem", "id": "254101" },
+            { "name": "Stock Charts", "id": "244101" },
+            { "name": "Watering Plants", "id": "250101" }
+          ]
+        },
+        {
+          "desc": "2009 round 3",
+          "contest": "243103",
+          "numPlayers": "296",
+          "problems": [
+            { "name": "EZ-Sokoban", "id": "291102" },
+            { "name": "Alphabetomials", "id": "290101" },
+            { "name": "Football Team", "id": "299101" },
+            { "name": "Interesting Ranges", "id": "293101" }
+          ]
+        },
+        {
+          "desc": "2009 world finals",
+          "contest": "311101",
+          "numPlayers": "23",
+          "problems": [
+            { "name": "Year of more Code Jam", "id": "322102" },
+            { "name": "Min Perimeter", "id": "317103" },
+            { "name": "Doubly-sorted Grid", "id": "319101" },
+            { "name": "Wi-fi Towers", "id": "322101" },
+            { "name": "Marbles", "id": "339102" },
+            { "name": "Lights", "id": "341101" }
+          ]
+        }
+      ]
+    },
+    {
+      "year": "2010",
+      "round": [
+        {
+          "desc": "2010 Qualification Round",
+          "contest": "433101",
+          "numPlayers": "10192",
+          "problems": [
+            { "name": "Snapper Chain", "id": "502103" },
+            { "name": "Fair Warning", "id": "506101" },
+            { "name": "Theme Park", "id": "509101" }
+          ]
+        },
+        {
+          "desc": "2010 round 1A",
+          "contest": "544101",
+          "numPlayers": "2155",
+          "problems": [
+            { "name": "Rotate", "id": "567116" },
+            { "name": "Make it Smooth", "id": "566101" },
+            { "name": "Number Game", "id": "583114" }
+          ]
+        },
+        {
+          "desc": "2010 round 1B",
+          "contest": "635101",
+          "numPlayers": "3139",
+          "problems": [
+            { "name": "File Fix-it", "id": "563117" },
+            { "name": "Picking Up Chicks", "id": "542118" },
+            { "name": "Your Rank is Pure", "id": "598111" }
+          ]
+        },
+        {
+          "desc": "2010 round 1C",
+          "contest": "619102",
+          "numPlayers": "3006",
+          "problems": [
+            { "name": "Rope Intranet", "id": "599117" },
+            { "name": "Load Testing", "id": "551112" },
+            { "name": "Making Chess Boards", "id": "563116" }
+          ]
+        },
+        {
+          "desc": "2010 round 2",
+          "contest": "635102",
+          "numPlayers": "1985",
+          "problems": [
+            { "name": "Elegant Diamond", "id": "694485" },
+            { "name": "World Cup 2010", "id": "698485" },
+            { "name": "Bacteria", "id": "706485" },
+            { "name": "Grazing Google Goats", "id": "689485" }
+          ]
+        },
+        {
+          "desc": "2010 round 3",
+          "contest": "639102",
+          "numPlayers": "370",
+          "problems": [
+            { "name": "De-RNG-ed", "id": "724485" },
+            { "name": "Fence", "id": "760487" },
+            { "name": "Hot Dog Proliferation", "id": "746490" },
+            { "name": "Different Sum", "id": "720485" }
+          ]
+        },
+        {
+          "desc": "2010 world finals",
+          "contest": "801485",
+          "numPlayers": "24",
+          "problems": [
+            { "name": "Letter Stamper", "id": "781485" },
+            { "name": "City Tour", "id": "729488" },
+            { "name": "Candy Store", "id": "786485" },
+            { "name": "Travel Plan", "id": "786486" },
+            { "name": "Ninjutsu", "id": "323102" },
+            { "name": "The Paths of Yin Yang", "id": "781486" }
+          ]
+        }
+      ]
+    },
+    {
+      "year": "2011",
+      "round": [
+        {
+          "desc": "2011 Qualification Round",
+          "contest": "975485",
+          "numPlayers": "11846",
+          "problems": [
+            { "name": "Bot Trust", "id": "1080487" },
+            { "name": "Magicka", "id": "1026487" },
+            { "name": "Candy Splitting", "id": "1059486" },
+            { "name": "GoroSort", "id": "992486" }
+          ]
+        },
+        {
+          "desc": "2011 round 1A",
+          "contest": "1145485",
+          "numPlayers": "3133",
+          "problems": [
+            { "name": "FreeCell Statistics", "id": "1040487" },
+            { "name": "The Killer Word", "id": "1062486" },
+            { "name": "Pseudominion", "id": "1053485" }
+          ]
+        },
+        {
+          "desc": "2011 round 1B",
+          "contest": "1150485",
+          "numPlayers": "4556",
+          "problems": [
+            { "name": "RPI", "id": "1048486" },
+            { "name": "Revenge of the Hot Dogs", "id": "1058489" },
+            { "name": "House of Kittens", "id": "1040486" }
+          ]
+        },
+        {
+          "desc": "2011 round 1C",
+          "contest": "1128486",
+          "numPlayers": "4196",
+          "problems": [
+            { "name": "Square Tiles", "id": "1060485" },
+            { "name": "Space Emergency", "id": "1003485" },
+            { "name": "Perfect Harmony", "id": "1076485" }
+          ]
+        },
+        {
+          "desc": "2011 round 2",
+          "contest": "1150486",
+          "numPlayers": "2246",
+          "problems": [
+            { "name": "Airport Walkways", "id": "1163489" },
+            { "name": "Spinning Blade", "id": "1160486" },
+            { "name": "Expensive Dinner", "id": "1100485" },
+            { "name": "A.I. War", "id": "1201485" }
+          ]
+        },
+        {
+          "desc": "2011 round 3",
+          "contest": "1158485",
+          "numPlayers": "407",
+          "problems": [
+            { "name": "Irregular Cakes", "id": "1135486" },
+            { "name": "Dire Straights", "id": "1178495" },
+            { "name": "Perpetual Motion", "id": "1178496" },
+            { "name": "Mystery Square", "id": "1212489" }
+          ]
+        },
+        {
+          "desc": "2011 world finals",
+          "contest": "1327485",
+          "numPlayers": "25",
+          "problems": [
+            { "name": "Runs", "id": "1285487" },
+            { "name": "Rains Over Atlantis", "id": "1283487" },
+            { "name": "Program within a Program", "id": "1288488" },
+            { "name": "Ace in the Hole", "id": "1282488" },
+            { "name": "Google Royale", "id": "1285488" }
+          ]
+        }
+      ]
+    },
+    {
+      "year": "2012",
+      "round": [
+        {
+          "desc": "2012 Qualification Round",
+          "contest": "1460488",
+          "numPlayers": "17803",
+          "problems": [
+            { "name": "Speaking in Tongues", "id": "1483485" },
+            { "name": "Dancing With the Googlers", "id": "1595491" },
+            { "name": "Recycled Numbers", "id": "1483488" },
+            { "name": "Hall of Mirrors", "id": "1285485" }
+          ]
+        },
+        {
+          "desc": "2012 round 1A",
+          "contest": "1645485",
+          "numPlayers": "3686",
+          "problems": [
+            { "name": "Password Problem", "id": "1673486" },
+            { "name": "Kingdom Rush", "id": "1482494" },
+            { "name": "Cruise Control", "id": "1480492" }
+          ]
+        },
+        {
+          "desc": "2012 round 1B",
+          "contest": "1836486",
+          "numPlayers": "3273",
+          "problems": [
+            { "name": "Safety in Numbers", "id": "1480487" },
+            { "name": "Tide Goes In, Tide Goes Out", "id": "1485488" },
+            { "name": "Equal Sums", "id": "1484496" }
+          ]
+        },
+        {
+          "desc": "2012 round 1C",
+          "contest": "1781488",
+          "numPlayers": "3173",
+          "problems": [
+            { "name": "Diamond Inheritance", "id": "1674486" },
+            { "name": "Out of Gas", "id": "1482492" },
+            { "name": "Box Factory", "id": "1485490" }
+          ]
+        },
+        {
+          "desc": "2012 round 2",
+          "contest": "1842485",
+          "numPlayers": "2095",
+          "problems": [
+            { "name": "Swinging Wild", "id": "1481486" },
+            { "name": "Aerobics", "id": "1484495" },
+            { "name": "Mountain View", "id": "1486492" },
+            { "name": "Descending in the Dark", "id": "1480495" }
+          ]
+        },
+        {
+          "desc": "2012 round 3",
+          "contest": "1835486",
+          "numPlayers": "401",
+          "problems": [
+            { "name": "Perfect Game", "id": "1475486" },
+            { "name": "Havannah", "id": "1590487" },
+            { "name": "Quality Food", "id": "1481492" },
+            { "name": "Lost Password", "id": "1481496" }
+          ]
+        },
+        {
+          "desc": "2012 world finals",
+          "contest": "2075486",
+          "numPlayers": "25",
+          "problems": [
+            { "name": "Zombie Smash", "id": "1486497" },
+            { "name": "Upstairs/Downstairs", "id": "2050486" },
+            { "name": "Xeno-archaeology", "id": "1821487" },
+            { "name": "Twirling Towards Freedom", "id": "1480498" },
+            { "name": "Shifting Paths", "id": "1484497" }
+          ]
+        }
+      ]
+    },
+    {
+      "year": "2013",
+      "round": [
+        {
+          "desc": "2013 Qualification Round",
+          "contest": "2270488",
+          "numPlayers": "21273",
+          "problems": [
+            { "name": "Tic-Tac-Toe-Tomek", "id": "2453486" },
+            { "name": "Lawnmover", "id": "2449486" },
+            { "name": "Fair and Square", "id": "2463486" },
+            { "name": "Treasure", "id": "2458486" }
+          ]
+        },
+        {
+          "desc": "2013 round 1A",
+          "contest": "2418487",
+          "numPlayers": "5904",
+          "problems": [
+            { "name": "Bullseye", "id": "2464487" },
+            { "name": "Manage your Energy", "id": "2645486" },
+            { "name": "Good Luck", "id": "2652486" }
+          ]
+        },
+        {
+          "desc": "2013 round 1B",
+          "contest": "2434486",
+          "numPlayers": "4664",
+          "problems": [
+            { "name": "Osmos", "id": "2692487" },
+            { "name": "Falling Diamonds", "id": "2700486" },
+            { "name": "Garbled Email", "id": "2705486" }
+          ]
+        },
+        {
+          "desc": "2013 round 1C",
+          "contest": "2437488",
+          "numPlayers": "4467",
+          "problems": [
+            { "name": "Consonants", "id": "2751486" },
+            { "name": "Pogo", "id": "2749486" },
+            { "name": "The Great Wall", "id": "2755486" }
+          ]
+        },
+        {
+          "desc": "2013 round 2",
+          "contest": "2442487",
+          "numPlayers": "1825",
+          "problems": [
+            { "name": "Ticket Swapping", "id": "2772486" },
+            { "name": "Many Prizes", "id": "2766487" },
+            { "name": "Erdos-Szekeres", "id": "2779487" },
+            { "name": "Multiplayer Pong", "id": "2798486" }
+          ]
+        },
+        {
+          "desc": "2013 round 3",
+          "contest": "2433487",
+          "numPlayers": "311",
+          "problems": [
+            { "name": "Cheaters", "id": "2850486" },
+            { "name": "Rural Planning", "id": "2855486" },
+            { "name": "Are We Lost Yet?", "id": "2860486" },
+            { "name": "Observation Wheel", "id": "2846487" }
+          ]
+        },
+        {
+          "desc": "2013 world finals",
+          "contest": "2437491",
+          "numPlayers": "24",
+          "problems": [
+            { "name": "Graduation Requirements", "id": "5785905063264256" },
+            { "name": "Drummer", "id": "5681726336532480" },
+            { "name": "X Marks the Spot", "id": "5891733057437696" },
+            { "name": "Can't Stop", "id": "5865619656278016" },
+            { "name": "Let Me Tell You a Story", "id": "5760616295825408" }
+          ]
+        }
+      ]
+    },
+    {
+      "year": "2014",
+      "round": [
+        {
+          "desc": "2014 Qualification Round",
+          "contest": "2974486",
+          "numPlayers": "25462",
+          "problems": [
+            { "name": "Magic Trick", "id": "5756407898963968" },
+            { "name": "Cookie Clicker Alpha", "id": "5709773144064000" },
+            { "name": "Minesweeper Master", "id": "5690574640250880" },
+            { "name": "Deceitful War", "id": "5644738749267968" }
+          ]
+        },
+        {
+          "desc": "2014 round 1A",
+          "contest": "2984486",
+          "numPlayers": "3621",
+          "problems": [
+            { "name": "Charging Chaos", "id": "5634947029139456" },
+            { "name": "Full Binary Tree", "id": "5766201229705216" },
+            { "name": "Proper Shuffle", "id": "5752104073297920" }
+          ]
+        },
+        {
+          "desc": "2014 round 1B",
+          "contest": "2994486",
+          "numPlayers": "7381",
+          "problems": [
+            { "name": "The Repeater", "id": "5751500831719424" },
+            { "name": "New Lottery Game", "id": "5658282861527040" },
+            { "name": "The Bored Travelling Salesman", "id": "5731331665297408" }
+          ]
+        },
+        {
+          "desc": "2014 round 1C",
+          "contest": "3004486",
+          "numPlayers": "4309",
+          "problems": [
+            { "name": "Part Elf", "id": "5706278382862336" },
+            { "name": "Reordering Train Cars", "id": "5669245564223488" },
+            { "name": "Enclosure", "id": "5658068650033152" }
+          ]
+        },
+        {
+          "desc": "2014 round 2",
+          "contest": "3014486",
+          "numPlayers": "2526",
+          "problems": [
+            { "name": "Data Packing", "id": "5737429512224768" },
+            { "name": "Up and Down", "id": "5721094409420800" },
+            { "name": "Don't Break the Nile", "id": "5158144455999488" },
+            { "name": "Trie Sharding", "id": "5649687893770240" }
+          ]
+        },
+        {
+          "desc": "2014 round 3",
+          "contest": "3024486",
+          "numPlayers": "389",
+          "problems": [
+            { "name": "Magical, Marvelous Tour", "id": "5645447150436352" },
+            { "name": "Last Hit", "id": "5724427840913408" },
+            { "name": "Crime House", "id": "5690270771314688" },
+            { "name": "Willow", "id": "5670781216358400" }
+          ]
+        },
+        {
+          "desc": "2014 world finals",
+          "contest": "7214486",
+          "numPlayers": "26",
+          "problems": [
+            { "name": "Checkerboard Matrix", "id": "5722683480211456" },
+            { "name": "Power Swapper", "id": "5656351736856576" },
+            { "name": "Symmetric Trees", "id": "5682018998288384" },
+            { "name": "Pardox Sort", "id": "5730212624990208" },
+            { "name": "Allergy Testing", "id": "5697089837203456" },
+            { "name": "ARAM", "id": "5747233781710848" }
+          ]
+        }
+      ]
+    }
+  ]
+}
