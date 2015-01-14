@@ -4,6 +4,7 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -301,7 +302,7 @@ public class DatasetCreator
 						   
 						   File srcFolder = new File(author_cpp_dir);
 					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
-						   +fileCount+"FilesAtLeastPerAuthor_2012_validation") ;
+						   +fileCount+"FilesAtLeastPerAuthor_2014_mallory/") ;
 					      	File destFolder = new File(destFolderParent +"/"+ directories[j].toString()) ;
 					    	if(!destFolder.exists())
 					    	{
@@ -593,6 +594,151 @@ public class DatasetCreator
 					    }
 				    }
 			    }}
+		public static void createMalloryDatasets(String trainFolder,String malloryFolder, String copy2Folder, int trainingFiles, int testFiles, int datasets) throws IOException{
+			File authors = new File(trainFolder);
+			   String[] authorDirectories = authors.list(new FilenameFilter() 
+			   {
+			     @Override
+			     public boolean accept(File current, String name) 
+			     {
+			       return new File(current, name).isDirectory();
+			     }
+			   });	
+				File mallorys = new File(malloryFolder);
+				   String[] malloryDirectories = mallorys.list(new FilenameFilter() 
+				   {
+				     @Override
+				     public boolean accept(File current, String name) 
+				     {
+				       return new File(current, name).isDirectory();
+				     }
+				   });	
+			   
+				   
+				   
+				   
+				for(int i=0; i<datasets; i++){
+					List<String> training_problems = new ArrayList<String>(trainingFiles);
+					training_problems.clear();
+					List<String> mallory_test = new ArrayList<String>(testFiles);
+					List<String> other_test = new ArrayList<String>(testFiles);
+					List<String> mallory_train = new ArrayList<String>(trainingFiles);
+
+					int iteration = trainingFiles;
+					 int temp=0;
+					 
+			   for(int k=0; k< iteration; k++)
+			    { 				
+					   List train_cpp_paths = Util.listCPPFiles(trainFolder+authorDirectories[(k+i) % authorDirectories.length]); //use this for preprocessing 
+					  	
+					   
+						
+						System.out.println(temp);
+						 File srcFile=new File(train_cpp_paths.get(temp).toString());
+						
+				    	if (!training_problems.contains(srcFile.getName().toString().substring(0, 24)))
+				     	{training_problems.add(srcFile.getName().toString().substring(0, 24));
+				    	File destFile= new File(copy2Folder + "malloryDataset_" + i+ "/trainingDocs_ABCDEFGH/"+ srcFile.getName());
+				    	
+				    	FileUtils.copyFile(srcFile, destFile);
+				     	if(!destFile.exists())
+				    	{
+				    		destFile.mkdirs();
+						}		
+				     	
+				  //   	if(!training_problems.contains(train_cpp_paths.get(k).toString().substring(0, 24)))
+					     	training_problems.add(srcFile.getName().toString().substring(0, 24));
+							   List destFileSize=  Util.listCPPFiles(copy2Folder + "malloryDataset_" + i+ "/trainingDocs_ABCDEFGH/");
+						    	temp= destFileSize.size();
+
+			    }  
+				    	else
+				    		{iteration++;}
+			    }
+				System.out.println("Training problems: "+training_problems);
+
+				
+				
+			   for(int mal=0; mal< malloryDirectories.length; mal++){
+					mallory_train.clear();
+
+			     //	  List train_cpp_paths_mallory = Util.listCPPFiles(trainFolder+malloryDirectories[trainingFiles+1]+"/");
+			     	  List train_cpp_paths_mallory = Util.listCPPFiles(malloryFolder+malloryDirectories[(mal+i) % malloryDirectories.length]+"/");
+			     	  List train_cpp_paths_other = Util.listCPPFiles(malloryFolder+malloryDirectories[(mal+i+1) % malloryDirectories.length] +"/");
+
+		     	  for(int mal_train=0; mal_train < trainingFiles+testFiles ;mal_train++ ){
+					     File malFile=new File(train_cpp_paths_mallory.get(mal_train).toString());							    	
+					     File otherFile=new File(train_cpp_paths_other.get(mal_train).toString());							    	
+
+		     		 mallory_train.add(malFile.getName().toString().substring(0, 24));
+		     		 other_test.add(otherFile.getName().toString().substring(0, 24));
+
+		     	  }
+		     	  
+		     	  
+					System.out.println("Training problems: "+mallory_train);
+
+		     		 if(mallory_train.containsAll(training_problems)==true){
+		     			 
+							System.out.println("match problems: "+mallory_train);
+		     			mal= malloryDirectories.length;
+
+					     int temp_other=0;
+
+					     for(int copying=0; copying < train_cpp_paths_mallory.size(); copying++){
+						      File malloryFile = new File(train_cpp_paths_mallory.get(copying).toString());							    	
+					    	 if(training_problems.contains(malloryFile.getName().toString().substring(0, 24))){
+				    	File destFile= new File(copy2Folder + "malloryDataset_" + i+ "/trainingDocs_mallory/"
+					    	 + malloryFile.getName());
+				    	FileUtils.copyFile(malloryFile, destFile);
+				    	
+				     	if(!destFile.exists())
+				    	{
+				    		destFile.mkdirs();
+						}	
+				     	
+		     		 }
+					    	 if(!training_problems.contains(malloryFile.getName().toString().substring(0, 24)))
+					    	 { 
+							    	File destFile= new File(copy2Folder + "malloryDataset_" + i+ "/testDocs_mallory/"+ malloryFile.getName());
+							    	FileUtils.copyFile(malloryFile, destFile);
+							     	if(!destFile.exists())
+							    	{
+							    		destFile.mkdirs();
+									}	
+							     	
+					     		 }
+		     		 
+					     
+					   
+						      File otherFile = new File(train_cpp_paths_other.get(copying).toString());
+		     			if(!training_problems.contains(otherFile.getName().toString().substring(0, 24)))
+		     			{
+		     				if(temp_other < testFiles){
+		     				File destFileo= new File(copy2Folder + "malloryDataset_" + i+ "/testDocs_other/"
+							    	 + otherFile.getName());
+						    	FileUtils.copyFile(otherFile, destFileo);
+						    	
+						     	if(!destFileo.exists())
+						    	{
+						    		destFileo.mkdirs();
+								}
+						     	List destFolder= Util.listCPPFiles(copy2Folder + "malloryDataset_" + i+ 
+						     			"/testDocs_other/");
+						     	temp_other= destFolder.size();
+		     				}
+		     			}
+					     	  
+
+						     	
+				     		 }	}
+		     			}
+				}
+		     		 
+		     		 }
+			   			     	
+	
+			
 				   
 		
 		public static void main(String[] args) throws Exception, IOException, InterruptedException 
@@ -603,14 +749,24 @@ public class DatasetCreator
 		String parentDir = "parentDir";	
 		String outputFolderName ="mergedAuthors";
 	//	mergeSameAuthors(parentDir, outputFolderName);
+
 		
-        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/6FilesPerAuthor_2014";
-        System.out.println(AvgLineOfCodePerFile(folder));
+//createMalloryDatasets(String test_cpp_dir, String copy2Folder, int trainingFiles, int testFiles, int datasets) throws IOException{
+		String trainFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/8FilesExactlyPerAuthor_2014/";
+		String malloryFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/14FilesAtLeastPerAuthor_2014_mallory/";
+		String copy2Folder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/mallory_new/";
+
+		createMalloryDatasets(trainFolder, malloryFolder, copy2Folder, 8, 6, 150);
+		
 //		organizeByCountry(folder, "byCountry2014", 2014);
     //    copyAuthorsWithAtLeastFileNumber(folder, 14);
-		for(int i=9; i<10; i++){
-		//	copyAuthorsWithExactFileNumber(folder, 19);
-		//copyAuthorsWithAtLeastFileNumber(folder, i);
+		for(int i=14; i<15; i++){
+	        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp/";
+
+	    //    System.out.println(i+" files: "+AvgLineOfCodePerFile(folder));
+
+		//	copyAuthorsWithExactFileNumber(folder, 8);
+		//copyAuthorsWithAtLeastFileNumber(folder, 8);
 		//	copyAuthorsRandomlyWithAtLeastFileNumber(folder, i, 2012);
 				}
 		String bigFolderEasy = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/12FilesPerAuthor_2014_easy/";

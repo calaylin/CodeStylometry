@@ -29,8 +29,9 @@ public class FeatureCalculators {
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
  //   	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/6FilesPerAuthor_2014_difficult_syntactic/";
-    	String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/6FilesPerAuthor_2014_easy/";
-;
+    	for (int datasetNo=0; datasetNo<30;datasetNo++){
+    	String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/mallory/mallory_CSFS/malloryDataset_"+datasetNo +"/";
+
 /*    	//check if the same authors exist
     	String mainFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2012_validation_exact";
     	   String depFileName=null;
@@ -55,13 +56,13 @@ public class FeatureCalculators {
            	
            	
            	
-           
+          
     //Clean non cpp files from folder
-    	List test_file_paths = Util.listAllFiles(testFolder); //use this for preprocessing       
-        for(int i=0; i< test_file_paths.size(); i++){
-  			if(!test_file_paths.get(i).toString().substring(test_file_paths.get(i).toString().length()-3, test_file_paths.get(i).toString().length()).contains("cpp"))
+    	List test_file_paths_cpp = Util.listAllFiles(testFolder); //use this for preprocessing       
+        for(int i=0; i< test_file_paths_cpp.size(); i++){
+  			if(!test_file_paths_cpp.get(i).toString().substring(test_file_paths_cpp.get(i).toString().length()-3, test_file_paths_cpp.get(i).toString().length()).contains("cpp"))
   			{
-  				File testFiles = new File(test_file_paths.get(i).toString());		
+  				File testFiles = new File(test_file_paths_cpp.get(i).toString());		
   				testFiles.delete();
   			}}
        
@@ -70,11 +71,11 @@ public class FeatureCalculators {
     	
     	
     	//preprocess to get ast dep and txt files for each cpp file
-    //	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+    	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
     	for(int i=0; i< test_file_paths.size(); i++){
     //		System.out.println(test_file_paths.get(i).toString());
     //		preprocessDataToASTFeatures(test_file_paths.get(i).toString());
-    // 	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
+     	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
         }
      
     	
@@ -87,7 +88,7 @@ public class FeatureCalculators {
         for(int i=0; i< test_dep_paths.size(); i++){
         	dep_file = new File(test_dep_paths.get(i).toString());
         	
-        	int fileNo=8;
+        	int fileNo=3;
         	//check if there are correct number of dep files for each author
         	 List author_dep_paths = Util.listDepFiles(dep_file.getParent());
         	 if(author_dep_paths.size()<fileNo){
@@ -114,7 +115,7 @@ public class FeatureCalculators {
 
         		}  
         		}
-        
+    	}
         
         
   
