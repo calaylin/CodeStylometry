@@ -97,3 +97,15 @@ for year_json in metadata['competitions']:
                 # alsdkjfa;lsdkfj;asldkjf;alsdkfj
                 print download_url
                 # need to send to someplace, unzip, check extension, and copy/rename
+
+# import shutil
+# copyfile(src, dest)
+#
+# import zipfile
+# import os.path
+# fh = open('something.zip', 'rb')
+# z = zipfile.ZipFile(fh)
+# for name in z.namelist():
+#    outpath = "C:\\asudhfkwjqehfkh"
+#    z.extract(name, outpath)
+# fh.close()
