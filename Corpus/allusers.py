@@ -34,9 +34,9 @@ for year_json in metadata['competitions']:
 	round_id = qual_round['contest']
 	get_all_users(round_id, num_players)
 	#
-	for user in users.keys():
-		print user
-		user_file.write(user)
-		user_file.write('\n')
+for user in users.keys():
+	print user
+	user_file.write(user)
+	user_file.write('\n')
 	#
 user_file.close()
