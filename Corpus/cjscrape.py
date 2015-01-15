@@ -104,15 +104,25 @@ for year_json in metadata['competitions']:
                 # need to send to someplace, unzip, check extension, and copy/rename
                 # create folders for zips like rosenblum does
                 # and put the zips there
-                target_file = 'temp/problem_num.username0.zip' ##############
-                urlretrieve(download_url,target_file)
+                target_zip = 'temp/problem_num.username0.zip' ##############
+                urlretrieve(download_url,target_zip)
                 # python can tell the contents of zips (?)
                 # check if these are c/cpp
                 # if so, extract and put them in some other folder that happens to be more organized
                 # authorname -> authorname0 or 0authorname0
                 # root -> author -> p[problem number].username.cpp
-                zip_header = open('aossalkdfjalsdkjf', 'rb')
+                zip_header = open(target_zip, 'rb')
                 my_zip = zipfile.ZipFile(zip_header)
+                #files = my_zip.namelist()
+                #c_or_cpp_files = []
+                for my_file in my_zip.namelist():
+                    if my_file.endswith(('.c', '.cpp')):
+                        #c_or_cpp_files.append(my_file)
+                        #extract! :DDDDDDDDD
+                        # my_zip.extract(my_file, 'path to put file')
+                        target_source = 'codejamfolder/username0/problem_num.username0.cpp dont forget to make dir if it doesnt exist' ###
+                        my_zip.extract(my_file, target_source)
+                        # might wanna put a print statement here
                 #
 
 # import shutil
