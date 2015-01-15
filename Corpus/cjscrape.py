@@ -76,11 +76,12 @@ def load_users():
     data = user_file.read()
     users = data.splitlines()
     return users
-
+'''
 # make temp directory for zips
 if not os.path.exists('temp'):
     os.makedirs('temp')
-
+'''
+#make codejam dir
 users = load_users()
 metadatafile = open("CodeJamMetadata.json").read()
 metadata = json.loads(metadatafile)
@@ -104,7 +105,11 @@ for year_json in metadata['competitions']:
                 # need to send to someplace, unzip, check extension, and copy/rename
                 # create folders for zips like rosenblum does
                 # and put the zips there
-                target_zip = 'temp/problem_num.username0.zip' ##############
+                #target_zip = 'temp/problem_num.username0.zip' ##############
+
+                # make temp here
+
+                target_zip = 'temp/' + problem_id + '.' + username + '0.zip' ## verify later
                 urlretrieve(download_url,target_zip)
                 # python can tell the contents of zips (?)
                 # check if these are c/cpp
@@ -120,13 +125,23 @@ for year_json in metadata['competitions']:
                         #c_or_cpp_files.append(my_file)
                         #extract! :DDDDDDDDD
                         # my_zip.extract(my_file, 'path to put file')
-                        target_source = 'codejamfolder/username0/ dont forget to make dir if it doesnt exist' ###
+                        #target_source = 'codejamfolder/username0/ dont forget to make dir if it doesnt exist' ###
+
+                        target_source = 'codejamfolder/' + username + '0' ## make if non-existent
+
                         # source dir can't have the rename thingy
                         # need to extract, copy/paste, then delete
                         my_zip.extract(my_file, target_source) #### may need full path for my_file
                         # might wanna put a print statement here
                         #os.rename
-                # delete zip (or temp dir)
+                        file_newname = 'p' + problem_id + '.' + username + '0.'
+                        if my_file.endswith('.c'):
+                            file_newname += 'c'
+                        else:
+                            file_newname += 'cpp'
+                        #naming convention: p[problem num].[username]0.c or cpp
+                        os.rename((target_source + '/' + my_file), (target_source + '/' + file_newname))
+                # delete zip (or temp dir) here
 
 # import shutil
 # copyfile(src, dest)
