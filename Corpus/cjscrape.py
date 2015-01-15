@@ -9,11 +9,6 @@ import shutil
 script_path = os.path.dirname(os.path.realpath(__file__))
 
 def get_download_url(round_id, problem_id, username):
-    '''
-    round_id = '7214486'
-    problem_id = '5722683480211456'
-    username = 'Gennady.Korotkevich'
-    '''
     return "http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest=" \
                 + round_id \
                 + "&problem=" \
@@ -26,11 +21,7 @@ def load_users():
     data = user_file.read()
     users = data.splitlines()
     return users
-'''
-# make temp directory for zips
-if not os.path.exists('temp'):
-    os.makedirs('temp')
-'''
+
 #make codejam dir
 if not os.path.exists('codejamfolder'):
     os.makedirs('codejamfolder')
@@ -103,7 +94,7 @@ for year_json in metadata['competitions']:
                             print target_source + '/' + file_newname
                 except:
                     print "error:", sys.exc_info()[0]
-                # delete zip (or temp dir) here
+
+                # delete temp directory
                 if os.path.exists('temp'):
-                    #os.makedirs('temp')
                     shutil.rmtree('temp')
