@@ -4,6 +4,7 @@ import json
 import sys
 import os
 import zipfile
+import shutil
 
 '''
 download_url = "http://code.google.com/codejam/contest/" \
