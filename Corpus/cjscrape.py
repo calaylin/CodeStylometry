@@ -108,6 +108,8 @@ for year_json in metadata['competitions']:
                 #target_zip = 'temp/problem_num.username0.zip' ##############
 
                 # make temp here
+                if not os.path.exists('temp'):
+                    os.makedirs('temp')
 
                 target_zip = 'temp/' + problem_id + '.' + username + '0.zip' ## verify later
                 urlretrieve(download_url,target_zip)
@@ -128,6 +130,8 @@ for year_json in metadata['competitions']:
                         #target_source = 'codejamfolder/username0/ dont forget to make dir if it doesnt exist' ###
 
                         target_source = 'codejamfolder/' + username + '0' ## make if non-existent
+                        if not os.path.exists(target_source):
+                            os.makedirs(target_source)
 
                         # source dir can't have the rename thingy
                         # need to extract, copy/paste, then delete
@@ -142,6 +146,9 @@ for year_json in metadata['competitions']:
                         #naming convention: p[problem num].[username]0.c or cpp
                         os.rename((target_source + '/' + my_file), (target_source + '/' + file_newname))
                 # delete zip (or temp dir) here
+                if os.path.exists('temp'):
+                    #os.makedirs('temp')
+                    shutil.rmtree('temp')
 
 # import shutil
 # copyfile(src, dest)
