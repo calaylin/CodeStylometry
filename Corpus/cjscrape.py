@@ -21,24 +21,6 @@ def get_download_url(round_id, problem_id, username):
                 + "&io_set_id=0&username=" \
                 + username
 
-def get_all_users(round_id, num_players):
-    counter = 1
-    users = []
-    for pos in range(1, int(num_players), 30):
-        meta_url = "http://code.google.com/codejam/contest/scoreboard/" \
-            + "do?cmd=GetScoreboard&contest_id=" \
-            + round_id \
-            + "&show_type=all&start_pos=" \
-            + str(pos) \
-            + "&views_time=1&views_file=0&csrfmiddlewaretoken="
-        meta_url_data = urlopen(meta_url).read()
-        meta_json = json.loads(meta_url_data)
-        for row in meta_json['rows']:
-            users.append(row['n'])
-            print "added user " + str(counter)
-            counter += 1
-    return users
-
 def load_users():
     user_file = open(script_path + '/users.txt', 'r')
     data = user_file.read()
