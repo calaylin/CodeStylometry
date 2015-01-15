@@ -83,6 +83,8 @@ if not os.path.exists('temp'):
     os.makedirs('temp')
 '''
 #make codejam dir
+if not os.path.exists('codejamfolder'):
+    os.makedirs('codejamfolder')
 users = load_users()
 metadatafile = open("CodeJamMetadata.json").read()
 metadata = json.loads(metadatafile)
