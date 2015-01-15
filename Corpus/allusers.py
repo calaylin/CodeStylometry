@@ -1,8 +1,13 @@
 from urllib import urlopen
 import json
 
+#
+# Gets all users who participated in the Google Code Jam competition.
+#
+
 users = {}
 
+# adds all users who participated in the given round to the dictionary
 def get_all_users(round_id, num_players):
 	global users
 	for pos in range(1, int(num_players), 30):
@@ -21,11 +26,15 @@ def get_all_users(round_id, num_players):
 user_file = open('users.txt', 'w')
 metadatafile = open("CodeJamMetadata.json").read()
 metadata = json.loads(metadatafile)
+
+# loop through all years
 for year_json in metadata['competitions']:
-	qual_round = year_json['round'][0]
+	qual_round = year_json['round'][0] # get only the qualification round
 	num_players = qual_round['numPlayers']
 	round_id = qual_round['contest']
-	get_all_users(round_id, num_players)
+	get_all_users(round_id, num_players) # get users for the qualification round of the given year
+
+# write out all users
 for user in users.keys():
 	user_file.write(user)
 	user_file.write('\n')
