@@ -120,10 +120,13 @@ for year_json in metadata['competitions']:
                         #c_or_cpp_files.append(my_file)
                         #extract! :DDDDDDDDD
                         # my_zip.extract(my_file, 'path to put file')
-                        target_source = 'codejamfolder/username0/problem_num.username0.cpp dont forget to make dir if it doesnt exist' ###
-                        my_zip.extract(my_file, target_source)
+                        target_source = 'codejamfolder/username0/ dont forget to make dir if it doesnt exist' ###
+                        # source dir can't have the rename thingy
+                        # need to extract, copy/paste, then delete
+                        my_zip.extract(my_file, target_source) #### may need full path for my_file
                         # might wanna put a print statement here
-                #
+                        #os.rename
+                # delete zip (or temp dir)
 
 # import shutil
 # copyfile(src, dest)
@@ -138,3 +141,5 @@ for year_json in metadata['competitions']:
 # fh.close()
 #
 # ZipFile.namelist() gets name of files in zip
+#
+# os.rename(old, new)
