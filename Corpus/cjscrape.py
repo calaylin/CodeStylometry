@@ -6,45 +6,7 @@ import os
 import zipfile
 import shutil
 
-'''
-download_url = "http://code.google.com/codejam/contest/" \
-    + "scoreboard/do?cmd=GetSourceCode&contest=" \
-    + contest \
-    + "&problem=" \
-    + problist[p_index]['id'] \
-    + "&io_set_id=" \
-    + str(set_id) \
-    + "&username=" \
-    + user \
-    + "&csrfmiddlewaretoken="
-
-target_dir = "c" + contest + "/p" + problist[p_index]['id']
-
-if not os.path.exists(target_dir) :
-    os.makedirs(target_dir)
-
-target_file = target_dir + "/" + str(set_id) + "." \
-    + user + ".zip"
-
-#print target_file
-
-urlretrieve(download_url,target_file)
-dl_cnt += 1
-'''
-
-'''
-public static String getDownloadURL(String roundNum, String problemNum, String name) {
-        return "http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest="
-                + roundNum
-                + "&problem="
-                + problemNum
-                + "&io_set_id=0&username=" + name;
-}
-'''
-
-# configfile = open("datasets.json").read()
-# parsed_config = json.loads(configfile) -- json object
-# {} -> hash and [] -> list
+script_path = os.path.dirname(os.path.realpath(__file__))
 
 def get_download_url(round_id, problem_id, username):
     return "http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest=" \
@@ -73,7 +35,7 @@ def get_all_users(round_id, num_players):
     return users
 
 def load_users():
-    user_file = open('users.txt', 'r')
+    user_file = open(script_path + '/users.txt', 'r')
     data = user_file.read()
     users = data.splitlines()
     return users
@@ -86,7 +48,7 @@ if not os.path.exists('temp'):
 if not os.path.exists('codejamfolder'):
     os.makedirs('codejamfolder')
 users = load_users()
-metadatafile = open("CodeJamMetadata.json").read()
+metadatafile = open(script_path + "/CodeJamMetadata.json").read()
 metadata = json.loads(metadatafile)
 for year_json in metadata['competitions']:
     year = year_json['year']
@@ -152,19 +114,3 @@ for year_json in metadata['competitions']:
                 if os.path.exists('temp'):
                     #os.makedirs('temp')
                     shutil.rmtree('temp')
-
-# import shutil
-# copyfile(src, dest)
-#
-# import zipfile
-# import os.path
-# fh = open('something.zip', 'rb')
-# z = zipfile.ZipFile(fh)
-# for name in z.namelist():
-#    outpath = "C:\\asudhfkwjqehfkh"
-#    z.extract(name, outpath)
-# fh.close()
-#
-# ZipFile.namelist() gets name of files in zip
-#
-# os.rename(old, new)
