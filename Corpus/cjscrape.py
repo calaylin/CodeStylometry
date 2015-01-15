@@ -9,6 +9,11 @@ import shutil
 script_path = os.path.dirname(os.path.realpath(__file__))
 
 def get_download_url(round_id, problem_id, username):
+    '''
+    round_id = '7214486'
+    problem_id = '5722683480211456'
+    username = 'Gennady.Korotkevich'
+    '''
     return "http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest=" \
                 + round_id \
                 + "&problem=" \
@@ -84,32 +89,38 @@ for year_json in metadata['competitions']:
                 # authorname -> authorname0 or 0authorname0
                 # root -> author -> p[problem number].username.cpp
                 zip_header = open(target_zip, 'rb')
-                my_zip = zipfile.ZipFile(zip_header)
-                #files = my_zip.namelist()
-                #c_or_cpp_files = []
-                for my_file in my_zip.namelist():
-                    if my_file.endswith(('.c', '.cpp')):
-                        #c_or_cpp_files.append(my_file)
-                        #extract! :DDDDDDDDD
-                        # my_zip.extract(my_file, 'path to put file')
-                        #target_source = 'codejamfolder/username0/ dont forget to make dir if it doesnt exist' ###
 
-                        target_source = 'codejamfolder/' + username + '0' ## make if non-existent
-                        if not os.path.exists(target_source):
-                            os.makedirs(target_source)
+                # TODO add try-catch here
+                try:
+                    my_zip = zipfile.ZipFile(zip_header)
+                    #files = my_zip.namelist()
+                    #c_or_cpp_files = []
+                    for my_file in my_zip.namelist():
+                        if my_file.endswith(('.c', '.cpp')):
+                            #c_or_cpp_files.append(my_file)
+                            #extract! :DDDDDDDDD
+                            # my_zip.extract(my_file, 'path to put file')
+                            #target_source = 'codejamfolder/username0/ dont forget to make dir if it doesnt exist' ###
 
-                        # source dir can't have the rename thingy
-                        # need to extract, copy/paste, then delete
-                        my_zip.extract(my_file, target_source) #### may need full path for my_file
-                        # might wanna put a print statement here
-                        #os.rename
-                        file_newname = 'p' + problem_id + '.' + username + '0.'
-                        if my_file.endswith('.c'):
-                            file_newname += 'c'
-                        else:
-                            file_newname += 'cpp'
-                        #naming convention: p[problem num].[username]0.c or cpp
-                        os.rename((target_source + '/' + my_file), (target_source + '/' + file_newname))
+                            target_source = 'codejamfolder/' + username + '0' ## make if non-existent
+                            if not os.path.exists(target_source):
+                                os.makedirs(target_source)
+
+                            # source dir can't have the rename thingy
+                            # need to extract, copy/paste, then delete
+                            my_zip.extract(my_file, target_source) #### may need full path for my_file
+                            # might wanna put a print statement here
+                            #os.rename
+                            file_newname = 'p' + problem_id + '.' + username + '0.'
+                            if my_file.endswith('.c'):
+                                file_newname += 'c'
+                            else:
+                                file_newname += 'cpp'
+                            #naming convention: p[problem num].[username]0.c or cpp
+                            os.rename((target_source + '/' + my_file), (target_source + '/' + file_newname))
+                            print target_source + '/' + file_newname
+                except:
+                    print "error:", sys.exc_info()[0]
                 # delete zip (or temp dir) here
                 if os.path.exists('temp'):
                     #os.makedirs('temp')
