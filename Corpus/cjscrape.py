@@ -3,6 +3,7 @@ from urllib import urlretrieve
 import json
 import sys
 import os
+import zipfile
 
 '''
 download_url = "http://code.google.com/codejam/contest/" \
@@ -76,6 +77,10 @@ def load_users():
     users = data.splitlines()
     return users
 
+# make temp directory for zips
+if not os.path.exists('temp'):
+    os.makedirs('temp')
+
 users = load_users()
 metadatafile = open("CodeJamMetadata.json").read()
 metadata = json.loads(metadatafile)
@@ -97,6 +102,18 @@ for year_json in metadata['competitions']:
                 # alsdkjfa;lsdkfj;asldkjf;alsdkfj
                 print download_url
                 # need to send to someplace, unzip, check extension, and copy/rename
+                # create folders for zips like rosenblum does
+                # and put the zips there
+                target_file = 'temp/problem_num.username0.zip' ##############
+                urlretrieve(download_url,target_file)
+                # python can tell the contents of zips (?)
+                # check if these are c/cpp
+                # if so, extract and put them in some other folder that happens to be more organized
+                # authorname -> authorname0 or 0authorname0
+                # root -> author -> p[problem number].username.cpp
+                zip_header = open('aossalkdfjalsdkjf', 'rb')
+                my_zip = zipfile.ZipFile(zip_header)
+                #
 
 # import shutil
 # copyfile(src, dest)
@@ -109,3 +126,5 @@ for year_json in metadata['competitions']:
 #    outpath = "C:\\asudhfkwjqehfkh"
 #    z.extract(name, outpath)
 # fh.close()
+#
+# ZipFile.namelist() gets name of files in zip
