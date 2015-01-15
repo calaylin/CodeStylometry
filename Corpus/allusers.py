@@ -5,7 +5,7 @@ import json
 # Gets all users who participated in the Google Code Jam competition.
 #
 
-users = {}
+users = {} # dictionary of all discovered users
 
 # adds all users who participated in the given round to the dictionary
 def get_all_users(round_id, num_players):
