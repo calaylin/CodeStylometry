@@ -89,7 +89,7 @@ for year_json in metadata['competitions']:
                                 file_newname += 'c'
                             elif my_file.endswith('.cpp'):
                                 file_newname += 'cpp'
-                            else
+                            else:
                                 file_newname += 'py'
                             #naming convention: p[problem num].[username]0.c or cpp
                             os.rename((target_source + '/' + my_file), (target_source + '/' + file_newname))
