@@ -84,9 +84,8 @@ for year_json in metadata['competitions']:
                             # my_zip.extract(my_file, 'path to put file')
                             #target_source = 'codejamfolder/username0/ dont forget to make dir if it doesnt exist' ###
 
-                            target_source = 'codejamfolder/' + username + '0' ## make if non-existent
-                            if not os.path.exists(target_source):
-                                os.makedirs(target_source)
+                            target_source = '/codejamfolder/' + username + '0' ## make if non-existent
+                            
 
                             # source dir can't have the rename thingy
                             # need to extract, copy/paste, then delete
@@ -96,11 +95,16 @@ for year_json in metadata['competitions']:
                             file_newname = 'p' + problem_id + '.' + username + '0.'
                             if my_file.endswith('.c'):
                                 file_newname += 'c'
+                                target_source = 'c/' + target_source
                             elif my_file.endswith('.cpp'):
                                 file_newname += 'cpp'
+                                target_source = 'cpp/' + target_source
                             else:
                                 file_newname += 'py'
-                                target_source = 'py' + target_source
+                                target_source = 'py/' + target_source
+
+                            if not os.path.exists(target_source):
+                                os.makedirs(target_source)
                             #naming convention: p[problem num].[username]0.c or cpp
                             os.rename((target_source + '/' + my_file), (target_source + '/' + file_newname))
                             print target_source + '/' + file_newname
