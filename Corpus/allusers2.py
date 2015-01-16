@@ -9,7 +9,7 @@ import os
 
 # gets a list of all users who participated in the round
 def get_all_users(round_id, num_players):
-	round_file = open(round_id + '.txt', 'w')
+	round_file = open('users/' + round_id + '.txt', 'w')
 	for pos in range(1, int(num_players), 30):
 		meta_url = "http://code.google.com/codejam/contest/scoreboard/" \
 			+ "do?cmd=GetScoreboard&contest_id=" \

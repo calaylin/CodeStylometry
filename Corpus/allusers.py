@@ -24,7 +24,7 @@ def get_all_users(round_id, num_players):
 			username = row['n']
 			users[username] = True
 
-user_file = open('users.txt', 'w')
+user_file = open('users/users.txt', 'w')
 metadatafile = open(os.path.dirname(os.path.realpath(__file__)) + "/CodeJamMetadata.json").read()
 metadata = json.loads(metadatafile)
 
