@@ -22,6 +22,7 @@ def load_users():
     users = data.splitlines()
     return users
 
+count = 0
 #make codejam dir
 if not os.path.exists('codejamfolder'):
     os.makedirs('codejamfolder')
@@ -91,6 +92,7 @@ for year_json in metadata['competitions']:
                                 file_newname += 'cpp'
                             else:
                                 file_newname += 'py'
+                                target_source = 'py' + target_source
                             #naming convention: p[problem num].[username]0.c or cpp
                             os.rename((target_source + '/' + my_file), (target_source + '/' + file_newname))
                             print target_source + '/' + file_newname
@@ -100,3 +102,5 @@ for year_json in metadata['competitions']:
                 # delete temp directory
                 if os.path.exists('temp'):
                     shutil.rmtree('temp')
+                count += 1
+                print count
