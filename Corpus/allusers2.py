@@ -1,5 +1,6 @@
 from urllib import urlopen
 import json
+import os
 
 #
 # Gets all users who participated in the Google Code Jam competition.
