@@ -7,7 +7,7 @@ import os
 # Posts results according to round number.
 #
 
-# gets a list of all users who participated in the round
+# writes a list of all users who participated in the round
 def get_all_users(round_id, num_players):
 	round_file = open('users/' + round_id + '.txt', 'w')
 	for pos in range(1, int(num_players), 30):
@@ -21,13 +21,11 @@ def get_all_users(round_id, num_players):
 		meta_json = json.loads(meta_url_data)
 		for row in meta_json['rows']:
 			username = row['n']
-			#users.append(username)
 			round_file.write(username)
 			round_file.write('\n')
 			print username
 	round_file.close()
 
-#user_file = open('users.txt', 'w')
 metadatafile = open(os.path.dirname(os.path.realpath(__file__)) + "/CodeJamMetadata.json").read()
 metadata = json.loads(metadatafile)
 
@@ -37,12 +35,3 @@ for year_json in metadata['competitions']:
 		num_players = round_json['numPlayers']
 		round_id = round_json['contest']
 		get_all_users(round_id, num_players)
-		#round_file = open(round_id + '.txt', 'w')
-		'''
-		print 'new file'
-		for user in users:
-			user_file.write(user)
-			user_file.write('\n')
-			print user
-		'''
-		#round_file.close()
