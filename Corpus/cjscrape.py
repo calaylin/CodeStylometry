@@ -46,7 +46,6 @@ def scrape(round_id, problems, script_path):
     # load list of users
     user_file = open(script_path + '/users/' + round_id + '.txt', 'r')
     users = user_file.read().splitlines()
-    user_file.close()
     
     # loop through problems in the round
     for problem_json in problems:
@@ -118,7 +117,6 @@ if __name__ == '__main__':
     script_path = os.path.dirname(os.path.realpath(__file__))
     metadatafile = open(script_path + "/CodeJamMetadata.json").read()
     metadata = json.loads(metadatafile)
-    metadatafile.close()
 
     # loop through years
     for year_json in metadata['competitions']:
