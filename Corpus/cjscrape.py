@@ -104,3 +104,4 @@ for year_json in metadata['competitions']:
                     shutil.rmtree('temp')
                 count += 1
                 print count
+                # stops are 11974456 or so
