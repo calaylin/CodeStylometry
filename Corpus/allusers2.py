@@ -3,14 +3,12 @@ import json
 
 #
 # Gets all users who participated in the Google Code Jam competition.
-# Posts results in a single text file.
+# Posts results according to round number.
 #
 
-users = {} # dictionary of all discovered users
-
-# adds all users who participated in the given round to the dictionary
+# gets a list of all users who participated in the round
 def get_all_users(round_id, num_players):
-	global users
+	users = []
 	for pos in range(1, int(num_players), 30):
 		meta_url = "http://code.google.com/codejam/contest/scoreboard/" \
 			+ "do?cmd=GetScoreboard&contest_id=" \
@@ -22,21 +20,20 @@ def get_all_users(round_id, num_players):
 		meta_json = json.loads(meta_url_data)
 		for row in meta_json['rows']:
 			username = row['n']
-			users[username] = True
+			users.append(username)
 
-user_file = open('users.txt', 'w')
+#user_file = open('users.txt', 'w')
 metadatafile = open(os.path.dirname(os.path.realpath(__file__)) + "/CodeJamMetadata.json").read()
 metadata = json.loads(metadatafile)
 
 # loop through all years
 for year_json in metadata['competitions']:
-	qual_round = year_json['round'][0] # get only the qualification round
-	num_players = qual_round['numPlayers']
-	round_id = qual_round['contest']
-	get_all_users(round_id, num_players) # get users for the qualification round of the given year
-
-# write out all users
-for user in users.keys():
-	user_file.write(user)
-	user_file.write('\n')
-user_file.close()
+	for round_json in year_json['round']:
+		num_players = round_json['numPlayers']
+		round_id = round_json['contest']
+		users = get_all_users(round_id, num_players)
+		round_file = open(round_id + '.txt', 'w')
+		for user in users:
+			user_file.write(user)
+			user_file.write('\n')
+		round_file.close()
