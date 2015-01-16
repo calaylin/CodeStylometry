@@ -109,7 +109,6 @@ def scrape(round_id, problems, script_path):
             # delete temp directory
             if os.path.exists(tempdir):
                 shutil.rmtree(tempdir)
-    
     return
 
 # main section of script
