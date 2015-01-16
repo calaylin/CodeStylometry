@@ -39,6 +39,7 @@ def scrape(round_id, problems, script_path):
             if not os.path.exists(tempdir):
                 os.makedirs(tempdir)
 
+            # download and read zip
             target_zip = tempdir + '/' + problem_id + '.' + username + '0.zip'
             urlretrieve(download_url,target_zip)
             zip_header = open(target_zip, 'rb')
@@ -46,10 +47,13 @@ def scrape(round_id, problems, script_path):
             # try-except in case of a bad header
             try:
                 my_zip = zipfile.ZipFile(zip_header)
+
+                # loop through each file in the zip file
                 for my_file in my_zip.namelist():
+
+                    # check for C/C++/Python source
                     if my_file.endswith(('.c', '.cpp', '.py')):
                         target_source = '/codejamfolder/' + username + '0' # destination of source files
-                        my_zip.extract(my_file, target_source)
                         file_newname = 'p' + problem_id + '.' + username + '0.'
                         if my_file.endswith('.c'):
                             file_newname += 'c'
@@ -62,6 +66,7 @@ def scrape(round_id, problems, script_path):
                             target_source = 'py/' + target_source
                         if not os.path.exists(target_source):
                             os.makedirs(target_source)
+                        my_zip.extract(my_file, target_source)
                         os.rename((target_source + '/' + my_file), (target_source + '/' + file_newname))
                         print target_source + '/' + file_newname
                         sys.stdout.flush()
