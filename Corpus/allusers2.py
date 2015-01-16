@@ -22,9 +22,9 @@ def get_all_users(round_id, num_players):
 		for row in meta_json['rows']:
 			username = row['n']
 			#users.append(username)
-			user_file.write(user)
-			user_file.write('\n')
-			print user
+			round_file.write(username)
+			round_file.write('\n')
+			print username
 	round_file.close()
 
 #user_file = open('users.txt', 'w')
