@@ -19,6 +19,7 @@ def get_all_users(round_id, num_players):
 			+ "&show_type=all&start_pos=" \
 			+ str(pos) \
 			+ "&views_time=1&views_file=0&csrfmiddlewaretoken="
+		print meta_url
 		meta_url_data = urlopen(meta_url).read()
 		meta_json = json.loads(meta_url_data)
 
