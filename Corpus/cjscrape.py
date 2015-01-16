@@ -69,7 +69,7 @@ for year_json in metadata['competitions']:
                     #files = my_zip.namelist()
                     #c_or_cpp_files = []
                     for my_file in my_zip.namelist():
-                        if my_file.endswith(('.c', '.cpp')):
+                        if my_file.endswith(('.c', '.cpp', '.py')):
                             #c_or_cpp_files.append(my_file)
                             #extract! :DDDDDDDDD
                             # my_zip.extract(my_file, 'path to put file')
@@ -87,8 +87,10 @@ for year_json in metadata['competitions']:
                             file_newname = 'p' + problem_id + '.' + username + '0.'
                             if my_file.endswith('.c'):
                                 file_newname += 'c'
-                            else:
+                            elif my_file.endswith('.cpp'):
                                 file_newname += 'cpp'
+                            else
+                                file_newname += 'py'
                             #naming convention: p[problem num].[username]0.c or cpp
                             os.rename((target_source + '/' + my_file), (target_source + '/' + file_newname))
                             print target_source + '/' + file_newname
