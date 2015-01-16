@@ -7,6 +7,11 @@ import zipfile
 import shutil
 import multiprocessing
 
+#
+# hi
+#
+
+# returns the URL to download the user submission
 def get_download_url(round_id, problem_id, username):
     return "http://code.google.com/codejam/contest/scoreboard/do?cmd=GetSourceCode&contest=" \
                 + round_id \
@@ -15,6 +20,7 @@ def get_download_url(round_id, problem_id, username):
                 + "&io_set_id=0&username=" \
                 + username
 
+# scrapes the C/C++/Python files of the given round
 def scrape(round_id, problems, script_path):
 
     # load list of users
@@ -53,8 +59,8 @@ def scrape(round_id, problems, script_path):
 
                     # check for C/C++/Python source
                     if my_file.endswith(('.c', '.cpp', '.py')):
-                        target_source = '/codejamfolder/' + username + '0' # destination of source files
-                        file_newname = 'p' + problem_id + '.' + username + '0.'
+                        target_source = username + '0' # destination of source files
+                        file_newname = 'p' + problem_id + '.' + username + '0.' # appropriate name for file
                         if my_file.endswith('.c'):
                             file_newname += 'c'
                             target_source = 'c/' + target_source
@@ -64,10 +70,17 @@ def scrape(round_id, problems, script_path):
                         else:
                             file_newname += 'py'
                             target_source = 'py/' + target_source
+                        target_source = 'codejamfolder/' + target_source
+
+                        # make directory for language and author
                         if not os.path.exists(target_source):
                             os.makedirs(target_source)
+
+                        # extract and rename source file
                         my_zip.extract(my_file, target_source)
                         os.rename((target_source + '/' + my_file), (target_source + '/' + file_newname))
+                        
+                        # print location of extracted source file
                         print target_source + '/' + file_newname
                         sys.stdout.flush()
             except:
@@ -80,14 +93,22 @@ def scrape(round_id, problems, script_path):
     
     return
 
+# main section of script
 if __name__ == '__main__':
     script_path = os.path.dirname(os.path.realpath(__file__))
     metadatafile = open(script_path + "/CodeJamMetadata.json").read()
     metadata = json.loads(metadatafile)
+    metadatafile.close()
+
+    # loop through years
     for year_json in metadata['competitions']:
         year = year_json['year']
+
+        # loop through rounds
         for round_json in year_json['round']:
             round_id = round_json['contest']
             problems = round_json['problems']
+
+            # run scraper on current round
             scraper = multiprocessing.Process(target=scrape, args=(round_id, problems, script_path))
             scraper.start()
