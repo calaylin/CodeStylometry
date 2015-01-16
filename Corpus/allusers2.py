@@ -10,6 +10,8 @@ import os
 # writes a list of all users who participated in the round
 def get_all_users(round_id, num_players):
 	round_file = open('users/' + round_id + '.txt', 'w')
+
+	# loop through each page of users
 	for pos in range(1, int(num_players), 30):
 		meta_url = "http://code.google.com/codejam/contest/scoreboard/" \
 			+ "do?cmd=GetScoreboard&contest_id=" \
@@ -19,6 +21,8 @@ def get_all_users(round_id, num_players):
 			+ "&views_time=1&views_file=0&csrfmiddlewaretoken="
 		meta_url_data = urlopen(meta_url).read()
 		meta_json = json.loads(meta_url_data)
+
+		# find and print usernames
 		for row in meta_json['rows']:
 			username = row['n']
 			round_file.write(username)
@@ -26,6 +30,7 @@ def get_all_users(round_id, num_players):
 			print username
 	round_file.close()
 
+# load JSON
 metadatafile = open(os.path.dirname(os.path.realpath(__file__)) + "/CodeJamMetadata.json").read()
 metadata = json.loads(metadatafile)
 
