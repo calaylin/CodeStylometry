@@ -49,7 +49,7 @@ def scrape(round_id, problems, script_path):
     user_file.close()
     
     # loop through problems in the round
-    for problem_json in problems
+    for problem_json in problems:
         problem_id = problem_json['id']
 
         # loop through users who participated in the round
