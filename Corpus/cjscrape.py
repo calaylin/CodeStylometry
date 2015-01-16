@@ -15,9 +15,16 @@ def get_download_url(round_id, problem_id, username):
                 + problem_id \
                 + "&io_set_id=0&username=" \
                 + username
-
+'''
 def load_users():
     user_file = open(script_path + '/users.txt', 'r')
+    data = user_file.read()
+    users = data.splitlines()
+    return users
+'''
+
+def load_users(round_id):
+    user_file = open(script_path + '/' + round_id + '.txt', 'r')
     data = user_file.read()
     users = data.splitlines()
     return users
@@ -26,7 +33,7 @@ count = 0
 #make codejam dir
 if not os.path.exists('codejamfolder'):
     os.makedirs('codejamfolder')
-users = load_users()
+#users = load_users()
 metadatafile = open(script_path + "/CodeJamMetadata.json").read()
 metadata = json.loads(metadatafile)
 for year_json in metadata['competitions']:
@@ -36,7 +43,8 @@ for year_json in metadata['competitions']:
         round_desc = round_json['desc']
         round_id = round_json['contest']
         num_players = round_json['numPlayers']
-        print "on " + round_desc
+        #print "on " + round_desc
+        users = load_users(round_id)
         #users = get_all_users(round_id, num_players)
         #print "got users"
         for problem_json in round_json['problems']:
