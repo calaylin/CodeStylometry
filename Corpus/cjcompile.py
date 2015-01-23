@@ -11,7 +11,7 @@ import sys
 flags = sys.argv
 flags.pop(0)
 
-# go through all files under the root directorys
+# go through all files under the root directory
 for (path, dirs, files) in os.walk('.'):
 	for f in files:
 		# check if file is a C or C++ file
