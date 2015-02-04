@@ -265,6 +265,87 @@ public class DatasetCreator
 		
 		
 		
+
+		
+		
+		public static void copyCAuthorsWithAtLeastFileNumber(String test_c_dir, int fileCount) throws IOException{
+
+			   File file = new File(test_c_dir);
+			   String[] directories = file.list(new FilenameFilter() 
+			   {
+			     @Override
+			     public boolean accept(File current, String name) 
+			     {
+			       return new File(current, name).isDirectory();
+			     }
+			   });
+			   System.out.println(Arrays.toString(directories));
+			   for(int j=0; j< directories.length; j++)
+			    {
+//				   System.out.println(directories[j].toString());
+				   String author_cpp_dir = test_c_dir + directories[j] +"/";
+//				   System.out.println(author_cpp_dir);
+				   List test_file_paths = Util.listCFiles(author_cpp_dir);
+				   for(int i=0; i< test_file_paths.size(); i++)
+				   {
+//						int testIDlength = test_file_paths.get(i).toString().length();   
+					   //if the author has 6 cpp files
+					//   int fileCount =6;
+					   if(test_file_paths.size() >= fileCount)
+					   {
+						   System.out.println(author_cpp_dir);
+
+						   String filePath = test_file_paths.get(i).toString();
+						   //one empty file in each folder, skip that
+						   System.out.println(filePath);  
+						   
+						   File srcFolder = new File(author_cpp_dir);
+					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
+						   +fileCount+"FilesAtLeastPerAuthor_2014_C/") ;
+					      	File destFolder = new File(destFolderParent +"/"+ directories[j].toString()) ;
+					    	if(!destFolder.exists())
+					    	{
+								///System.out.println(file.getAbsolutePath());
+					    		destFolder.mkdirs();
+							}
+					    	
+					    	
+					  
+					    	
+						    List cpp_file_paths = Util.listCFiles(author_cpp_dir);
+						    for(int k=0; k< fileCount; k++)
+						    	
+						    {
+						    	File srcFile=new File(cpp_file_paths.get(k).toString());							    	
+						    	File destFile= new File(destFolder + "/"+ srcFile.getName());
+						    	FileUtils.copyFile(srcFile, destFile);
+						     	if(!destFile.exists())
+						    	{
+									///System.out.println(file.getAbsolutePath());
+						    		destFile.mkdirs();
+								}
+						    }
+						    
+
+					    	
+					    	
+					   }   
+				   }	   
+			    }
+			}	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
@@ -302,7 +383,7 @@ public class DatasetCreator
 						   
 						   File srcFolder = new File(author_cpp_dir);
 					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
-						   +fileCount+"FilesAtLeastPerAuthor_2014_mallory/") ;
+						   +fileCount+"FilesAtLeastPerAuthor_2014_C/") ;
 					      	File destFolder = new File(destFolderParent +"/"+ directories[j].toString()) ;
 					    	if(!destFolder.exists())
 					    	{
@@ -752,14 +833,14 @@ public class DatasetCreator
 
 		
 //createMalloryDatasets(String test_cpp_dir, String copy2Folder, int trainingFiles, int testFiles, int datasets) throws IOException{
-		String trainFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/8FilesExactlyPerAuthor_2014/";
+		String trainFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014Cprogrammers/";
 		String malloryFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/14FilesAtLeastPerAuthor_2014_mallory/";
 		String copy2Folder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/mallory_new/";
 
-		createMalloryDatasets(trainFolder, malloryFolder, copy2Folder, 8, 6, 150);
+	//	createMalloryDatasets(trainFolder, malloryFolder, copy2Folder, 8, 6, 150);
 		
 //		organizeByCountry(folder, "byCountry2014", 2014);
-    //    copyAuthorsWithAtLeastFileNumber(folder, 14);
+        copyCAuthorsWithAtLeastFileNumber(trainFolder, 9);
 		for(int i=14; i<15; i++){
 	        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp/";
 
@@ -769,7 +850,7 @@ public class DatasetCreator
 		//copyAuthorsWithAtLeastFileNumber(folder, 8);
 		//	copyAuthorsRandomlyWithAtLeastFileNumber(folder, i, 2012);
 				}
-		String bigFolderEasy = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/12FilesPerAuthor_2014_easy/";
+		String bigFolderEasy = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014Cprogrammers/";
 		String bigFolderDifficult = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/12FilesPerAuthor_2014_difficult/";
 	//	SplitDatasetInto2Easy(bigFolderEasy);
 	//	SplitDatasetInto2Difficult(bigFolderDifficult);
