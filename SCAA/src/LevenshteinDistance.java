@@ -63,9 +63,9 @@ public static void main(String[] args) throws IOException {
 	     }
 	   });
 	   System.out.println(Arrays.toString(directories));	
-	   
 	   for (int i =0; i< directories.length; i++)
 	   {
+		   	double author_ratio=0;
 		   //authorname is directoryname - 1 because Andrew put an extra 0 at the end of the authorname
 		   String authorName = directories[i].toString().substring(0, directories[i].toString().length()); 
 		   String authorDir = parentDir + directories[i] + "/";
@@ -76,14 +76,16 @@ public static void main(String[] args) throws IOException {
 		   BufferedReader br = null;
 			String line = "";
 		   	List test_cpp_paths = Util.listCPPFiles(authorDir);
+
 		   	for(int j=0; j < test_cpp_paths.size();j++ )
 			{
+				double  avg_ratio=0;
+				double ratio =0;
+
 				String file1 = Util.readFile(test_cpp_paths.get(j).toString());
 				   Util.writeFile(test_cpp_paths.get(j).toString() +"\n", output_file, true);
-				   double  avg_ratio=0;
 				for(int k=0; k < test_cpp_paths.size();k++ )
 				{
-					double ratio =0;
 					if(j!=k){
 						String file2 = Util.readFile(test_cpp_paths.get(k).toString());
 						int distance =computeDistance(file1, file2);
@@ -98,12 +100,19 @@ public static void main(String[] args) throws IOException {
 								"File2 length:"+file2.length()+" ", output_file, true);
 						Util.writeFile("distance: "+Integer.toString(distance)+
 								" "+"ratio: "+ Double.toString(ratio) + "\n" ,output_file, true);
-						avg_ratio =+ratio;
+						avg_ratio =avg_ratio+ratio;
 					}}
 					avg_ratio = avg_ratio/(double)((Integer)(test_cpp_paths.size()-1));
 					   Util.writeFile("average ratio of file: "+avg_ratio +"\n", output_file, true);
+					   System.out.println("average ratio of file: "+avg_ratio );
 
+					   author_ratio=author_ratio+avg_ratio;
 				}
+		   			author_ratio=author_ratio/(double)((Integer)(test_cpp_paths.size()));
+					   System.out.println("average ratio of author: "+author_ratio);
+   
+		   			Util.writeFile("average ratio of author: "+author_ratio +"\n", output_file, true);
+
 			}	  
 	   }  
 }
