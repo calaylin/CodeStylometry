@@ -51,7 +51,7 @@ public static void main(String[] args) throws IOException {
 	  
 	  	String parentDir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/"
 				+ "SCAA_Datasets/bigExperiments/250authors/9FilesExactlyPer250Author_2014/";
-	   	String output_file= "/Users/Aylin/Desktop/similarityTest.txt";
+	   	String output_file= "/Users/Aylin/Desktop/similarityTestAcrossAuthors.txt";
 
 	  File file = new File(parentDir);
 	   String[] directories = file.list(new FilenameFilter() 
@@ -63,7 +63,8 @@ public static void main(String[] args) throws IOException {
 	     }
 	   });
 	   System.out.println(Arrays.toString(directories));	
-	   for (int i =0; i< directories.length; i++)
+	   //within author similarity
+/*	   for (int i =0; i< directories.length; i++)
 	   {
 		   	double author_ratio=0;
 		   //authorname is directoryname - 1 because Andrew put an extra 0 at the end of the authorname
@@ -113,6 +114,51 @@ public static void main(String[] args) throws IOException {
    
 		   			Util.writeFile("average ratio of author: "+author_ratio +"\n", output_file, true);
 
-			}	  
+			}*/	  
+	   
+	   	List all_cpp_paths = Util.listCPPFiles(parentDir);
+	   	String authorName2;
+		double  avg_ratio=0;
+
+	   	   for (int i =0; i< all_cpp_paths.size(); i++)
+	   {
+		   //authorname is directoryname - 1 because Andrew put an extra 0 at the end of the authorname
+		   File newFile = new File(all_cpp_paths.get(i).toString());
+		    authorName2 = newFile.getParentFile().getName().toString();
+		   Util.writeFile(authorName2+":"+newFile.getName().toString() +"\n", output_file, true);
+		   System.out.println(authorName2);
+
+		   BufferedReader br = null;
+
+		   	for(int j=0; j < all_cpp_paths.size();j++ )
+			{
+		  	  File newFile1 = new File(all_cpp_paths.get(j).toString());
+			   String authorName3 = newFile1.getParentFile().getName().toString();
+
+				double ratio =0;
+			if(!authorName2.equals(authorName3)){
+				String file1 = Util.readFile(all_cpp_paths.get(i).toString());
+				
+						String file2 = Util.readFile(all_cpp_paths.get(j).toString());
+						int distance =computeDistance(file1, file2);
+						if(file1.length() <= file2.length()){
+							 ratio = distance/(double)((Integer)file2.length());
+						}
+						if(file2.length() < file1.length()){
+							 ratio = distance/(double)((Integer)file1.length());
+						}	
+						
+			/*			Util.writeFile("File1 length: "+file1.length() +" " +
+								"File2 length:"+file2.length()+" ", output_file, true);
+						Util.writeFile("distance: "+Integer.toString(distance)+
+								" "+"ratio: "+ Double.toString(ratio) + "\n" ,output_file, true);*/
+					//	Util.writeFile( Double.toString(ratio) + ", " ,output_file, true);
+						avg_ratio =avg_ratio+ratio;
+					}}
+					avg_ratio = avg_ratio/(double)((Integer)(all_cpp_paths.size()-9));
+					   Util.writeFile("\n Average distance to all other files: "+avg_ratio +"\n", output_file, true);
+					   System.out.println("Average distance to all other files: "+avg_ratio );
+	   }
+	   
 	   }  
 }
