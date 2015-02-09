@@ -1,10 +1,8 @@
-
-
-
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,27 +26,48 @@ public class MergeArffFiles {
     public static void main(String[] args) throws Exception{
     	
     	
-    	for(int numberFiles = 8; numberFiles <9; numberFiles++){
+    	for(int numberFiles = 1; numberFiles <2; numberFiles++){
  
-    	String word = "@data";																		
-    	String file1 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mallory_CSFS_new.arff" ;
-    	String file2 = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mallory_CSFS_andrew.arff";
-    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/mallory_CSFSANdrew_all.arff";
+    	String word = "@data";		
+    	String file1 ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigramArffs/Random250/"
+    			+ "9RandomExperiment250_FS9Andrew.arff";
+    	String file2 ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigramArffs/Random250/"
+    	+"2.3_250RandomAuthors_9FilesPerAuthor_bigrams.arff";
+    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigramArffs/Random250/"
+    			+ "250RandomAuthors_9FilesPerAuthor_bigramsCSFS_merged.arff";
 
-    	
+/*     	String file1_tosort ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigramArffs/2014/"
+    			+ "9BigExperiment250_2014FS9Andrew.arff";
+    	String file1_sorted ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigramArffs/2014/"
+    			+ "9BigExperiment250_2014FS9Andrew_sorted.arff ";
+    	Util.AlphabeticallySortLinesOfTextInFile(file1_tosort, file1_sorted);
+    	}*/
 
     	int atDataLineNumberFile1 = MergeArffFiles.grepLineNumber(file1, word);
     	int atDataLineNumberFile2 = MergeArffFiles.grepLineNumber(file2, word);
     	
-    	for(int firstFileAttributes=1; firstFileAttributes <atDataLineNumberFile1; firstFileAttributes++ )
-    	{Util.writeFile(readSpecificLineNumber(file1, firstFileAttributes) + "\n", outputArffName, true);}
+/*    	for(int firstFileAttributes=1; firstFileAttributes <atDataLineNumberFile1; firstFileAttributes++ )
+    	{Util.writeFile(readSpecificLineNumber(file1, firstFileAttributes) + "\n", outputArffName, true);}*/
+    	File file = new File(file2);
+		FileReader fileReader = new FileReader(file);
+		BufferedReader bufferedReader = new BufferedReader(fileReader);
+		StringBuffer stringBuffer = new StringBuffer();
+		String line;
+		while ((line = bufferedReader.readLine()) != "@data") {
+			stringBuffer.append(line);
+			stringBuffer.append("\n");
+			Util.writeFile(line + "\n", outputArffName, true);
+		}
+		fileReader.close();
+
     	
     	for(int secondFileAttributes=4; secondFileAttributes <=atDataLineNumberFile2; secondFileAttributes++ )
     	{Util.writeFile(readSpecificLineNumber(file2, secondFileAttributes) + "\n", outputArffName, true);}
 
-    	int numberOfInstances = (65 * numberFiles)-1; 
-    	int numberOfInstances1 = 519; 
-
+    	int numberOfInstances = (250 * 9); 
+    	int numberOfInstances1 = (250 * 9); 
+  //  	int numberOfInstances = 28; 
+  //  	int numberOfInstances1 = 28; 
 
 		int file2LineNumberStart=atDataLineNumberFile2+1;
 
@@ -79,10 +98,7 @@ public class MergeArffFiles {
                		    			System.out.println(j);  
         					   }
         					}
-        					
-        					
-        					
-        		    		
+ 
         		    		
 /*        		    		//Use this if the second file is in descending order
         		   		if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
@@ -90,16 +106,24 @@ public class MergeArffFiles {
         		    		}
         		    		j=file2LineNumberStart-1;
         		    		//end of descending order  
-*/        		    		
-        		    	//if file2 is in ascending order	
-        		    	//	if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
-        		    	//	file2LineNumberStart= j-9;
-        		    	//	j = atDataLineNumberFile2+numberOfInstances;        				      			
-        		    //}
+        		    		*/
+        		    //	if file2 is in ascending order	
+        		    		if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
+            		    	if( j < atDataLineNumberFile2 +9){     
+            		    	file2LineNumberStart= j+1;
+        		    		j = atDataLineNumberFile2+numberOfInstances;  
+}
+            		    	
+            		    	if(j<atDataLineNumberFile2+numberOfInstances-9 & j >= atDataLineNumberFile2 +9){
+
+        		    		file2LineNumberStart= j+1;
+        		    		
+        		    		j = atDataLineNumberFile2+numberOfInstances;        				      			
+        		    }
         		}
     		}
         	}
-    	}    	
+    	}   }	
     	
     }
     public static String getInstanceID(String file, int lineNumber) throws IOException
