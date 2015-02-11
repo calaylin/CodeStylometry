@@ -77,8 +77,9 @@ public class FeatureExtractor {
 //Use the following for syntactic inner nodes and code leaves (remember to change astlabel.py accordingly!
        String[] ASTtypes =FeatureCalculators.uniqueDepASTTypes(test_dir);
        String[] wordUnigramsCPP =FeatureCalculators.wordUnigramsCPP(test_dir);
+      	String[] ASTNodeBigrams = BigramExtractor.getASTNodeBigrams(test_dir);
+    	
 
-    
     //if only interested in syntactic features use this if the dep file contains user input    
  //   String[] ASTtypes =FeatureCalculators.uniqueASTTypes(test_dir);
 
@@ -93,7 +94,16 @@ public class FeatureExtractor {
 /*    for (int i=0; i<ASTtypes.length; i++)	
     {	Util.writeFile("@attribute 'ASTtypesTFIDF["+i+"]' numeric"+"\n", output_filename, true);}
 */
-    
+      	
+    	for (int i=0; i<ASTNodeBigrams.length; i++)		
+  	  {  	ASTNodeBigrams[i] = ASTNodeBigrams[i].replace("'", "apostrophesymbol");
+  	    	Util.writeFile("@attribute 'ASTNodeBigramsTF "+i+"=["+ASTNodeBigrams[i]+"]' numeric"+"\n", output_filename, true);}
+      
+    	for (int i=0; i<wordUnigramsCPP.length; i++)	   	
+       {  	wordUnigramsCPP[i] = wordUnigramsCPP[i].replace("'", "apostrophesymbol");
+            	Util.writeFile("@attribute 'wordUnigramsC "+i+"=["+wordUnigramsCPP[i]+"]' numeric"+"\n", output_filename, true);}
+
+    	  
     for (int i=0; i<ASTtypes.length; i++)	
     	
   {  	ASTtypes[i] = ASTtypes[i].replace("'", "apostrophesymbol");
@@ -196,7 +206,12 @@ public class FeatureExtractor {
 	    for (int j=0; j<ASTtypes.length; j++)
 		{Util.writeFile(astTypeTFIDF[j]+",", output_filename, true);}	*/
 
-	    //get count of each wordUnigram in C source file	 
+	    //get frequency of each ASTnodebigram in CPP source file's AST	 
+		float[] bigramCount = BigramExtractor.getASTNodeBigramsTF(DepASTText, ASTNodeBigrams );
+		for (int j=0; j<ASTNodeBigrams.length; j++)
+		{Util.writeFile(bigramCount[j] +",", output_filename, true);}	    
+		    
+	    //get count of each wordUnigram in CPP source file	 
 	    float[] wordUniCount = FeatureCalculators.WordUnigramTF(sourceCode, wordUnigramsCPP);
 	    for (int j=0; j<wordUniCount.length; j++)
 		{Util.writeFile(wordUniCount[j] +",", output_filename, true);}	
