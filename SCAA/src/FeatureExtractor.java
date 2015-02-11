@@ -40,16 +40,17 @@ public class FeatureExtractor {
     	//TODO when time changes, output_filename changes every time which needs to be corrected
 //       	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/incremental/" +"CodeJam_14FilesPerAuthor_2014_"+ (month+1) + "." + 
 //    	dayOfMonth + "_"+ time +".arff" ;
-       	for(int numberFiles=8; numberFiles<9; numberFiles++){
-    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/" +"mallory_CSFS_new.arff" ;
-		String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/mallory/mallory_CSFS/";
+       	for(int numberFiles=2; numberFiles<4; numberFiles++){
+    	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/"
+    			+ "mallory_150/SFS/" +"mallory_SFS_"+numberFiles+".arff" ;
+		String test_dir = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/mallory_new_SFS/malloryDataset_"+numberFiles+"/";
 
        	List test_file_paths = Util.listTextFiles(test_dir);
 
 	String text = "";
   	//Writing the test arff
   	//first specify relation
-	Util.writeFile("@relation "+numberFiles+"TRAININGmallory_CSFS "+"\n"+"\n", output_filename, true);
+	Util.writeFile("@relation "+numberFiles+"mallory_dataset_SFS_"+numberFiles+"\n"+"\n", output_filename, true);
 	Util.writeFile("@attribute instanceID {", output_filename, true);
    	List test_cpp_paths = Util.listCPPFiles(test_dir);
    	for(int j=0; j < test_cpp_paths.size();j++ )
@@ -74,7 +75,9 @@ public class FeatureExtractor {
     //uniqueDepASTTypes contain user input, such as function and variable names
     
 //Use the following for syntactic inner nodes and code leaves (remember to change astlabel.py accordingly!
-        String[] ASTtypes =FeatureCalculators.uniqueDepASTTypes(test_dir);
+       String[] ASTtypes =FeatureCalculators.uniqueDepASTTypes(test_dir);
+       String[] wordUnigramsCPP =FeatureCalculators.wordUnigramsCPP(test_dir);
+
     
     //if only interested in syntactic features use this if the dep file contains user input    
  //   String[] ASTtypes =FeatureCalculators.uniqueASTTypes(test_dir);
@@ -193,6 +196,11 @@ public class FeatureExtractor {
 	    for (int j=0; j<ASTtypes.length; j++)
 		{Util.writeFile(astTypeTFIDF[j]+",", output_filename, true);}	*/
 
+	    //get count of each wordUnigram in C source file	 
+	    float[] wordUniCount = FeatureCalculators.WordUnigramTF(sourceCode, wordUnigramsCPP);
+	    for (int j=0; j<wordUniCount.length; j++)
+		{Util.writeFile(wordUniCount[j] +",", output_filename, true);}	
+	    
 	    //get count of each ASTtype not-DepAST type present	 
 	    float[] typeCount = FeatureCalculators.DepASTTypeTF(DepASTText, ASTtypes );
 	    for (int j=0; j<ASTtypes.length; j++)
