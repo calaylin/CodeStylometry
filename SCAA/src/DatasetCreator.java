@@ -300,7 +300,7 @@ public class DatasetCreator
 						   System.out.println(filePath);  
 						   
 						   File srcFolder = new File(author_cpp_dir);
-					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
+					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/largeScale/"
 						   +fileCount+"FilesAtLeastPerAuthor_2014_C/") ;
 					      	File destFolder = new File(destFolderParent +"/"+ directories[j].toString()) ;
 					    	if(!destFolder.exists())
@@ -334,7 +334,72 @@ public class DatasetCreator
 			    }
 			}	
 		
-		
+		public static void copyPythonAuthorsWithAtLeastFileNumber(String test_py_dir, int fileCount) throws IOException{
+
+			   File file = new File(test_py_dir);
+			   String[] directories = file.list(new FilenameFilter() 
+			   {
+			     @Override
+			     public boolean accept(File current, String name) 
+			     {
+			       return new File(current, name).isDirectory();
+			     }
+			   });
+			   System.out.println(Arrays.toString(directories));
+			   for(int j=0; j< directories.length; j++)
+			    {
+//				   System.out.println(directories[j].toString());
+				   String author_cpp_dir = test_py_dir + directories[j] +"/";
+//				   System.out.println(author_cpp_dir);
+				   List test_file_paths = Util.listPythonFiles(author_cpp_dir);
+				   for(int i=0; i< test_file_paths.size(); i++)
+				   {
+//						int testIDlength = test_file_paths.get(i).toString().length();   
+					   //if the author has 6 cpp files
+					//   int fileCount =6;
+					   if(test_file_paths.size() >= fileCount)
+					   {
+						   System.out.println(author_cpp_dir);
+
+						   String filePath = test_file_paths.get(i).toString();
+						   //one empty file in each folder, skip that
+						   System.out.println(filePath);  
+						   
+						   File srcFolder = new File(author_cpp_dir);
+					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/pythonDatasets/"
+						   +fileCount+"FilesAtLeastPerAuthor_2014_Python/") ;
+					      	File destFolder = new File(destFolderParent +"/"+ directories[j].toString()) ;
+					    	if(!destFolder.exists())
+					    	{
+								///System.out.println(file.getAbsolutePath());
+					    		destFolder.mkdirs();
+							}
+					    	
+					    	
+					  
+					    	
+						    List cpp_file_paths = Util.listPythonFiles(author_cpp_dir);
+						    for(int k=0; k< fileCount; k++)
+						    	
+						    {
+						    	File srcFile=new File(cpp_file_paths.get(k).toString());							    	
+						    	File destFile= new File(destFolder + "/"+ srcFile.getName());
+						    	FileUtils.copyFile(srcFile, destFile);
+						     	if(!destFile.exists())
+						    	{
+									///System.out.println(file.getAbsolutePath());
+						    		destFile.mkdirs();
+								}
+						    }
+						    
+
+					    	
+					    	
+					   }   
+				   }	   
+			    }
+			}	
+
 		
 		
 		
@@ -382,8 +447,8 @@ public class DatasetCreator
 						   System.out.println(filePath);  
 						   
 						   File srcFolder = new File(author_cpp_dir);
-					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
-						   +fileCount+"FilesAtLeastPerAuthor_2014_C/") ;
+					    	File destFolderParent = new File("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/largeScale/"
+						   +fileCount+"FilesAtLeastPerAuthor_2012/") ;
 					      	File destFolder = new File(destFolderParent +"/"+ directories[j].toString()) ;
 					    	if(!destFolder.exists())
 					    	{
@@ -833,16 +898,17 @@ public class DatasetCreator
 
 		
 //createMalloryDatasets(String test_cpp_dir, String copy2Folder, int trainingFiles, int testFiles, int datasets) throws IOException{
-		String trainFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014Cprogrammers/";
+		String trainFolder=
+				"/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2012MoreFileUsers/";
 		String malloryFolder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/14FilesAtLeastPerAuthor_2014_mallory/";
 		String copy2Folder="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/forMallory/mallory_new/";
 
 	//	createMalloryDatasets(trainFolder, malloryFolder, copy2Folder, 8, 6, 150);
 		
 //		organizeByCountry(folder, "byCountry2014", 2014);
-        copyCAuthorsWithAtLeastFileNumber(trainFolder, 9);
+        copyAuthorsWithAtLeastFileNumber(trainFolder, 9);
 		for(int i=14; i<15; i++){
-	        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2014complete_cpp/";
+	        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2012MoreFileUsers/";
 
 	    //    System.out.println(i+" files: "+AvgLineOfCodePerFile(folder));
 

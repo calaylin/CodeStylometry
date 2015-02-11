@@ -26,17 +26,16 @@ public class BigramExtractor {
        	String time = sdf.format(cal.getTime());
     	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigramArffs/"
     			+(month+1) + "." + dayOfMonth + "_" +
-    			"2014complete_cpp_incremental_9FilesPerAuthor_2014.arff" ;
+    			"9FilesExactlyPerAuthor_2012_validation_exact_bigrams.arff" ;
 	
     	String dirPath="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
-    			+ "2014complete_cpp_incremental/9FilesPerAuthor_2014";	
-      	List test_file_paths = Util.listTextFiles(dirPath);
+    			+"bigExperiments/250authors/9FilesExactlyPerAuthor_2012_validation_exact_allfeatures/";      	List test_file_paths = Util.listTextFiles(dirPath);
       	
 
 	String text = "";
   	//Writing the test arff
   	//first specify relation
-	Util.writeFile("@relation test"+"\n"+"\n", output_filename, true);
+	Util.writeFile("@relation 9FilesExactlyPerAuthor_2012_validation_bigrams"+"\n"+"\n", output_filename, true);
 	Util.writeFile("@attribute instanceID {", output_filename, true);
    	List test_cpp_paths = Util.listCPPFiles(dirPath);
    	for(int j=0; j < test_cpp_paths.size();j++ )
@@ -53,7 +52,7 @@ public class BigramExtractor {
 	for (int i=0; i<ASTNodeBigrams.length; i++)	
     	
 	  {  	ASTNodeBigrams[i] = ASTNodeBigrams[i].replace("'", "apostrophesymbol");
-	    	Util.writeFile("@attribute 'ASTNodeTypesTF "+i+"=["+ASTNodeBigrams[i]+"]' numeric"+"\n", output_filename, true);}
+	    	Util.writeFile("@attribute 'ASTNodeBigramsTF "+i+"=["+ASTNodeBigrams[i]+"]' numeric"+"\n", output_filename, true);}
 	Util.writeFile("@attribute 'authorName' {",output_filename, true);
 	for(int i=0; i< test_file_paths.size(); i++){
 		int testIDlength = test_file_paths.get(i).toString().length();   

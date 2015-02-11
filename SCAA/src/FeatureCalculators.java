@@ -31,8 +31,8 @@ public class FeatureCalculators {
 
  //   	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/6FilesPerAuthor_2014_difficult_syntactic/";
    // 	for (int datasetNo=6; datasetNo<150;datasetNo++){
-    	String testFolder ="/Users/Aylin/Desktop/Drexel/2014/"
-    			+ "ARLInternship/SCAA_Datasets/obfuscated_C/mixed/";
+    	String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
+    			+ "largeScale/9Files_largescale/";
 
 /*    	//check if the same authors exist
     	String mainFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2012_validation_exact";
@@ -64,8 +64,8 @@ public class FeatureCalculators {
   			}} */
  	
     	//preprocess to get ast dep and txt files for each cpp file
-//    	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
-    	List test_file_paths = Util.listCFiles(testFolder); //use this for preprocessing       
+    	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+//    	List test_file_paths = Util.listCFiles(testFolder); //use this for preprocessing       
 
     	for(int i=0; i< test_file_paths.size(); i++){
     		System.out.println(test_file_paths.get(i).toString());
@@ -76,7 +76,7 @@ public class FeatureCalculators {
 
     		
     	//	preprocessDataToASTFeatures(test_file_paths.get(i).toString());
-    	//	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
+    		preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
         }
      
     	
@@ -124,7 +124,7 @@ public class FeatureCalculators {
         	//	preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
         	//	preprocessCDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"c");  
 
-             // 	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
+              	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
 
         		}  
         		}
@@ -315,7 +315,24 @@ public class FeatureCalculators {
 	        return words;
 	 }
      
-     //not normalized by the number of APISymbols in the source code
+     //not normalized by the number of ASTTypes in the source code in the source code
+	    public static float [] WordUnigramTF (String featureText, String[] wordUnigrams )
+	    {    
+	    float symbolCount = wordUnigrams.length;
+	    float [] counter = new float[(int) symbolCount];
+	    for (int i =0; i<symbolCount; i++){
+	//if case insensitive, make lowercase
+	//   String str = APISymbols[i].toString().toLowerCase();
+	 	 String str = wordUnigrams[i].toString();
+	//if case insensitive, make lowercase
+	//   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
+	 	 counter[i] = StringUtils.countMatches(featureText, str);  	   
+	
+	    }
+	    return counter;
+	    }
+
+	//not normalized by the number of APISymbols in the source code
      public static float [] APISymbolTF (String featureText, String[] APISymbols )
      {    
      float symbolCount = APISymbols.length;
@@ -489,24 +506,7 @@ public class FeatureCalculators {
 	   return counter;
 	   }
 
-	//not normalized by the number of ASTTypes in the source code in the source code
-    public static float [] WordUnigramTF (String featureText, String[] wordUnigrams )
-    {    
-    float symbolCount = wordUnigrams.length;
-    float [] counter = new float[(int) symbolCount];
-    for (int i =0; i<symbolCount; i++){
-//if case insensitive, make lowercase
-//   String str = APISymbols[i].toString().toLowerCase();
- 	 String str = wordUnigrams[i].toString();
-//if case insensitive, make lowercase
-//   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
- 	 counter[i] = StringUtils.countMatches(featureText, str);  	   
-
-    }
-    return counter;
-    }
-    
-	     public static float [] ASTTypeTF (String featureText, String[] ASTTypes )
+	public static float [] ASTTypeTF (String featureText, String[] ASTTypes )
 	     {    
 	     float symbolCount = ASTTypes.length;
 	     float [] counter = new float[(int) symbolCount];
@@ -596,7 +596,32 @@ public class FeatureCalculators {
 	}
   
    
-   public static int functionIDCount (String featureText)
+   public static void wordsCount (String featureText) throws IOException 
+   {
+	   
+	   String[] splitted = featureText.split(" ");
+	      HashMap hm = new HashMap();
+	      int x;
+	   
+	   for (int i = 0; i < splitted.length; i++) {
+            if (!hm.containsKey(splitted[i])) {
+                hm.put(splitted[i], 1);
+            } else {
+                hm.put(splitted[i], (Integer) hm.get(splitted[i]) + 1);
+            }
+        }
+	   
+	   for (Object word : hm.keySet()){
+            System.out.println(word + " " + (Integer) hm.get(word));
+        }
+	   
+	   
+		for(int i=0; i<50; i++)
+		{
+			
+		}}
+
+public static int functionIDCount (String featureText)
 	  {		   int counter = 0;
 
 			   String str = "FunctionId";
@@ -699,31 +724,6 @@ public class FeatureCalculators {
    
    
    
-	  public static void wordsCount (String featureText) throws IOException 
-   {
-	   
-	   String[] splitted = featureText.split(" ");
-	      HashMap hm = new HashMap();
-	      int x;
-	   
-	   for (int i = 0; i < splitted.length; i++) {
-            if (!hm.containsKey(splitted[i])) {
-                hm.put(splitted[i], 1);
-            } else {
-                hm.put(splitted[i], (Integer) hm.get(splitted[i]) + 1);
-            }
-        }
-	   
-	   for (Object word : hm.keySet()){
-            System.out.println(word + " " + (Integer) hm.get(word));
-        }
-	   
-	   
-		for(int i=0; i<50; i++)
-		{
-			
-		}}
-	  
 	  public static float [] getCPPKeywordsTF(String sourceCode)
 	  {
 		  //84 reserved cpp keywords + override and final
