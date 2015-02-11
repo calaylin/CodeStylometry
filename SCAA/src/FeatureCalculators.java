@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import javax.script.ScriptException;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -29,8 +30,9 @@ public class FeatureCalculators {
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
  //   	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/6FilesPerAuthor_2014_difficult_syntactic/";
-    	for (int datasetNo=0; datasetNo<30;datasetNo++){
-    	String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/mallory/mallory_CSFS/malloryDataset_"+datasetNo +"/";
+   // 	for (int datasetNo=6; datasetNo<150;datasetNo++){
+    	String testFolder ="/Users/Aylin/Desktop/Drexel/2014/"
+    			+ "ARLInternship/SCAA_Datasets/obfuscated_C/mixed/";
 
 /*    	//check if the same authors exist
     	String mainFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2012_validation_exact";
@@ -51,31 +53,30 @@ public class FeatureCalculators {
   				System.out.println(delFiles);
             }
             }*/
-           	
-           	 
-           	
-           	
-           	
-          
-    //Clean non cpp files from folder
+
+/*    //Clean non cpp files from folder
     	List test_file_paths_cpp = Util.listAllFiles(testFolder); //use this for preprocessing       
         for(int i=0; i< test_file_paths_cpp.size(); i++){
   			if(!test_file_paths_cpp.get(i).toString().substring(test_file_paths_cpp.get(i).toString().length()-3, test_file_paths_cpp.get(i).toString().length()).contains("cpp"))
   			{
   				File testFiles = new File(test_file_paths_cpp.get(i).toString());		
   				testFiles.delete();
-  			}}
-       
-    	
-    	
-    	
-    	
+  			}} */
+ 	
     	//preprocess to get ast dep and txt files for each cpp file
-    	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+//    	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+    	List test_file_paths = Util.listCFiles(testFolder); //use this for preprocessing       
+
     	for(int i=0; i< test_file_paths.size(); i++){
-    //		System.out.println(test_file_paths.get(i).toString());
-    //		preprocessDataToASTFeatures(test_file_paths.get(i).toString());
-     	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
+    		System.out.println(test_file_paths.get(i).toString());
+    	//	preprocessCDataToASTFeatures(test_file_paths.get(i).toString());
+    	//	preprocessCDataToTXTdepAST(test_file_paths.get(i).toString());
+    	//	preprocessCDataToTXTdepAST("/Users/Aylin/Desktop/Drexel/2014/"
+        //			+ "ARLInternship/SCAA_Datasets/obfuscated_C/mixed/Konrad127123/2974486_5690574640250880_Konrad127123.c");
+
+    		
+    	//	preprocessDataToASTFeatures(test_file_paths.get(i).toString());
+    	//	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
         }
      
     	
@@ -88,7 +89,7 @@ public class FeatureCalculators {
         for(int i=0; i< test_dep_paths.size(); i++){
         	dep_file = new File(test_dep_paths.get(i).toString());
         	
-        	int fileNo=3;
+        	int fileNo=9;
         	//check if there are correct number of dep files for each author
         	 List author_dep_paths = Util.listDepFiles(dep_file.getParent());
         	 if(author_dep_paths.size()<fileNo){
@@ -101,7 +102,7 @@ public class FeatureCalculators {
         	 List author_txt_paths = Util.listTextFiles(dep_file.getParent());
         	 if(author_txt_paths.size()<fileNo){
         	System.out.println(author_txt_paths.size()+" txt files "+dep_file.getParent());}
-        	 
+        	       	 
         	 
         	 
         //	System.out.println(test_dep_paths.get(i).toString());
@@ -109,8 +110,20 @@ public class FeatureCalculators {
         	//ADD CHANGE, CHECK IF CPP FILE'S DEP FILE EXISTS INSTEAD OF LISTNG THE DEP FILES
         	        	if(dep_file.length()==0 )
         	{
+        	        		
         		depFileName = test_dep_paths.get(i).toString();
-        		preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
+                	System.out.println("Size 0 dep file: "+test_dep_paths.get(i).toString());
+
+                	File txt = new File (depFileName.substring(0, depFileName.length()-3)+"txt");
+                	File dep = new File (depFileName.substring(0, depFileName.length()-3)+"dep");
+                	File ast = new File (depFileName.substring(0, depFileName.length()-3)+"ast");
+   
+                	txt.delete();
+                	dep.delete();
+                	ast.delete();
+        	//	preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
+        	//	preprocessCDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"c");  
+
              // 	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
 
         		}  
@@ -203,7 +216,7 @@ public class FeatureCalculators {
     	System.out.println("tfidf: "+symCount[i] + " tf: " +symCount1[i] + " idf: " + idf );}
     
     */
-    }
+ //   }
      
 
     public static String[] uniqueASTTypes (String dirPath) throws IOException{
@@ -267,7 +280,40 @@ public class FeatureCalculators {
        return words;
 }
      
+   
+     public static String[] wordUnigramsCPP(String dirPath) throws IOException{
+    	  
+  	   
+	 	    List test_file_paths = Util.listCPPFiles(dirPath);
+	 		  String[] words = null;
+	 	    for(int i=0; i< test_file_paths.size(); i++){
+	 			String filePath = test_file_paths.get(i).toString();  
+	 	   
+	 	   String inputText =Util.readFile(filePath);
+	 	   String[] arr = inputText.split("\\s+");
+	 	    words = ArrayUtils.addAll(arr);
+	 	   }
+	 		HashSet<String> uniqueWords = new HashSet<String>(Arrays.asList(words));
+	 	    words = uniqueWords.toArray(new String[0]);
+	        return words;
+	 }
      
+     public static String[] wordUnigramsC(String dirPath) throws IOException{
+    	  
+  	   
+	 	    List test_file_paths = Util.listCFiles(dirPath);
+	 		  String[] words = null;
+	 	    for(int i=0; i< test_file_paths.size(); i++){
+	 			String filePath = test_file_paths.get(i).toString();  
+	 	   
+	 	   String inputText =Util.readFile(filePath);
+	 	   String[] arr = inputText.split("\\s+");
+	 	    words = ArrayUtils.addAll(arr);
+	 	   }
+	 		HashSet<String> uniqueWords = new HashSet<String>(Arrays.asList(words));
+	 	    words = uniqueWords.toArray(new String[0]);
+	        return words;
+	 }
      
      //not normalized by the number of APISymbols in the source code
      public static float [] APISymbolTF (String featureText, String[] APISymbols )
@@ -444,6 +490,22 @@ public class FeatureCalculators {
 	   }
 
 	//not normalized by the number of ASTTypes in the source code in the source code
+    public static float [] WordUnigramTF (String featureText, String[] wordUnigrams )
+    {    
+    float symbolCount = wordUnigrams.length;
+    float [] counter = new float[(int) symbolCount];
+    for (int i =0; i<symbolCount; i++){
+//if case insensitive, make lowercase
+//   String str = APISymbols[i].toString().toLowerCase();
+ 	 String str = wordUnigrams[i].toString();
+//if case insensitive, make lowercase
+//   strcounter = StringUtils.countMatches(featureText.toLowerCase(), str);
+ 	 counter[i] = StringUtils.countMatches(featureText, str);  	   
+
+    }
+    return counter;
+    }
+    
 	     public static float [] ASTTypeTF (String featureText, String[] ASTTypes )
 	     {    
 	     float symbolCount = ASTTypes.length;
@@ -687,6 +749,29 @@ public class FeatureCalculators {
 		     return counter;
 	  }
 	  
+	  
+	  public static float [] getCKeywordsTF(String sourceCode)
+	  {
+		  //84 reserved cpp keywords + override and final
+		  String [] cKeywords = {"auto", 	"break", 	"case", 	"char", 	"const", 	
+				  "continue", 	"default", 	"do", 	"double", 	"else", 	"enum", 	
+				  "extern", 	"float", 	"for", 	"goto", 	"if", 	"inline", 	
+				  "int", 	"long", 	"register", 	"restrict", 	"return", 	"short", 	
+				  "signed", 	"sizeof", 	"static", 	"struct", 	"switch", 	"typedef", 	
+				  "union", 	"unsigned", 	"void", 	"volatile", 	"while", 	"_Alignas", 	
+				  "_Alignof", 	"_Atomic", 	"_Bool", 	"_Complex", 	"_Generic", 	"_Imaginary",
+				  "_Noreturn", 	"_Static_assert", 	"_Thread_local" };
+		  
+		     float symbolCount = cKeywords.length;
+		     float [] counter = new float[(int) symbolCount];
+		     for (int i =0; i<symbolCount; i++){
+		  	 String str = cKeywords[i].toString();
+		  	 counter[i] = StringUtils.countMatches(sourceCode, str);  	   
+
+		     }
+		     return counter;
+	  }
+	  
 	  public static float [] getInfoGainCPPKeywordsTF(String sourceCode, String [] cppKeywords)
 	  {
 /*		  //84 reserved cpp keywords + override and final
@@ -781,7 +866,138 @@ public class FeatureCalculators {
 		
 	}
 
+	public static void preprocessCDataToASTFeatures(String filePath) throws IOException, InterruptedException, ScriptException{
+		//should take filename to test each time
+		//just needs the name of the directory with the authors and their source files as an input
+		//and outputs .ast files in source file's corresponding directory - has AST information 
 	
+		 Runtime dbTime = Runtime.getRuntime();
+		 Runtime joernTime = Runtime.getRuntime();
+		 Runtime scriptTime = Runtime.getRuntime();
+	
+	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	       });
+	       stopDB.waitFor();
+	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+	       while(br.ready())
+	           System.out.println(br.readLine());
+	       
+	       Process deleteIndex = dbTime.exec(new String[]{"/bin/sh", "-c","rm -r /Users/Aylin/git/joern/.joernIndex"});
+	       deleteIndex.waitFor();
+	
+	       Process joernRun = joernTime.exec(new String[]{"/bin/sh", "-c", 
+	    		   "cd /Users/Aylin/git/joern"+"\n"+ "java -jar /Users/Aylin/git/joern/bin/joern.jar " + filePath });
+	       joernRun.waitFor();
+	       BufferedReader br1 = new BufferedReader(new InputStreamReader(joernRun.getInputStream()));
+	       while(br1.ready())
+	           System.out.println(br1.readLine());
+	
+	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
+	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	       });
+	       startDB.waitFor();
+	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
+	       while(br2.ready())
+	           System.out.println(br2.readLine());
+	
+	       String output_filename = filePath.substring(0, filePath.length()-1).concat("dep");
+	       String cmd1 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
+	       		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
+	       		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
+	       		+ "python /Users/Aylin/git/joern-tools/astlabel.py |  "
+	       		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
+	       		+ output_filename;
+	       
+	       Process joernscripts = dbTime.exec((new String[]{"/bin/sh","-c", cmd1}));
+	
+	       joernscripts.waitFor();
+	          BufferedReader br5 = new BufferedReader(new InputStreamReader(joernscripts.getInputStream()));
+	          while(br5.ready())
+	              System.out.println(br5.readLine());
+	         
+	          BufferedReader br6 = new BufferedReader(new InputStreamReader(joernscripts.getErrorStream()));
+	          while(br6.ready())
+	              System.out.println(br6.readLine());
+	    
+	    	    
+	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    });
+	    stopDB.waitFor();
+	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+	    while(br4.ready())
+	        System.out.println(br4.readLine());
+	
+		
+	}
+
+	public static void preprocessPythonDataToAST(String filePath) throws IOException, InterruptedException, ScriptException{
+		//should take filename to test each time
+		//just needs the name of the directory with the authors and their source files as an input
+		//and outputs .ast files in source file's corresponding directory - has AST information 
+	
+		 Runtime dbTime = Runtime.getRuntime();
+		 Runtime joernTime = Runtime.getRuntime();
+		 Runtime scriptTime = Runtime.getRuntime();
+	
+	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	       });
+	       stopDB.waitFor();
+	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+	       while(br.ready())
+	           System.out.println(br.readLine());
+	       
+	       Process deleteIndex = dbTime.exec(new String[]{"/bin/sh", "-c","rm -r /Users/Aylin/git/joern/.joernIndex"});
+	       deleteIndex.waitFor();
+	
+	       Process joernRun = joernTime.exec(new String[]{"/bin/sh", "-c", 
+	    		   "cd /Users/Aylin/git/joern"+"\n"+ "java -jar /Users/Aylin/git/joern/bin/joern.jar " + filePath });
+	       joernRun.waitFor();
+	       BufferedReader br1 = new BufferedReader(new InputStreamReader(joernRun.getInputStream()));
+	       while(br1.ready())
+	           System.out.println(br1.readLine());
+	
+	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
+	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	       });
+	       startDB.waitFor();
+	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
+	       while(br2.ready())
+	           System.out.println(br2.readLine());
+	
+	       String output_filename = filePath.substring(0, filePath.length()-1).concat("dep");
+	       String cmd1 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
+	       		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
+	       		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
+	       		+ "python /Users/Aylin/git/joern-tools/astlabel.py |  "
+	       		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
+	       		+ output_filename;
+	       
+	       Process joernscripts = dbTime.exec((new String[]{"/bin/sh","-c", cmd1}));
+	
+	       joernscripts.waitFor();
+	          BufferedReader br5 = new BufferedReader(new InputStreamReader(joernscripts.getInputStream()));
+	          while(br5.ready())
+	              System.out.println(br5.readLine());
+	         
+	          BufferedReader br6 = new BufferedReader(new InputStreamReader(joernscripts.getErrorStream()));
+	          while(br6.ready())
+	              System.out.println(br6.readLine());
+	    
+	    	    
+	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    });
+	    stopDB.waitFor();
+	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+	    while(br4.ready())
+	        System.out.println(br4.readLine());
+	
+		
+	}
+
 	
 	public static void preprocessDataToAPISymbols(String filePath) throws IOException, InterruptedException{
 	//should take filename to test each time
@@ -1018,7 +1234,110 @@ public class FeatureCalculators {
 		
 	}
 	
+	public static void preprocessCDataToTXTdepAST(String filePath) throws IOException, InterruptedException, ScriptException{
+		//should take filename to test each time
+		//just needs the name of the directory with the authors and their source files as an input
+		//and outputs .ast files in source file's corresponding directory - has AST information 
 	
+		 Runtime dbTime = Runtime.getRuntime();
+		 Runtime joernTime = Runtime.getRuntime();
+		 Runtime scriptTime = Runtime.getRuntime();
+	
+	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	       });
+	       stopDB.waitFor();
+	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+	       while(br.ready())
+	           System.out.println(br.readLine());
+	       
+	       Process deleteIndex = dbTime.exec(new String[]{"/bin/sh", "-c","rm -r /Users/Aylin/git/joern/.joernIndex"});
+	       deleteIndex.waitFor();
+	
+	       Process joernRun = joernTime.exec(new String[]{"/bin/sh", "-c", 
+	    		   "cd /Users/Aylin/git/joern"+"\n"+ "java -jar /Users/Aylin/git/joern/bin/joern.jar " + filePath });
+	       joernRun.waitFor();
+	       BufferedReader br1 = new BufferedReader(new InputStreamReader(joernRun.getInputStream()));
+	       while(br1.ready())
+	           System.out.println(br1.readLine());
+	
+	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
+	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	       });
+	       startDB.waitFor();
+	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
+	       while(br2.ready())
+	           System.out.println(br2.readLine());
+	
+	       String output_filename = filePath.substring(0, filePath.length()-1).concat("dep");
+	       String cmd1 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
+	       		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
+	       		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
+	       		+ "python /Users/Aylin/git/joern-tools/astlabel.py |  "
+	       		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
+	       		+ output_filename;
+	       
+	       Process joernscripts = dbTime.exec((new String[]{"/bin/sh","-c", cmd1}));
+	
+	       joernscripts.waitFor();
+	          BufferedReader br5 = new BufferedReader(new InputStreamReader(joernscripts.getInputStream()));
+	          while(br5.ready())
+	              System.out.println(br5.readLine());
+	         
+	          BufferedReader br6 = new BufferedReader(new InputStreamReader(joernscripts.getErrorStream()));
+	          while(br6.ready())
+	              System.out.println(br6.readLine());
+	    
+	    	    
+	          
+		       String output_filename1 = filePath.substring(0, filePath.length()-1).concat("ast");
+		       String cmd2 = "echo \'queryNodeIndex(\"type:Function\").id\' | "
+		       		+ "python /Users/Aylin/git/joern-tools/lookup.py -g |  "
+		       		+ "python /Users/Aylin/git/joern-tools/getAst.py | "
+		       		+ "python /Users/Aylin/git/joern-tools/ast2Features.py >" 
+		       		+ output_filename1;
+		       
+		       Process joernscripts2 = dbTime.exec((new String[]{"/bin/sh","-c", cmd2}));
+		
+		       joernscripts2.waitFor();
+		          BufferedReader br7 = new BufferedReader(new InputStreamReader(joernscripts2.getInputStream()));
+		          while(br7.ready())
+		              System.out.println(br7.readLine());
+		         
+		          BufferedReader br8 = new BufferedReader(new InputStreamReader(joernscripts2.getErrorStream()));
+		          while(br8.ready())
+		              System.out.println(br8.readLine());	          
+	          
+	          
+	      
+		          Process runScript = scriptTime.exec(new String[]{"/bin/sh", "-c", 
+		       		   "cd /Users/Aylin/git/joern-tools"+"\n"+ "python /Users/Aylin/git/joern-tools/template.py"
+		          });
+		          runScript.waitFor();
+		          
+		          
+		          BufferedReader br3 = new BufferedReader(new InputStreamReader(runScript.getInputStream()));
+		          String output_filename3 = filePath.substring(0, filePath.length()-1).concat("txt");
+		      	while(br3.ready())
+		          { //   System.out.println(br3.readLine());
+		          Util.writeFile(br3.readLine().toString() +"\n",output_filename3, true);
+		   	   }		          
+		          
+		          
+	          
+	          
+	          
+	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
+	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    });
+	    stopDB.waitFor();
+	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
+	    while(br4.ready())
+	        System.out.println(br4.readLine());
+	
+		
+	}
+
 	
 	
 	
