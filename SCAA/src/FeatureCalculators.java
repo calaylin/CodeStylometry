@@ -291,7 +291,7 @@ public class FeatureCalculators {
 	 	   
 	 	   String inputText =Util.readFile(filePath);
 	 	   String[] arr = inputText.split("\\s+");
-	 	    words = ArrayUtils.addAll(arr);
+	 	    words = ArrayUtils.addAll(words,arr);
 	 	   }
 	 		HashSet<String> uniqueWords = new HashSet<String>(Arrays.asList(words));
 	 	    words = uniqueWords.toArray(new String[0]);
@@ -308,7 +308,7 @@ public class FeatureCalculators {
 	 	   
 	 	   String inputText =Util.readFile(filePath);
 	 	   String[] arr = inputText.split("\\s+");
-	 	    words = ArrayUtils.addAll(arr);
+	 	    words = ArrayUtils.addAll(words,arr);
 	 	   }
 	 		HashSet<String> uniqueWords = new HashSet<String>(Arrays.asList(words));
 	 	    words = uniqueWords.toArray(new String[0]);
