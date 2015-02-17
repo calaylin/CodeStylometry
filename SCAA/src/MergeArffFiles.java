@@ -28,13 +28,19 @@ public class MergeArffFiles {
     	
     	for(int numberFiles = 1; numberFiles <2; numberFiles++){
  
-    	String word = "@data";		
-    	String file1 ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigramArffs/Random250/"
-    			+ "9RandomExperiment250_FS9Andrew.arff";
-    	String file2 ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigramArffs/Random250/"
-    	+"2.3_250RandomAuthors_9FilesPerAuthor_bigrams.arff";
-    	String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigramArffs/Random250/"
-    			+ "250RandomAuthors_9FilesPerAuthor_bigramsCSFS_merged.arff";
+        	String word = "@data";
+
+            String file1 ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/UsenixArffs/62Authors/"
+
+            + "62authors14FilesOnlyUsenixFeatures.arff";
+
+            String file2 ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/UsenixArffs/62Authors/"
+
+            + "62authors14FilesAndrewFeatures.arff";
+
+            String outputArffName ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/UsenixArffs/62Authors/"
+
+            + "62authors14FilesUsenixAndrewFeatures.arff";
 
 /*     	String file1_tosort ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAAarffs/bigramArffs/2014/"
     			+ "9BigExperiment250_2014FS9Andrew.arff";
@@ -46,9 +52,8 @@ public class MergeArffFiles {
     	int atDataLineNumberFile1 = MergeArffFiles.grepLineNumber(file1, word);
     	int atDataLineNumberFile2 = MergeArffFiles.grepLineNumber(file2, word);
     	
-/*    	for(int firstFileAttributes=1; firstFileAttributes <atDataLineNumberFile1; firstFileAttributes++ )
-    	{Util.writeFile(readSpecificLineNumber(file1, firstFileAttributes) + "\n", outputArffName, true);}*/
-    	File file = new File(file2);
+    	//fast copy attributes
+/*    	File file = new File(file2);
 		FileReader fileReader = new FileReader(file);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		StringBuffer stringBuffer = new StringBuffer();
@@ -58,14 +63,18 @@ public class MergeArffFiles {
 			stringBuffer.append("\n");
 			Util.writeFile(line + "\n", outputArffName, true);
 		}
-		fileReader.close();
-
+		fileReader.close();*/
     	
-    	for(int secondFileAttributes=4; secondFileAttributes <=atDataLineNumberFile2; secondFileAttributes++ )
-    	{Util.writeFile(readSpecificLineNumber(file2, secondFileAttributes) + "\n", outputArffName, true);}
+    	//write the feature names in order from both files
+/*    	for(int firstFileAttributes=1; firstFileAttributes <atDataLineNumberFile1; firstFileAttributes++ )
+    	{Util.writeFile(readSpecificLineNumber(file1, firstFileAttributes) + "\n", outputArffName, true);}
 
-    	int numberOfInstances = (250 * 9); 
-    	int numberOfInstances1 = (250 * 9); 
+    	for(int secondFileAttributes=4; secondFileAttributes <=atDataLineNumberFile2; secondFileAttributes++ )
+    	{Util.writeFile(readSpecificLineNumber(file2, secondFileAttributes) + "\n", outputArffName, true);}*/
+
+    	int numFiles = 14;
+    	int numberOfInstances = (62 * numFiles); 
+    	int numberOfInstances1 = (62 * numFiles); 
   //  	int numberOfInstances = 28; 
   //  	int numberOfInstances1 = 28; 
 
@@ -77,10 +86,10 @@ public class MergeArffFiles {
 			String instID = getInstanceID(file1, i);
 
     		//Use this if the second file is in descending order
-        	//for(int j=atDataLineNumberFile2+numberOfInstances;j>=file2LineNumberStart; j--)
+        	for(int j=atDataLineNumberFile2+numberOfInstances;j>=file2LineNumberStart; j--)
 
         		//for normal case in ascending order
-        	for(int j=file2LineNumberStart; j <= atDataLineNumberFile2+numberOfInstances; j++)
+       // 	for(int j=file2LineNumberStart; j <= atDataLineNumberFile2+numberOfInstances; j++)
         	{
 				System.out.println(j);
         		if (instID.equals(MergeArffFiles.getInstanceID(file2, j)))
@@ -100,27 +109,31 @@ public class MergeArffFiles {
         					}
  
         		    		
-/*        		    		//Use this if the second file is in descending order
-        		   		if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
-        		    			atDataLineNumberFile2=j - numberOfInstances +numberFiles;
+        		    		//Use this if the second file is in descending order
+//        		   		if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
+            		   		if(j<atDataLineNumberFile2+numberOfInstances-numFiles){
+
+//        		    			atDataLineNumberFile2= j - numberOfInstances +numberFiles;
+    		    			atDataLineNumberFile2= j - numberOfInstances +numFiles;
+
         		    		}
         		    		j=file2LineNumberStart-1;
         		    		//end of descending order  
-        		    		*/
-        		    //	if file2 is in ascending order	
+        		    		
+/*        		    //	if file2 is in ascending order	
         		    		if(j<atDataLineNumberFile2+numberOfInstances-numberFiles){
             		    	if( j < atDataLineNumberFile2 +9){     
             		    	file2LineNumberStart= j+1;
         		    		j = atDataLineNumberFile2+numberOfInstances;  
-}
+            		    		}
             		    	
             		    	if(j<atDataLineNumberFile2+numberOfInstances-9 & j >= atDataLineNumberFile2 +9){
 
         		    		file2LineNumberStart= j+1;
         		    		
-        		    		j = atDataLineNumberFile2+numberOfInstances;        				      			
+        		    		j = atDataLineNumberFile2+numberOfInstances;     				      			
         		    }
-        		}
+        		}*/
     		}
         	}
     	}   }	
