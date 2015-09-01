@@ -170,7 +170,6 @@ public class Extractor {
     	problem_numbers_2014[6][4] = 5697089837203456L;
     	problem_numbers_2014[6][5] = 5747233781710848L;
 
-    			
 
     			
     			
