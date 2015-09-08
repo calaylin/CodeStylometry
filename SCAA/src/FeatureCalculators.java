@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -29,13 +30,13 @@ public class FeatureCalculators {
     
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
- //   	String testFolder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/6FilesPerAuthor_2014_difficult_syntactic/";
+ //   	String testFolder = "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/SCAA_Datasets/difficultyExp/6FilesPerAuthor_2014_difficult_syntactic/";
    // 	for (int datasetNo=6; datasetNo<150;datasetNo++){
-    	String testFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/"
-    			+ "largeScale/9Files_largescale/";
+    	String testFolder ="/Users/Aylin/Desktop/Princeton/BAA/"
+    			+ "datasets/c++/14FilesPerAuthor_2014_decompiledC/";
 
 /*    	//check if the same authors exist
-    	String mainFolder ="/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2012_validation_exact";
+    	String mainFolder ="/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/SCAA_Datasets/bigExperiments/9FilesExactlyPerAuthor_2012_validation_exact";
     	   String depFileName=null;
            List test_dep_paths = Util.listDepFiles(testFolder); //use this for preprocessing 
            List main_dep_paths = Util.listDepFiles(mainFolder); //use this for preprocessing       
@@ -54,29 +55,68 @@ public class FeatureCalculators {
             }
             }*/
 
-/*    //Clean non cpp files from folder
-    	List test_file_paths_cpp = Util.listAllFiles(testFolder); //use this for preprocessing       
-        for(int i=0; i< test_file_paths_cpp.size(); i++){
-  			if(!test_file_paths_cpp.get(i).toString().substring(test_file_paths_cpp.get(i).toString().length()-3, test_file_paths_cpp.get(i).toString().length()).contains("cpp"))
-  			{
-  				File testFiles = new File(test_file_paths_cpp.get(i).toString());		
-  				testFiles.delete();
-  			}} */
+/*    //add .c to each filename
+    	List test_file_paths_cpp = Util.listAllFilesFolders(testFolder); //use this for preprocessing 
+    	
+        for(int k=0; k< test_file_paths_cpp.size(); k++){
+				System.out.println(test_file_paths_cpp.get(k).toString() + " "+k);
+
+//  			if(!test_file_paths_cpp.get(i).toString().substring(test_file_paths_cpp.get(i).toString().length()-3, test_file_paths_cpp.get(i).toString().length()).contains("cpp"))
+  			if(!test_file_paths_cpp.get(k).toString().substring(test_file_paths_cpp.get(k).toString().length()-2, test_file_paths_cpp.get(k).toString().length()).contains(".c"))
+
+        	{
+  				File testFiles = new File(test_file_paths_cpp.get(k).toString());
+
+  				if(!testFiles.isDirectory()){
+  					
+  					
+  					if(test_file_paths_cpp.get(k).toString().contains(".DS_Store.c")){
+  						testFiles.delete();
+  		  				System.out.println("deletingDSStore");
+
+  					}
+  					
+  					else{
+  			  				File newFile = new File(test_file_paths_cpp.get(k).toString() + ".c");
+  			  				System.out.println(newFile.getPath());
+//  						testFiles.renameTo(newFile);
+	  				System.out.println("newCfile");
+
+ 				if(!newFile.exists()) {
+  					
+  					newFile.createNewFile();
+  					FileOutputStream oFile = new FileOutputStream(newFile, false); 
+
+  				} 
+  				Files.move(testFiles.toPath(), newFile.toPath());
+  				System.out.println("newCfile");
+
+	  				testFiles.delete();}
+  					
+  					
+  					
+  					}
+
+  			}}*/ 
  	
     	//preprocess to get ast dep and txt files for each cpp file
-    	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
-//    	List test_file_paths = Util.listCFiles(testFolder); //use this for preprocessing       
+  //  	List test_file_paths = Util.listCPPFiles(testFolder); //use this for preprocessing       
+    	List test_file_paths = Util.listCFiles(testFolder); //use this for preprocessing       
 
+
+    	
     	for(int i=0; i< test_file_paths.size(); i++){
     		System.out.println(test_file_paths.get(i).toString());
     	//	preprocessCDataToASTFeatures(test_file_paths.get(i).toString());
-    	//	preprocessCDataToTXTdepAST(test_file_paths.get(i).toString());
-    	//	preprocessCDataToTXTdepAST("/Users/Aylin/Desktop/Drexel/2014/"
-        //			+ "ARLInternship/SCAA_Datasets/obfuscated_C/mixed/Konrad127123/2974486_5690574640250880_Konrad127123.c");
+    		preprocessCDataToTXTdepAST(test_file_paths.get(i).toString());
+    	//	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
+
+    	//	preprocessCDataToTXTdepAST("/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/SCAA_Datasets"
+    	//			+ "/obfuscated_C/obfuscated3/9FilesAtLeastPerAuthor_2014_C/Konrad127123/2974486_5690574640250880_Konrad127123.c");
 
     		
     	//	preprocessDataToASTFeatures(test_file_paths.get(i).toString());
-    		preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
+    	//	preprocessDataToTXTdepAST(test_file_paths.get(i).toString());
         }
      
     	
@@ -121,10 +161,10 @@ public class FeatureCalculators {
                 	txt.delete();
                 	dep.delete();
                 	ast.delete();
-        	//	preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
-        	//	preprocessCDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"c");  
+                //preprocessDataToASTFeatures(depFileName.substring(0, depFileName.length()-3)+"cpp");  
+        		//preprocessCDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"c");  
 
-              	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
+             	preprocessDataToTXTdepAST(depFileName.substring(0, depFileName.length()-3)+"cpp");
 
         		}  
         		}
@@ -168,10 +208,10 @@ public class FeatureCalculators {
         
         
         
-//    	String testFile = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/Austria/p5658068650033152.nicon0.cpp";
+//    	String testFile = "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/SCAA_Datasets/byCountry/AtLeast6FilesPerCountry/Austria/p5658068650033152.nicon0.cpp";
 //      	preprocessDataToASTFeatures(testFile);
 
-/*    String test = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/IncrementsOf3FilesPerAuthor/";	
+/*    String test = "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/SCAA_Datasets/IncrementsOf3FilesPerAuthor/";	
     for (int j =p 7; j<=13; j=j+2)
     {
     	String test_cpp_dir = test + "/" + j + "FilesPerAuthor/";
@@ -197,12 +237,12 @@ public class FeatureCalculators {
 /*  
    //Get API symbols and their count in each txt file
 //   String[] APIsymbols = uniqueAPISymbols(test);
-	String dataDir= "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/";
-	String dataDir1= "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor";
+	String dataDir= "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/";
+	String dataDir1= "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/SCAA_Datasets/6FilesPerAuthor";
     String[] ASTTypes = uniqueASTTypes(dataDir);
     String[] DepASTTypes = uniqueASTTypes(dataDir1);
 
-	String featureText = Util.readFile("/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/for/simpleforlabels.dep");
+	String featureText = Util.readFile("/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/SCAA_Datasets/AnalysisCode/for/simpleforlabels.dep");
 	for (int i=0; i<ASTTypes.length; i++)
     { System.out.println(ASTTypes[i]);}
 	for (int i=0; i<DepASTTypes.length; i++)
@@ -810,7 +850,7 @@ public static int functionIDCount (String featureText)
 		 Runtime scriptTime = Runtime.getRuntime();
 	
 	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	       });
 	       stopDB.waitFor();
 	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -828,7 +868,7 @@ public static int functionIDCount (String featureText)
 	           System.out.println(br1.readLine());
 	
 	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
 	       });
 	       startDB.waitFor();
 	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
@@ -856,7 +896,7 @@ public static int functionIDCount (String featureText)
 	    
 	    	    
 	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	 		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	    });
 	    stopDB.waitFor();
 	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -876,7 +916,7 @@ public static int functionIDCount (String featureText)
 		 Runtime scriptTime = Runtime.getRuntime();
 	
 	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	       });
 	       stopDB.waitFor();
 	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -894,7 +934,7 @@ public static int functionIDCount (String featureText)
 	           System.out.println(br1.readLine());
 	
 	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
 	       });
 	       startDB.waitFor();
 	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
@@ -922,7 +962,7 @@ public static int functionIDCount (String featureText)
 	    
 	    	    
 	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	 		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	    });
 	    stopDB.waitFor();
 	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -942,7 +982,7 @@ public static int functionIDCount (String featureText)
 		 Runtime scriptTime = Runtime.getRuntime();
 	
 	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	       });
 	       stopDB.waitFor();
 	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -960,7 +1000,7 @@ public static int functionIDCount (String featureText)
 	           System.out.println(br1.readLine());
 	
 	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
 	       });
 	       startDB.waitFor();
 	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
@@ -988,7 +1028,7 @@ public static int functionIDCount (String featureText)
 	    
 	    	    
 	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	 		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	    });
 	    stopDB.waitFor();
 	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -1009,7 +1049,7 @@ public static int functionIDCount (String featureText)
 	 Runtime scriptTime = Runtime.getRuntime();
 
       Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
        });
        stopDB.waitFor();
        BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -1027,7 +1067,7 @@ public static int functionIDCount (String featureText)
            System.out.println(br1.readLine());
 
        Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
-    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
        });
        startDB.waitFor();
        BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
@@ -1042,7 +1082,7 @@ public static int functionIDCount (String featureText)
        
        
        BufferedReader br3 = new BufferedReader(new InputStreamReader(runScript.getInputStream()));
- //  	String output_filename = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/cgy4ever/cgy4ever_3_0.txt";
+ //  	String output_filename = "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/SCAA_Datasets/small_jam_data/byName/cgy4ever/cgy4ever_3_0.txt";
        String output_filename = filePath.substring(0, filePath.length()-3).concat("txt");
    	while(br3.ready())
        { //   System.out.println(br3.readLine());
@@ -1052,7 +1092,7 @@ public static int functionIDCount (String featureText)
    	
    	
     stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-  		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+  		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
      });
      stopDB.waitFor();
      BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -1075,7 +1115,7 @@ public static int functionIDCount (String featureText)
 		 Runtime scriptTime = Runtime.getRuntime();
 	
 	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	       });
 	       stopDB.waitFor();
 	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -1093,7 +1133,7 @@ public static int functionIDCount (String featureText)
 	           System.out.println(br1.readLine());
 	
 	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
 	       });
 	       startDB.waitFor();
 	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
@@ -1120,7 +1160,7 @@ public static int functionIDCount (String featureText)
 	    
 	    	    
 	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	 		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	    });
 	    stopDB.waitFor();
 	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -1140,7 +1180,7 @@ public static int functionIDCount (String featureText)
 		 Runtime scriptTime = Runtime.getRuntime();
 	
 	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	       });
 	       stopDB.waitFor();
 	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -1158,7 +1198,7 @@ public static int functionIDCount (String featureText)
 	           System.out.println(br1.readLine());
 	
 	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
 	       });
 	       startDB.waitFor();
 	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
@@ -1224,7 +1264,7 @@ public static int functionIDCount (String featureText)
 	          
 	          
 	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	 		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	    });
 	    stopDB.waitFor();
 	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -1244,7 +1284,7 @@ public static int functionIDCount (String featureText)
 		 Runtime scriptTime = Runtime.getRuntime();
 	
 	      Process stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	       });
 	       stopDB.waitFor();
 	       BufferedReader br = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
@@ -1262,7 +1302,7 @@ public static int functionIDCount (String featureText)
 	           System.out.println(br1.readLine());
 	
 	       Process startDB = dbTime.exec(new String[]{"/bin/sh","-c",  
-	    		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
+	    		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j start"        		   
 	       });
 	       startDB.waitFor();
 	       BufferedReader br2 = new BufferedReader(new InputStreamReader(startDB.getInputStream()));
@@ -1328,7 +1368,7 @@ public static int functionIDCount (String featureText)
 	          
 	          
 	    stopDB = dbTime.exec(new String[]{"/bin/sh", "-c",
-	 		   "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
+	 		   "/Users/Aylin/Desktop/Princeton/Drexel/2014/ARLInternship/joern_related/neo4j-community-1.9.7/bin/neo4j stop"        		   
 	    });
 	    stopDB.waitFor();
 	    BufferedReader br4 = new BufferedReader(new InputStreamReader(stopDB.getInputStream()));
