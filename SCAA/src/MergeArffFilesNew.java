@@ -71,7 +71,7 @@ public class MergeArffFilesNew {
 				}
 
 				System.out.println(type);
-				Util.writeFile("@attribue " +"`"+instances.attribute(att).name()+"'" + "_decompiled "
+				Util.writeFile("@attribue " +"'"+instances.attribute(att).name()+"'" + "decompiled "
 				+ type +"\n", outputArffName, true);
 		}
 		
@@ -89,7 +89,7 @@ public class MergeArffFilesNew {
 				}
 			//	System.out.println(type);
 
-				Util.writeFile("@attribue "+"`" +instances.attribute(att2).name() +"'"+ "_original "
+				Util.writeFile("@attribue "+"'" +instances.attribute(att2).name() +"'"+ "original "
 				+ type +"\n", outputArffName, true);
 		}
 
