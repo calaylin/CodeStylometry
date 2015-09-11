@@ -6,11 +6,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 
@@ -63,7 +66,11 @@ public class MergeArffFilesNew {
 				String type="";
 				String attValues="";
 				String name=instances.attribute(att).name();
-				name.replaceAll("\\n", "backslashN");
+			    	String arr[] = name.split("\n", 10);
+		    	 if(arr.length>1){
+			    	name = arr[0].toString()+arr[1].toString();
+		    	 }
+								
 				if(instances.attribute(att).isNumeric()){
 					type="numeric";
 				}
@@ -108,8 +115,12 @@ public class MergeArffFilesNew {
 		String attValues="";
 		
 		String name =instances2.attribute(att2).name();
-		name.replaceAll("\\n", "backslashN");
-
+    	String arr[] = name.split("\n", 10);
+   	 		if(arr.length>1){
+	    	name = arr[0].toString()+arr[1].toString();
+   	 		}
+   	 		
+   	 		
 		if(instances2.attribute(att2).isNumeric()){
 			type="numeric";
 		}
@@ -156,8 +167,8 @@ public class MergeArffFilesNew {
 		        System.out.println(i+" \n"); 
 
 
-				Util.writeFile(instances.instance(i)
-						+ ","+ instances2.instance(j)+ "\n", outputArffName, true );
+				Util.writeFile(instances.instance(i).toString().trim()
+						+ ", "+ instances2.instance(j)+ "\n", outputArffName, true );
 					}
 			
 		}
