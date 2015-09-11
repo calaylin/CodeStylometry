@@ -67,9 +67,14 @@ public class MergeArffFilesNew {
 				String attValues="";
 				String name=instances.attribute(att).name();
 			    	String arr[] = name.split("\n", 10);
-		    	 if(arr.length>1){
-			    	name = arr[0].toString()+arr[1].toString();
-		    	 }
+		   	 		if(arr.length>1){
+		   	 			name="";
+		   	 			int splits = arr.length;
+		   	 					for(int i =0; i<splits; i++){
+		   	 					name = name + arr[i]	;
+		   	 					}
+			
+		   	 		}
 								
 				if(instances.attribute(att).isNumeric()){
 					type="numeric";
@@ -89,14 +94,14 @@ public class MergeArffFilesNew {
 				
 				if(type.equals("nominal"))
 				{
-					Util.writeFile("@attribtue " +"'"+name+"decompiled' "
-					+ "{"+attValues+"}" +" \n", outputArffName, true);
+					Util.writeFile("@attribute " +"'"+name+"decompiled' "
+					+ "{"+attValues+"}" +"\n", outputArffName, true);
 				}
 				
 				else
 				{
 					Util.writeFile("@attribute " +"'"+name+"decompiled' "
-					+ type +" \n", outputArffName, true);
+					+ type +"\n", outputArffName, true);
 				}
 
 		}
@@ -117,7 +122,12 @@ public class MergeArffFilesNew {
 		String name =instances2.attribute(att2).name();
     	String arr[] = name.split("\n", 10);
    	 		if(arr.length>1){
-	    	name = arr[0].toString()+arr[1].toString();
+   	 			name="";
+   	 			int splits = arr.length;
+   	 					for(int i =0; i<splits; i++){
+   	 					name = name + arr[i]	;
+   	 					}
+	
    	 		}
    	 		
    	 		
@@ -144,12 +154,12 @@ public class MergeArffFilesNew {
 		{
 			
 			Util.writeFile("@attribute " +"'"+ name +"original' " 
-			+ "{"+attValues+"}" +" \n", outputArffName, true);
+			+ "{"+attValues+"}" +"\n", outputArffName, true);
 		}
 		
 		else{
 			Util.writeFile("@attribute " +"'"+ name +"original' "  
-			+ type +" \n", outputArffName, true);
+			+ type +"\n", outputArffName, true);
 		}
 
 }
@@ -167,7 +177,7 @@ public class MergeArffFilesNew {
 		        System.out.println(i+" \n"); 
 
 
-				Util.writeFile(instances.instance(i).toString().trim()
+				Util.writeFile(instances.instance(i)
 						+ ", "+ instances2.instance(j)+ "\n", outputArffName, true );
 					}
 			
