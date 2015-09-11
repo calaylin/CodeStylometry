@@ -66,6 +66,7 @@ public class MergeArffFilesNew {
 				String type="";
 				String attValues="";
 				String name=instances.attribute(att).name();
+				name.replace("$", "dollarsign");
 			    	String arr[] = name.split("\n", 10);
 		   	 		if(arr.length>1){
 		   	 			name="";
@@ -120,6 +121,8 @@ public class MergeArffFilesNew {
 		String attValues="";
 		
 		String name =instances2.attribute(att2).name();
+		//TODO
+		//name.replace("$", "dollarsign");
     	String arr[] = name.split("\n", 10);
    	 		if(arr.length>1){
    	 			name="";
