@@ -57,8 +57,8 @@ public class MergeArffFilesNew {
 		Instances instances2 = new Instances(new FileReader(file2));
 		
 		for (int att=0; att < instances.numAttributes(); att++)
+
 		{		System.out.println(instances.attribute(att).name());
-				System.out.println(instances.attribute(att).isNumeric());
 				String type=null;
 				if(instances.attribute(att).isNumeric()){
 					type="numeric";
@@ -69,14 +69,14 @@ public class MergeArffFilesNew {
 				else if(instances.attribute(att).isString()){
 					type="string";
 				}
-				
-				Util.writeFile("@attribue " +instances.attribute(att).name() + "_decompiled "
+
+				System.out.println(type);
+				Util.writeFile("@attribue " +"`"+instances.attribute(att).name()+"'" + "_decompiled "
 				+ type +"\n", outputArffName, true);
 		}
 		
 		for (int att2=0; att2 < instances2.numAttributes(); att2++)
-		{		System.out.println(instances2.attribute(att2).name());
-				System.out.println(instances2.attribute(att2).isNumeric());
+		{	//	System.out.println(instances2.attribute(att2).name());
 				String type=null;
 				if(instances2.attribute(att2).isNumeric()){
 					type="numeric";
@@ -87,10 +87,12 @@ public class MergeArffFilesNew {
 				else if(instances2.attribute(att2).isString()){
 					type="string";
 				}
-				
-				Util.writeFile("@attribue " +instances.attribute(att2).name() + "_original "
+			//	System.out.println(type);
+
+				Util.writeFile("@attribue "+"`" +instances.attribute(att2).name() +"'"+ "_original "
 				+ type +"\n", outputArffName, true);
 		}
+
 		Util.writeFile( "\n" +"@data" +"\n", outputArffName, true);
 
 		
