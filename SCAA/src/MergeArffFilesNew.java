@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -57,43 +58,80 @@ public class MergeArffFilesNew {
 		Instances instances2 = new Instances(new FileReader(file2));
 		
 		for (int att=0; att < instances.numAttributes(); att++)
+//		for (int att=0; att < 50; att++)
 
-		{		System.out.println(instances.attribute(att).name());
-				String type=null;
+		{	//	System.out.println("instance no:"+att+"    "+instances.attribute(att).name());
+				String type="";
+				String attValues="";
 				if(instances.attribute(att).isNumeric()){
 					type="numeric";
 				}
-				else if(instances.attribute(att).isNominal()){
+				if(instances.attribute(att).isNominal()){
 					type="nominal";
+					Enumeration vals = instances.attribute(att).enumerateValues();
+					while(vals.hasMoreElements()){
+					attValues = attValues + vals.nextElement().toString();
+					attValues = attValues + ", ";}
 				}
-				else if(instances.attribute(att).isString()){
+			
+				if(instances.attribute(att).isString()){
 					type="string";
 				}
+	
+				
+				if(type.equals("nominal"))
+				{
+					Util.writeFile("@attribtue " +"'"+instances.attribute(att).name()+"decompiled' "
+					+ "{"+attValues+"}" +" \n", outputArffName, true);
+				}
+				
+				else
+				{
+					Util.writeFile("@attribute " +"'"+instances.attribute(att).name()+"decompiled' "
+					+ type +" \n", outputArffName, true);
+				}
 
-				System.out.println(type);
-				Util.writeFile("@attribue " +"'"+instances.attribute(att).name()+"'" + "decompiled "
-				+ type +"\n", outputArffName, true);
 		}
 		
 		for (int att2=0; att2 < instances2.numAttributes(); att2++)
-		{	//	System.out.println(instances2.attribute(att2).name());
-				String type=null;
-				if(instances2.attribute(att2).isNumeric()){
-					type="numeric";
-				}
-				else if(instances2.attribute(att2).isNominal()){
-					type="nominal";
-				}
-				else if(instances2.attribute(att2).isString()){
-					type="string";
-				}
-			//	System.out.println(type);
+		{		
+			//System.out.println("instance no:"+att2+"    "+instances2.attribute(att2).name());
+		String type="";
+		String attValues="";
+		if(instances2.attribute(att2).isNumeric()){
+			type="numeric";
+		}
+		
 
-				Util.writeFile("@attribue "+"'" +instances.attribute(att2).name() +"'"+ "original "
-				+ type +"\n", outputArffName, true);
+		
+		if(instances2.attribute(att2).isNominal()){
+			type="nominal";
+			Enumeration vals = instances2.attribute(att2).enumerateValues();
+			while(vals.hasMoreElements()){
+				attValues = attValues + vals.nextElement().toString();
+			attValues = attValues + ", ";}
+		}
+	
+		if(instances2.attribute(att2).isString()){
+			type="string";
 		}
 
-		Util.writeFile( "\n" +"@data" +"\n", outputArffName, true);
+		
+		if(type.equals("nominal"))
+		{
+			Util.writeFile("@attribute " +"'"+instances2.attribute(att2).name()+"original' " 
+			+ "{"+attValues+"}" +" \n", outputArffName, true);
+		}
+		
+		else{
+			Util.writeFile("@attribute " +"'"+instances2.attribute(att2).name()+"original' "  
+			+ type +" \n", outputArffName, true);
+		}
+
+}
+
+
+		Util.writeFile( "@data" +"\n", outputArffName, true);
 
 		
 		
@@ -109,7 +147,8 @@ public class MergeArffFilesNew {
 						+ ","+ instances2.instance(j)+ "\n", outputArffName, true );
 					}
 			
-		}}
-    }
+		}
+		}
+    } 
 	
 }
