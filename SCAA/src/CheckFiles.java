@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 import javax.script.ScriptException;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +22,8 @@ public class CheckFiles {
 	
     public static void main(String[] args) throws Exception, IOException, InterruptedException {
 
-    String testFolder="/Users/Aylin/Desktop/Princeton/BAA/datasets/c++/14FilesPerAuthor_2014_linux32/";
+    String testFolder="githubManySmallSnippets/";
+    cleanNonCPPFromFolder(testFolder);
 
     //to add .c to decompiled filenames
 	String testFolder_compiled ="/Users/Aylin/Desktop/Princeton/BAA/"
@@ -42,7 +45,7 @@ public class CheckFiles {
 	
 	
 	//to change a particular feature (authorname)
-	fixArffFeature(arffFile1);
+//	fixArffFeature(arffFile1);
 	
 /*	   String depFileName=null;
        List test_cpp_paths = Util.listCPPFiles(testFolder); //use this for preprocessing
@@ -58,8 +61,9 @@ public class CheckFiles {
 	public static void rearrangeFolders(String testFolder_compiled) throws IOException
 	{
    //add .c to each filename
-	List test_file_paths = Util.listAllFilesFolders(testFolder_compiled); //use this for preprocessing 
-	
+//	List test_file_paths = Util.listAllFilesFolders(testFolder_compiled); //use this for preprocessing 
+	List test_file_paths = Util.listAllFiles(testFolder_compiled); //use this for preprocessing 
+
     for(int k=0; k< test_file_paths.size(); k++){
 			System.out.println(test_file_paths.get(k).toString() + " "+k);
 
@@ -89,8 +93,9 @@ public class CheckFiles {
 	public static void addDotCToDecompiledFileName(String testFolder_compiled) throws IOException
 	{
    //add .c to each filename
-	List test_file_paths = Util.listAllFilesFolders(testFolder_compiled); //use this for preprocessing 
-	
+//	List test_file_paths = Util.listAllFilesFolders(testFolder_compiled); //use this for preprocessing 
+	List test_file_paths = Util.listAllFiles(testFolder_compiled); //use this for preprocessing 
+
     for(int k=0; k< test_file_paths.size(); k++){
 			System.out.println(test_file_paths.get(k).toString() + " "+k);
 
@@ -124,8 +129,31 @@ public class CheckFiles {
 	
 	
     
+public static void cleanNonCPPFromFolder(String cleanFolder) throws IOException{
+	List test_cpp_files = Util.listCPPFiles(cleanFolder);
+	List all_files = Util.listAllFiles(cleanFolder);
+	
+	
+	for(int i=0; i< all_files.size(); i++){
+       	
+		File file = new File(all_files.get(i).toString());
+		if((!(FilenameUtils.getExtension(file.getName()).equals("cpp"))) && (!(FilenameUtils.getExtension(file.getName()).equals("cc")))){
+			{	file.delete();
+				}
+			
+		if(FilenameUtils.getExtension(file.getName()).equals("cc")){
+			System.out.println(FilenameUtils.getExtension(file.getName()));
+	    	File destFile = new File(all_files.get(i).toString().substring(0, all_files.get(i).toString().length()-2)+"cpp");
+	    	FileUtils.copyFile(file, destFile);
+	    	file.delete();
+		}
+		}}
+		
+
+    
+        }
 public static void cleanNonCodeFromFolder(String cleanFolder){
-	List test_c_files = Util.listCFiles(cleanFolder);
+	List test_c_files = Util.listCPPFiles(cleanFolder);
 	for(int i=0; i< test_c_files.size(); i++){
        	
 		File c_file = new File(test_c_files.get(i).toString());

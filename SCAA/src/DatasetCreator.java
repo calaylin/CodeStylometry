@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 
 public class DatasetCreator 
@@ -262,7 +263,146 @@ public class DatasetCreator
 	    }
 	}
 
+	
 		
+		
+		
+		
+		
+		
+		
+		public static void copyAuthorsWithLOCFileNumber(String test_cpp_dir, String destinationFolder, int LOC, int minFile, boolean exactFileNumber) throws IOException{
+			File destFolderParent = new File(destinationFolder) ;
+		  	if(!destFolderParent.exists())
+	    	{
+				///System.out.println(file.getAbsolutePath());
+		  		destFolderParent.mkdirs();
+			}
+			
+		   File file = new File(test_cpp_dir);
+		   String ext;
+		   String[] directories = file.list(new FilenameFilter() 
+		   {
+		     @Override
+		     public boolean accept(File current, String name) 
+		     {
+		       return new File(current, name).isDirectory();
+		     }
+		   });
+		   System.out.println(Arrays.toString(directories));
+		   
+		   
+		   for(int j=0; j< directories.length; j++)
+
+		    {
+			   int fileCounter=0;
+			   int fileCounterExact=0;
+			   File code=null;
+			   System.out.println(directories[j].toString());
+			   String author_cpp_dir = test_cpp_dir + directories[j] +"/";
+			   List test_file_paths = Util.listCPPFiles(author_cpp_dir);
+			   for(int k=0; k< test_file_paths.size(); k++)
+			   {
+				    code = new File(test_file_paths.get(k).toString());
+				   if(code.isFile() && fileCounter <= minFile){
+				   int lines = Util.getLines(code);
+				   if(lines > LOC){
+					   fileCounter++;}
+				   }}
+					  
+				   for(int i=0; i< test_file_paths.size(); i++)
+				   {
+					   if(((exactFileNumber == true) && fileCounterExact < minFile ) ||
+							   (exactFileNumber == false)   ){
+					    code = new File(test_file_paths.get(i).toString());
+						   int lines = Util.getLines(code);
+
+					   if(fileCounter >= minFile){
+						   if(lines > LOC){
+							   fileCounterExact++;				
+							   System.out.println(directories[j].toString());
+							   ext = FilenameUtils.getExtension(test_file_paths.get(i).toString());
+							   File srcTXT= null;
+							   File srcDEP= null;
+							   File srcAST= null;
+							   File destFile = null;
+							   File destTXT= null;
+							   File destDEP= null;
+							   File destAST= null;
+							   
+						   if(ext.length()==3){
+							   System.out.println("extension:"+ext);
+
+
+						   srcTXT= new File(test_file_paths.get(i).toString().substring(0, code.getPath().length()-3)+"txt");
+						   srcDEP= new File(test_file_paths.get(i).toString().substring(0, code.getPath().length()-3)+"txt");
+						   srcAST= new File(test_file_paths.get(i).toString().substring(0, code.getPath().length()-3)+"txt");
+
+					   
+				      	 destFile = new File(destFolderParent +"/"+ directories[j].toString()
+				      			+"/"+ code.getName()) ;
+
+				    	 destTXT = new File(destFolderParent +"/"+ directories[j].toString()
+				      			+"/"+ code.getName().substring(0,code.getName().length()-3) +"txt") ;
+				    	 destDEP =  new File(destFolderParent +"/"+ directories[j].toString()
+				      			+"/"+ code.getName().substring(0,code.getName().length()-3) +"dep") ;
+				    	 destAST =  new File(destFolderParent +"/"+ directories[j].toString()
+				      			+"/"+ code.getName().substring(0,code.getName().length()-3) +"ast") ;
+						   }
+						   
+						   
+						   if(ext.length()==2){
+							   System.out.println("extension:"+ext);
+
+/*						   srcTXT= new File(test_file_paths.get(i).toString().substring(0, code.getPath().length()-2)+"txt");
+						   srcDEP= new File(test_file_paths.get(i).toString().substring(0, code.getPath().length()-2)+"txt");
+						   srcAST= new File(test_file_paths.get(i).toString().substring(0, code.getPath().length()-2)+"txt");
+
+					   
+				      	 destFile = new File(destFolderParent +"/"+ directories[j].toString()
+				      			+"/"+ code.getName()) ;
+
+				    	 destTXT = new File(destFolderParent +"/"+ directories[j].toString()
+				      			+"/"+ code.getName().substring(0,code.getName().length()-2) +"txt") ;
+				    	 destDEP =  new File(destFolderParent +"/"+ directories[j].toString()
+				      			+"/"+ code.getName().substring(0,code.getName().length()-2) +"dep") ;
+				    	 destAST =  new File(destFolderParent +"/"+ directories[j].toString()
+				      			+"/"+ code.getName().substring(0,code.getName().length()-2) +"ast") ;*/
+						   }
+						   File srcFolder = new File(author_cpp_dir); 
+
+				    	//make sure source exists
+				    	if(!srcFolder.exists())
+				    	{
+				           System.out.println("Directory does not exist.");
+				           //just exit
+				           System.exit(0);
+				        }
+				    	else
+				        {
+				 
+				           try{							   if(ext.length()==3){
+
+				       /* 	   String text =Util.readFile(test_file_paths.get(i).toString());
+				        	   Util.writeFile(text, destFolderParent +"/"+ directories[j].toString()
+				      			+"/"+ code.getName(), true);*/
+						      	    FileUtils.copyFile(code, destFile);
+						      	    FileUtils.copyFile(srcTXT, destTXT);
+						      	    FileUtils.copyFile(srcDEP, destDEP);
+						      	    FileUtils.copyFile(srcAST, destAST);
+				           }
+
+						      	} catch (IOException e) {
+						      	    e.printStackTrace();
+						      		System.out.println(code.getAbsolutePath());
+
+						      	}
+				        }
+				   }   }
+			   }	   
+		    }}
+		}
+
 		
 		
 
@@ -889,9 +1029,14 @@ public class DatasetCreator
 		
 		public static void main(String[] args) throws Exception, IOException, InterruptedException 
 		{
-		String test_cpp_dir = "test_cpp_dir";	
-		int fileCount = 6;
+		String test_cpp_dir = "githubManySmallSnippets/";	
+		int LOC = 10 ;
+		int minFile = 5;
+		copyAuthorsWithLOCFileNumber(test_cpp_dir, "githubManySmallSnippets" + "_minLOC"+LOC + "_minFiles"+
+		minFile+"/", LOC, minFile, true);
+
 //		copyAuthorsWithExactFileNumber(test_cpp_dir, fileCount);
+		int fileCount = 20;
 		String parentDir = "parentDir";	
 		String outputFolderName ="mergedAuthors";
 	//	mergeSameAuthors(parentDir, outputFolderName);
@@ -906,7 +1051,7 @@ public class DatasetCreator
 	//	createMalloryDatasets(trainFolder, malloryFolder, copy2Folder, 8, 6, 150);
 		
 //		organizeByCountry(folder, "byCountry2014", 2014);
-        copyAuthorsWithAtLeastFileNumber(trainFolder, 9);
+//        copyAuthorsWithAtLeastFileNumber(trainFolder, 9);
 		for(int i=14; i<15; i++){
 	        String folder = "/Users/Aylin/Desktop/Drexel/2014/ARLInternship/SCAA_Datasets/2012MoreFileUsers/";
 
