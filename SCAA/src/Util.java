@@ -28,7 +28,29 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 public class Util {
 	
-
+	static int getLines(File f) throws IOException { 
+		FileReader fr=new FileReader(f);
+		BufferedReader br=new BufferedReader(fr); 
+		int i=0;
+		boolean isEOF=false;
+		do{
+		String t=br.readLine();
+		if(t!=null){
+		isEOF=true;
+		t=t.replaceAll("\\n|\\t|\\s", "");
+		if((!t.equals("")) && (!t.startsWith("//"))) {
+		i = i + 1;
+		}
+		}
+		else {
+		isEOF=false;
+		}
+		}while(isEOF);
+		br.close();
+		fr.close();
+		return i;
+		}
+	
 	public static void writeFile(List<String> allLines,String fileName, boolean append)
 	{
 		File aFile = new File(fileName);
@@ -517,6 +539,7 @@ public class Util {
         	}else{
         		//if file, then copy it
         		//Use bytes stream to support all file types
+        		
         		InputStream in = new FileInputStream(src);
         	        OutputStream out = new FileOutputStream(dest); 
      
