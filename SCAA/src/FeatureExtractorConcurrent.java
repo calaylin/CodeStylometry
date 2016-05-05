@@ -31,8 +31,8 @@ public class FeatureExtractorConcurrent implements Runnable  {
 
 		    public static void main(String[] args){
 		    	
-				String test_dir = "/Users/aylin/Desktop/githubManySmallSnippets_minLOC5_minFiles90/";
-		    	String output_filename = "/Users/aylin/Desktop/"+"githubManySmallSnippets_minLOC5_minFiles90";
+				String test_dir = "";
+		    	String output_filename = "";
 				//test_dir.replace("/", "") ;
 		    	
 		    	//REMOVE COMMENTS
@@ -185,12 +185,6 @@ public class FeatureExtractorConcurrent implements Runnable  {
 		  
 		  
 
-
-	 text = "";
-  	//Writing the test arff
-  	//first specify relation
-	Util.writeFile("@relation "+"githubManySmallSnippets_minLOC5_minFiles90"+"\n"+"\n", output_filename, true);
-	Util.writeFile("@attribute instanceID {", output_filename, true);
    	List test_cpp_paths = Util.listCPPFiles(test_dir);
    	for(int j=0; j < test_cpp_paths.size();j++ )
 	{
