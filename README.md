@@ -29,6 +29,6 @@ If you want only syntactic features from the syntactic dataset that has only nod
 
 3) Extract features: from all text files in the directory structure, year-> author name -> all_txt_files_ofauthor (output from joern) extract the desired features to be written to feature vectors.  In order to extract some layout and other lexical features, run Driver.java in Naive Baseline.  If you want to merge the arffs from feature extractor and driver, run MergeArffFiles.java. (the instance order is important, modify code accordingly.)
 
-4)Once the arff file is written, open it in WEKA or call WEKA from java and use the necessary classifiers, and attribute selection methods to do authorship attribution.  AuthorClassification.java can also be used with a random forest and relaxed attribution.
+4) Once the arff file is written, open it in WEKA or call WEKA from java and use the necessary classifiers, and attribute selection methods to do authorship attribution.  AuthorClassification.java can also be used with a random forest and relaxed attribution.
 
 SCAA
